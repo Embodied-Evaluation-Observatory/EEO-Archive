@@ -1,0 +1,36 @@
+# Licence for data and derived tables
+
+This repository's data is released in three blocks. They are not interchangeable.
+
+## Block 1 — our compilation, CC-BY-4.0
+
+The table structure, the de-identification, the anonymous device ids, the stratum
+estimates, the design-effect and effective-sample columns, the summary rows, the
+dataset cards, and the protocol specification are released under the Creative Commons
+Attribution 4.0 International licence (CC-BY-4.0).
+
+Attribute as: `EEO Archive, release <id>. Embodied Evaluation Observatory.`
+
+## Block 2 — source records, source terms
+
+The per-attempt result fields — model, task, scene, outcome, score, and the
+configuration fields — originate in the public archive named in each
+`provenance/<release>.md` and each `public/<release>/DATASET_CARD.md`.
+
+Their rights remain with the source. This repository cites them as facts, not as
+licensed content, and grants no rights over them. Anyone redistributing those fields
+must comply with the source's terms, which may differ from CC-BY-4.0.
+
+The sealed source bytes are not redistributed here at all. Their hashes are published
+so that a holder can verify a copy.
+
+## Block 3 — quoted text
+
+Where a dataset card quotes the source's own rule (for example its exclusion criteria),
+the text is quoted, not asserted. Quotation does not make it our claim or our licence.
+
+## What is not claimed
+
+No licence here covers any third-party log file, video, or image. Those are not
+redistributed. Only their availability is reported, as two flags: whether a log exists
+and how many videos were attached.

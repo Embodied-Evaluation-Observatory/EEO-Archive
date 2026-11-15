@@ -1,0 +1,30 @@
+{
+  "title": "EEO Archive, release 2026-11-15: public tables of the Repetition and Discernibility Audit",
+  "upload_type": "dataset",
+  "license": {
+    "id": "other-open"
+  },
+  "access_right": "open",
+  "creators": [
+    {
+      "name": "Embodied Evaluation Observatory"
+    }
+  ],
+  "description": "<p>Per-attempt records of public robot evaluations, re-published as three flat tables, together with the intra-cluster correlation estimates, design effects and effective sample sizes that follow from them.</p><p>The observatory does not evaluate robots. It audits published evaluations for statistical reliability. Every estimate quoted here can be recomputed from the published table alone, without access to the sealed source bytes, using <code>tools/verify_public.py</code>.</p><p><b>Licence, three blocks.</b> (1) The compilation, the de-identification and all computed statistics are CC-BY-4.0; attribute as <i>EEO Archive, release 2026-11-15</i>. (2) The per-attempt result fields originate in the public source archive named in the dataset card; their rights remain with the source, and this deposit cites them as facts without relicensing them. (3) The sealed source bytes are not redistributed; their sha256 hashes are published so that a holder can verify a copy. The deposit as a whole is therefore offered as other-open, not as CC-BY-4.0 over third-party content.</p><p>Scope: this deposit contains records and reliability measurements, not evaluation conclusions about any robot or model.</p>",
+  "keywords": [
+    "robot benchmarking",
+    "evaluation variance",
+    "intra-cluster correlation",
+    "design effect",
+    "zero-failure certification",
+    "rank stability"
+  ],
+  "notes": "Release hash c0bd689f26900f488802ed21159c55c5a40ca5cde6064cb91fbe9795ce93b7db. Protocol: Repetition and Discernibility Audit (ReDA), version 1.0.",
+  "related_identifiers": [
+    {
+      "identifier": "https://embodied-evaluation.org",
+      "relation": "isDocumentedBy",
+      "resource_type": "publication-other"
+    }
+  ]
+}

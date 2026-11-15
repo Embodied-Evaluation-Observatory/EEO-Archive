@@ -1,0 +1,9 @@
+# never commit these
+private/
+**/private/
+*.tar.gz
+*.zip
+__pycache__/
+*.pyc
+.DS_Store
+.venv/

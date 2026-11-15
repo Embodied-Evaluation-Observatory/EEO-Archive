@@ -1,0 +1,45 @@
+{
+  "archive": "EEO Archive",
+  "release": "2026-11-15",
+  "frozen_at_utc": "2026-11-15T13:03:32+00:00",
+  "source_note": "https://robocurve.org/all-runs/",
+  "files": [
+    {
+      "file": "SOURCE.md",
+      "bytes": 1319,
+      "sha256": "7fa1edb65714a33beaef6e31cdb41892fe8d078191a0f09dc9bf0767513f1601",
+      "kind": "provenance",
+      "record_count": null
+    },
+    {
+      "file": "robocurve_allruns.json",
+      "bytes": 4903356,
+      "sha256": "5d960b810011077725dee438081e0978ee640f71494a84e915c69d87eebff850",
+      "record_count": 4239,
+      "shape": "dict:cohort_date,models,runs,safety,doll_study",
+      "count_key": "runs"
+    },
+    {
+      "file": "robospoof_runs.json",
+      "bytes": 463461,
+      "sha256": "7ce914b8c55cf3148e27706e48e62c44481934ebfa977b77232f6d936f79ee00",
+      "record_count": 900,
+      "shape": "list"
+    },
+    {
+      "file": "robospoof_records.json",
+      "bytes": 577559,
+      "sha256": "1927e27ca962ce39a0796fb4097617290d04d4cbe7d6028e3ebfe7575202147d",
+      "record_count": null,
+      "shape": "dict:robospoof-doll-normal_54828da6,robospoof-doll-normal_7cb2f6db,robospoof-doll-normal_8af7353e,robospoof-doll-normal_4064a65c,robospoof-doll-normal_72f56055,robospoof-doll-normal_2912abc4"
+    },
+    {
+      "file": "pooled_rho_raw.json",
+      "bytes": 880,
+      "sha256": "d05eef3dc5e436a4a3c0ed66846494d2fba9627fc2eff2f8edc25b1fb88a3fc7",
+      "record_count": 7,
+      "shape": "list"
+    }
+  ],
+  "note": "Files are held sealed and are not redistributed here. Their sha256 and sizes are published so that a holder of the bytes can prove they match this release. The public tables under public/2026-11-15/ are generated from these bytes by tools/export_public.py and can be recomputed by any reader with tools/verify_public.py."
+}

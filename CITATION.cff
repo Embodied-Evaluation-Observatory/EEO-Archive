@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use these tables, cite this release. A DOI is archived per release via Zenodo."
+title: "EEO Archive, release 2026-11-15: public tables of the Repetition and Discernibility Audit"
+type: dataset
+authors:
+  - name: "Embodied Evaluation Observatory"
+version: "2026-11-15"
+date-released: "2026-11-15"
+license: "CC-BY-4.0"
+url: "https://embodied-evaluation.org"
+abstract: >-
+  Per-attempt records of public robot evaluations, re-published as flat tables, together
+  with the intra-cluster correlation estimates, design effects and effective sample sizes
+  that follow from them. The observatory does not evaluate robots; it audits published
+  evaluations for statistical reliability. Every quoted estimate can be recomputed from
+  the published table with tools/verify_public.py.
+keywords:
+  - robot benchmarking
+  - evaluation variance
+  - intra-cluster correlation
+  - design effect
+  - zero-failure certification
+  - rank stability
+preferred-citation:
+  type: dataset
+  title: "EEO Archive, release 2026-11-15"
+  authors:
+    - name: "Embodied Evaluation Observatory"
+  version: "2026-11-15"
+  year: 2026
+  notes: "Release hash c0bd689f26900f488802ed21159c55c5a40ca5cde6064cb91fbe9795ce93b7db"

@@ -1,0 +1,161 @@
+# -*- coding: utf-8 -*-
+"""Reader-side verification: recompute the release summary from the public table.
+
+This is the check a reader can run without access to the sealed bytes.
+
+    python3 tools/verify_public.py --release 2026-11-15
+
+It (1) verifies every published file against checksums.txt, (2) recomputes each
+stratum and both family merges from attempts.csv alone, and (3) compares the result
+with release_summary.csv. Exit code 0 means the published numbers are what the
+published table implies.
+"""
+import argparse
+import collections
+import csv
+import hashlib
+import json
+import math
+import os
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
+ATT_REFUSAL = ('refused', 'refused_capability', 'guardrail_blocked')
+TOL = 0.0006
+
+
+def sha256(path):
+    h = hashlib.sha256()
+    with open(path, 'rb') as f:
+        for chunk in iter(lambda: f.read(1 << 20), b''):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def icc(groups):
+    g = [x for x in groups if len(x) >= 2]
+    m = len(g)
+    N = sum(len(x) for x in g)
+    gm = sum(sum(x) for x in g) / N
+    msw = sum(sum((v - sum(x) / len(x)) ** 2 for v in x) for x in g) / (N - m)
+    msb = sum(len(x) * (sum(x) / len(x) - gm) ** 2 for x in g) / (m - 1)
+    n0 = (N - sum(len(x) ** 2 for x in g) / N) / (m - 1)
+    den = msb + (n0 - 1) * msw
+    return (max(0.0, (msb - msw) / den) if den > 0 else 0.0), m, N
+
+
+def dersimonian_laird(items):
+    ys = [(math.atanh(min(max(v, 0.001), 0.999)), 1 / max(m - 3, 1)) for _, v, m, _ in items]
+    y = [a for a, _ in ys]
+    v = [b for _, b in ys]
+    w = [1 / x for x in v]
+    fe = sum(a * b for a, b in zip(y, w)) / sum(w)
+    Q = sum(wi * (yi - fe) ** 2 for wi, yi in zip(w, y))
+    dfree = len(y) - 1
+    C = sum(w) - sum(wi ** 2 for wi in w) / sum(w)
+    tau = max(0.0, (Q - dfree) / C) if C > 0 else 0.0
+    wr = [1 / (x + tau) for x in v]
+    pe = sum(a * b for a, b in zip(y, wr)) / sum(wr)
+    se = math.sqrt(1 / sum(wr))
+    return math.tanh(pe), math.tanh(pe - 1.96 * se), math.tanh(pe + 1.96 * se)
+
+
+def outcome_value(row, rule):
+    if rule == 'succ':
+        return 1.0 if row['score'] not in ('', None) and abs(float(row['score']) - 1.0) < 1e-9 else 0.0
+    if rule == 'comp':
+        return 1.0 if row['outcome'] == 'attempted_succeeded' else 0.0
+    if rule == 'att':
+        return 0.0 if row['outcome'] in ATT_REFUSAL else 1.0
+    raise ValueError(rule)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--release', required=True)
+    ap.add_argument('--root', default=ROOT)
+    args = ap.parse_args()
+
+    pub = os.path.join(args.root, 'public', args.release)
+    attempts_path = os.path.join(pub, 'attempts.csv')
+    if not os.path.isfile(attempts_path):
+        sys.exit('MISSING: %s' % attempts_path)
+
+    # 1 -- file integrity
+    bad = []
+    with open(os.path.join(pub, 'checksums.txt'), encoding='utf-8') as f:
+        for line in f:
+            want, name = line.split()
+            p = os.path.join(pub, name)
+            if not os.path.isfile(p) or sha256(p) != want:
+                bad.append(name)
+    if bad:
+        sys.exit('FAIL: published files do not match checksums.txt: %s' % ', '.join(bad))
+    print('checksums: all published files match')
+
+    rows = list(csv.DictReader(open(attempts_path, encoding='utf-8')))
+    print('attempts: %d rows' % len(rows))
+
+    # 2 -- recompute
+    strata = [
+        ('RoboDojo-RC task success', 'robodojo-rc-tier-1', 'succ', None, 'perf'),
+        ('Simple-tasks task success', 'simple-tasks', 'succ', None, 'perf'),
+        ('RoboHarm completion', 'roboharm-v1', 'comp', None, 'perf'),
+    ]
+    for scene in ('unaltered', 'blurred', 'doctored'):
+        strata.append(('RoboSpoof attempt (%s)' % scene, 'robospoof', 'att', scene, 'att'))
+    strata.append(('RoboHarm attempt', 'roboharm-v1', 'att', None, 'att'))
+
+    got = {}
+    for name, bench, rule, scene, fam in strata:
+        sub = [r for r in rows if r['benchmark'] == bench
+               and (scene is None or r['scene'] == scene)]
+        groups = collections.defaultdict(list)
+        for r in sub:
+            groups[(r['model'], r['task'])].append(outcome_value(r, rule))
+        rho, m, N = icc(list(groups.values()))
+        got[name] = (rho, m, N, fam)
+
+    merged = {}
+    for fam in ('perf', 'att'):
+        items = [(n, v[0], v[1], v[2]) for n, v in got.items() if v[3] == fam]
+        merged[fam] = dersimonian_laird(items)
+
+    # 3 -- compare
+    ref = {r['name']: r for r in csv.DictReader(open(os.path.join(pub, 'release_summary.csv'),
+                                                   encoding='utf-8'))}
+    fails = []
+    for name, (rho, m, N, fam) in got.items():
+        if name not in ref:
+            fails.append('%s missing from release_summary.csv' % name)
+            continue
+        if abs(float(ref[name]['rho']) - rho) > TOL:
+            fails.append('%s rho %.4f vs published %s' % (name, rho, ref[name]['rho']))
+        if int(ref[name]['cells']) != m or int(ref[name]['trials']) != N:
+            fails.append('%s counts %d/%d vs published %s/%s'
+                         % (name, m, N, ref[name]['cells'], ref[name]['trials']))
+        else:
+            print('  %-32s rho=%.4f cells=%3d trials=%4d  ok' % (name, rho, m, N))
+
+    for fam, label in (('perf', 'completion_family'), ('att', 'attempt_family')):
+        rho, lo, hi = merged[fam]
+        r = ref[label]
+        if abs(float(r['rho']) - rho) > TOL:
+            fails.append('%s rho %.4f vs published %s' % (label, rho, r['rho']))
+        for key, val in (('ci_lo', lo), ('ci_hi', hi)):
+            if abs(float(r[key]) - val) > TOL:
+                fails.append('%s %s %.4f vs published %s' % (label, key, val, r[key]))
+        print('  %-32s rho=%.4f CI=[%.4f, %.4f]  ok' % (label, rho, lo, hi))
+
+    if fails:
+        print('\nFAIL')
+        for f in fails:
+            print('  -', f)
+        return 1
+    print('\nPASS: published summary reproduces from attempts.csv')
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())
