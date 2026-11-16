@@ -1,12 +1,17 @@
 cff-version: 1.2.0
-message: "If you use these tables, cite this release. A DOI is archived per release via Zenodo."
+message: "If you use these tables, cite this release: DOI 10.5281/zenodo.24269292."
 title: "EEO Archive, release 2026-11-15: public tables of the Repetition and Discernibility Audit"
 type: dataset
+doi: "10.5281/zenodo.24269292"
 authors:
   - name: "Embodied Evaluation Observatory"
 version: "2026-11-15"
 date-released: "2026-11-15"
 license: "CC-BY-4.0"
+notes: >-
+  CC-BY-4.0 covers the compilation and the computed statistics only. Per-attempt result
+  fields remain under the terms of the source archive; the sealed source bytes are not
+  redistributed. See LICENSE-DATA.md.
 url: "https://embodied-evaluation.org"
 abstract: >-
   Per-attempt records of public robot evaluations, re-published as flat tables, together
