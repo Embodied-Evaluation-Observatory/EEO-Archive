@@ -1,0 +1,188 @@
+{
+  "assertions": [
+    {
+      "id": "C1.1",
+      "interval": {
+        "hi": 0.6127,
+        "level": 0.95,
+        "lo": 0.3463
+      },
+      "note": "由 attempts.csv 的 outcome 字段按 comp 规则重算，与 release_summary.csv 一致（容差 0.0006）",
+      "quantity": "completion family pooled rho",
+      "status": "verified",
+      "unit": "correlation",
+      "value": 0.4909
+    },
+    {
+      "id": "C1.2",
+      "interval": {
+        "hi": 0.7679,
+        "level": 0.95,
+        "lo": 0.5433
+      },
+      "note": "同上，按 att 规则",
+      "quantity": "attempt family pooled rho",
+      "status": "verified",
+      "unit": "correlation",
+      "value": 0.6707
+    },
+    {
+      "id": "C1.3",
+      "note": "格数按 (model, task) 去重，尝试数为行数",
+      "quantity": "cells and attempts (completion family)",
+      "status": "verified",
+      "unit": "count",
+      "value": {
+        "attempts": 3069,
+        "cells": 133
+      }
+    },
+    {
+      "id": "C1.4",
+      "note": "同上",
+      "quantity": "cells and attempts (attempt family)",
+      "status": "verified",
+      "unit": "count",
+      "value": {
+        "attempts": 1598,
+        "cells": 105
+      }
+    },
+    {
+      "id": "C1.5",
+      "note": "deff = 1+(J−1)ρ，ρ 取完成族合并值",
+      "quantity": "design effect at J=20",
+      "status": "verified",
+      "unit": "ratio",
+      "value": 10.327
+    },
+    {
+      "id": "C1.7",
+      "note": "由 cells.csv 按 family=perf 计数得到，分辨率按此设计计算",
+      "quantity": "cells per model (completion family)",
+      "status": "verified",
+      "unit": "cells",
+      "value": {
+        "max": 12,
+        "median": 6,
+        "min": 1
+      }
+    },
+    {
+      "id": "C1.6",
+      "note": "n_eff = J/deff；二十次买约两次",
+      "quantity": "effective attempts per cell at J=20",
+      "status": "verified",
+      "unit": "attempts",
+      "value": 1.937
+    }
+  ],
+  "assumptions": [
+    {
+      "anchor": "rda-protocol.md §3",
+      "id": "A1",
+      "statement": "同一格内 20 次重复视为可交换（exchangeable），组内相关按单因素随机效应 ICC(1) 近似。若重复间存在顺序效应（学习、磨损、缓存预热），ICC 会低估真实相关。",
+      "status": "anchored"
+    },
+    {
+      "anchor": "rda-protocol.md §3",
+      "id": "A2",
+      "statement": "合并相关采用 Fisher-z 与 DerSimonian–Laird 随机效应权重；相关尺度上的正态近似在 |ρ| 接近 1 或格数很少时不精确。",
+      "status": "anchored"
+    },
+    {
+      "anchor": "rda-protocol.md §3",
+      "id": "A3",
+      "statement": "完成族由三个分层（96+7+30 格）合并；合并值描述该族平均，不描述任何单一分层，层间异质性越大解释力越弱。",
+      "status": "anchored"
+    },
+    {
+      "anchor": "none",
+      "id": "A4",
+      "statement": "一格定义为同一模型与同一任务的尝试集合；跨族出现的同格在 cells.csv 中重复计数（族级 238，跨族去重 248），本证书不跨族去重。",
+      "status": "none"
+    },
+    {
+      "anchor": "rda-protocol.md §2",
+      "id": "A5",
+      "statement": "结果采用发布方原始 outcome 与 score 字段，未重新判分；判分器自身的可靠性不在本证书范围。",
+      "status": "anchored"
+    },
+    {
+      "anchor": "rda-protocol.md §4",
+      "id": "A6",
+      "statement": "分辨率按二比例差的标准误推得，取 p=0.5 最不利情形与双侧 α=0.05；真实成功率偏离 0.5 时 δ* 更小，故此处为保守上界。",
+      "status": "source-implied"
+    }
+  ],
+  "certificate_hash": "ac89161e924442b1147695abc5be3873a2a85dd6db56a140d4125298f46f3b0b",
+  "certificate_id": "ReDA-C-2026-11-15-004",
+  "claim": {
+    "claim_level": "established-by-us",
+    "id": "C1-repetition-ceiling",
+    "scope": "release 2026-11-15 完成族（133 格 / 3,069 次尝试）；不适用于其他发布或其他族。",
+    "statement": "在 2026-11-15 发布的公开层中，同格重复买不到精度：每格 20 次尝试在设计效应下只相当于约 2 次独立尝试；完成族每模型格数中位为 6 格（范围 1–12），在该设计下低于约 41 个百分点的成功率差异不可分辨。"
+  },
+  "estimator": {
+    "definition": "格内 ICC(1) 按单因素随机效应估计；跨格 Fisher-z 后按 DerSimonian–Laird 随机效应权重合并；区间为合并标准误 ±1.96 反变换。设计效应 deff=1+(J−1)ρ，有效尝试 n_eff=J/deff。",
+    "id": "icc1_dl_fisherz"
+  },
+  "input": {
+    "file_sha256": {
+      "DATASET_CARD.md": "8904588f966c3306a05d695d204421da062e9143f3876293d6207d481a7e9cc8",
+      "attempts.csv": "6ed3df820735c924efb81a69ddfed4bc17697cac54ab45121c433e3e9a8be9d9",
+      "cells.csv": "9dca1b1413d75182a9a7f4be299db207bd77ce4293a67592cc7b6d381358b131",
+      "cost_buckets.json": "65e76f642e8b0617619c3d90701fd8f51daedcf4f6fb38505d34841f0495f9e6",
+      "release_summary.csv": "52304463351ea84281d52d86b41b5069fbfe62775716b10a0e01050b1724ca13"
+    },
+    "files": [
+      "DATASET_CARD.md",
+      "attempts.csv",
+      "cells.csv",
+      "cost_buckets.json",
+      "release_summary.csv"
+    ],
+    "release": "2026-11-15"
+  },
+  "issued_at": "2026-11-16T20:45:00+08:00",
+  "issuer": {
+    "name": "Embodied Evaluation Observatory",
+    "protocol_version": "ReDA-1.0"
+  },
+  "not_certified": [
+    "可分辨比较对的数量（4/120）——依赖 max-T 逐步程序的实现版本，未纳入本证书",
+    "来源集中度与选择性提交等 provenance 指标",
+    "判分器（judge）自身的可靠性",
+    "任何跨发布的比较；本证书只覆盖 2026-11-15 一个发布",
+    "任何模型名次；本证书不产生排序"
+  ],
+  "resolution": {
+    "alpha": 0.05,
+    "delta_star": 0.4066,
+    "delta_star_by_design": {
+      "1": 0.9959,
+      "12": 0.2875,
+      "6": 0.4066
+    },
+    "design": {
+      "attempts_per_cell": 20,
+      "cells_per_model": 6,
+      "cells_per_model_max": 12,
+      "cells_per_model_min": 1,
+      "rho": 0.4909
+    },
+    "note": "δ* = z(1−α/2)·sqrt(2p(1−p)/n_eff_model)，p=0.5 最不利情形；n_eff_model = 格数 × n_eff_cell。小于 δ* 的差异在该设计下不可分辨，应记为 tier 内并列而非排序。",
+    "unit": "success-rate difference (proportion)"
+  },
+  "schema_version": "reda-cert-1.0",
+  "supersedes": "ReDA-C-2026-11-15-003",
+  "verification": {
+    "command": "python3 tools/verify_certificate.py --cert certificates/2026-11-15/C1.json --release 2026-11-15",
+    "tolerance": 0.0006,
+    "toolchain": {
+      "canonical_json": "sort_keys, separators=(\",\",\":\"), utf-8",
+      "hash": "sha256",
+      "python": "3.10+ (stdlib only)"
+    }
+  }
+}

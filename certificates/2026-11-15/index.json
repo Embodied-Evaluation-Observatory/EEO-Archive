@@ -1,0 +1,50 @@
+{
+  "release": "2026-11-15",
+  "note": "证书只追加、不覆盖。作废不删除，以 superseded 标注并指向取代它的证书；这与 archive 的更正纪律一致。",
+  "certificates": [
+    {
+      "id": "ReDA-C-2026-11-15-001",
+      "file": "C1.json",
+      "status": "superseded",
+      "superseded_by": "ReDA-C-2026-11-15-002",
+      "reason": "设计参数取预设 m=20 格，与 cells.csv 实测中位 6 格不符；delta* 应由 22.3pp 更正。",
+      "certificate_hash": "99f9091aab7974fcbf964a66ea6ee862df2393b3b63262091dff99f4c404e4c0"
+    },
+    {
+      "id": "ReDA-C-2026-11-15-002",
+      "file": "C2.json",
+      "status": "superseded",
+      "superseded_by": "ReDA-C-2026-11-15-003",
+      "reason": "claim 正文仍写“每模型 20 格”，与自身 design 字段（中位 6 格）矛盾；数值正确但文本自相矛盾。",
+      "certificate_hash": "e511cd583ce9de17615cc50d317929fabaed7c5556b6828e0f57fdc73ee4b2db"
+    },
+    {
+      "id": "ReDA-C-2026-11-15-003",
+      "file": "C3.json",
+      "status": "superseded",
+      "supersedes": "ReDA-C-2026-11-15-002",
+      "key_result": "完成族 rho=0.4909 [0.3463,0.6127]；deff(20)=10.327；n_eff/cell=1.937；中位 6 格 delta*=40.7pp（1 格 99.6pp，12 格 28.8pp）",
+      "certificate_hash": "f39c8b1798e7890b428ec769a6634081112c1a3e535527f1b3a6d8c6b4e73c4c",
+      "superseded_by": "ReDA-C-2026-11-15-004",
+      "reason": "协议对外缩写由 RDA 改为 ReDA、锚点路径由 docs/ 更正为仓库根目录，导致证书的 protocol_version 与锚点失效；数值未变，仅元数据更正。"
+    },
+    {
+      "id": "ReDA-C-2026-11-15-004",
+      "file": "C4.json",
+      "status": "superseded",
+      "supersedes": "ReDA-C-2026-11-15-003",
+      "key_result": "完成族 rho=0.4909 [0.3463,0.6127]；deff(20)=10.327；n_eff/cell=1.937；中位 6 格 delta*=40.7pp；协议版本 ReDA-1.0",
+      "certificate_hash": "ac89161e924442b1147695abc5be3873a2a85dd6db56a140d4125298f46f3b0b",
+      "superseded_by": "ReDA-C-2026-11-15-005",
+      "reason": "协议文件名由 rda-protocol.md 改为 reda-protocol.md，锚点随之失效；数值未变。"
+    },
+    {
+      "id": "ReDA-C-2026-11-15-005",
+      "file": "C5.json",
+      "status": "active",
+      "supersedes": "ReDA-C-2026-11-15-004",
+      "key_result": "完成族 rho=0.4909 [0.3463,0.6127]；deff(20)=10.327；n_eff/cell=1.937；中位 6 格 delta*=40.7pp；协议 ReDA-1.0",
+      "certificate_hash": "9880adcd227663bcdc02534ae998052b0822ef17c23f15ac6703d71c8e808ae9"
+    }
+  ]
+}
