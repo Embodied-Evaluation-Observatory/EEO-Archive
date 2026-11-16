@@ -24,7 +24,7 @@ reader can recompute every number we quote.
 | `tools/export_public.py` | produces the public tables from sealed bytes |
 | `tools/verify_public.py` | recomputes the summary from the public table alone |
 | `tools/freeze_release.py` | creates an immutable release; refuses to overwrite one |
-| `site/rda-protocol.md` | the ReDA protocol specification, version 1.0 |
+| `reda-protocol.md` | the ReDA protocol specification, version 1.0 |
 
 ## Check it
 

@@ -6,7 +6,7 @@
 Rules enforced by this script, not by convention:
   * every input file is sha256-checked against checksums.txt before anything is computed;
   * every asserted number is recomputed here, never copied from a summary written elsewhere;
-  * every assumption carries an anchor into docs/rda-protocol.md or is marked 'none';
+  * every assumption carries an anchor into reda-protocol.md or is marked 'none';
   * if a recomputed number disagrees with release_summary.csv beyond TOL, the certificate is REFUSED.
 """
 import argparse, collections, csv, hashlib, json, math, os, sys
