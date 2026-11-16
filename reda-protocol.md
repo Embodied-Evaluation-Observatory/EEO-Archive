@@ -1,6 +1,6 @@
 # ReDA Protocol — Repetition and Discernibility Audit
 
-**Version** ReDA-1.0 · **Institution** Embodied Evaluation Observatory · **Status** public draft
+**Version** ReDA-1.1 · **Institution** Embodied Evaluation Observatory · **Status** public draft
 
 ## 1. What this protocol does
 
@@ -10,6 +10,13 @@ cell, how many attempts the counts actually buy, which model pairs are separable
 whether the record's provenance shows signs of selective submission. It produces no
 robot performance data. Every number it reports is a statement about an existing
 measurement, not a new measurement.
+
+The Audit is a reading aid, not an authority. It offers a second view of a record that
+someone else collected, in the form of intervals, tiers and bounds, so that a reader can
+judge a claim for themselves. It does not adjudicate whether a paper is correct, does not
+certify a system as capable or safe, and does not rank in place of the benchmark that ran
+the evaluation. A number here is usable when it changes what a reader would otherwise have
+assumed; it is not usable as a verdict, and no reader is obliged to accept it.
 
 ## 2. Scope and non-goals
 
@@ -38,6 +45,13 @@ level δ is `1 − δ^(1/n_eff)`. At J = 20, δ = 0.05 the independent reading g
 the correlation-adjusted reading gives about 0.77. Both are shown, because the gap
 between them is the point.
 
+Substituting `n_eff` into the Clopper–Pearson bound is a first-order move, since that
+bound assumes independent draws. A simulation over 36 combinations of ρ, J and cell
+count, with cluster-level rates drawn from a Beta distribution and conditioned on zero
+failures, gave coverage 1.000 at every point, with bounds well above the true rate. The
+reading is therefore conservative in the region where zero-failure reporting is
+possible.
+
 ## 4. Discernibility
 
 For a pair of models, separability is decided on the interval of the difference, not on
@@ -48,8 +62,14 @@ Tiers are cut by a step-down max-T procedure that controls the probability of an
 false split.
 
 Required cells: to certify a bound λ with zero failures at level δ under correlation ρ,
-`n ≥ ρ ln δ / ln(1 − λ)`. For ρ = 0.491, δ = 0.05: λ = 1e-2 needs 146 cells, λ = 1e-3
-needs 1,470, λ = 1e-6 needs 1,470,904. Under ρ = 0.01 the same λ = 1e-3 needs 30. The
+with J attempts per cell, `n ≥ deff · ln δ / (J · ln(1 − λ))`, where
+`deff = 1 + (J − 1) ρ`. For ρ = 0.491, J = 20, δ = 0.05: λ = 1e-2 needs 154 cells,
+λ = 1e-3 needs 1,546, λ = 1e-6 needs 1,546,000.
+
+The independent baseline is about 3,000 attempts for λ = 1e-3, or 150 cells at J = 20;
+the correlated requirement exceeds it by the design effect, 10.3, and that factor holds
+at every target. Comparisons with a much smaller figure rest on the limit J → ∞, which
+no benchmark reaches: at ρ = 0.01 and J = 20 the same target needs 178 cells. The
 protocol always publishes both the number and the ρ it assumed.
 
 ## 5. Provenance audit
@@ -91,3 +111,29 @@ protocol version, the release id, and the hash of the frozen input.
 Protocol changes are announced before the release that adopts them, and the previous
 version stays citable. ReDA-1.0 is the first public version; it is the version under
 which the initial archive release was frozen.
+ReDA-1.1 restates the cell requirement of §4 in its finite-J form and adds a
+coverage note to §3; see §9. The release frozen under ReDA-1.0 stays citable and is
+not withdrawn.
+
+## 9. Revision notes
+
+ReDA-1.1 (2026-11-17) fixes two errors of the public draft and adds one limitation
+statement. No definition, threshold or certificate output changes.
+
+1. §4 cell requirement. ReDA-1.0 gave `n ≥ ρ ln δ / ln(1 − λ)`, which is the J → ∞
+   limit. The finite-J form differs by the factor deff/J, so the published counts were
+   low: 146 becomes 154 for λ = 1e-2, 1,470 becomes 1,546 for 1e-3, and 1,470,904
+   becomes 1,546,000 for 1e-6. The version also quoted 30 cells for ρ = 0.01, a figure
+   that is only valid in the same limit; at J = 20 the correct count is 178.
+2. §4 comparison baseline. The draft compared the correlated requirement with 30 cells
+   rather than with the independent requirement at the same J, 150 cells. The honest
+   statement is that correlation multiplies the requirement by the design effect,
+   10.3 at the pooled estimate, not that it changes the requirement by orders of
+   magnitude.
+3. §3 zero-failure bound. The substitution of n_eff into the Clopper–Pearson bound is
+   first-order. The version now states this and reports a simulation of coverage, which
+   came out conservative at all 36 grid points.
+
+The corrected counts are larger than the draft's, so any figure computed from §4 under
+ReDA-1.0 should be recomputed; figures produced by §3 are unaffected in direction and
+remain quotable as upper bounds.

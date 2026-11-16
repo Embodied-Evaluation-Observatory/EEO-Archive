@@ -41,10 +41,20 @@
     {
       "id": "ReDA-C-2026-11-15-005",
       "file": "C5.json",
-      "status": "active",
+      "status": "superseded",
       "supersedes": "ReDA-C-2026-11-15-004",
       "key_result": "完成族 rho=0.4909 [0.3463,0.6127]；deff(20)=10.327；n_eff/cell=1.937；中位 6 格 delta*=40.7pp；协议 ReDA-1.0",
-      "certificate_hash": "9880adcd227663bcdc02534ae998052b0822ef17c23f15ac6703d71c8e808ae9"
+      "certificate_hash": "9880adcd227663bcdc02534ae998052b0822ef17c23f15ac6703d71c8e808ae9",
+      "superseded_by": "ReDA-C-2026-11-15-006",
+      "reason": "协议由 ReDA-1.0 修订为 ReDA-1.1，§4 所需格数改为有限 J 形式、§3 增近似说明；本证书数值未变，但所锚定的协议文本已变，故重建。"
+    },
+    {
+      "id": "ReDA-C-2026-11-15-006",
+      "file": "C6.json",
+      "status": "active",
+      "supersedes": "ReDA-C-2026-11-15-005",
+      "reason": "锚定 ReDA-1.1；ρ、格数、δ*=0.4066 与 C5 相同，仅协议版本与锚文本更新。",
+      "certificate_hash": "57f4fe0a2ac5d8facd88a358b08c159e499fbccfb509114a880ee150b4c44ee9"
     }
   ]
 }

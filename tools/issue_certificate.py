@@ -6,7 +6,7 @@
 Rules enforced by this script, not by convention:
   * every input file is sha256-checked against checksums.txt before anything is computed;
   * every asserted number is recomputed here, never copied from a summary written elsewhere;
-  * every assumption carries an anchor into reda-protocol.md or is marked 'none';
+  * every assumption carries an anchor into docs/rda-protocol.md or is marked 'none';
   * if a recomputed number disagrees with release_summary.csv beyond TOL, the certificate is REFUSED.
 """
 import argparse, collections, csv, hashlib, json, math, os, sys
@@ -78,6 +78,16 @@ STRATA = [
 ]
 
 
+def read_protocol_version(root):
+    import re
+    for cand in (root / "reda-protocol.md", root.parent / "reda-protocol.md"):
+        if cand.exists():
+            m = re.search(r"\*\*Version\*\*\s+(ReDA-[0-9.]+)", cand.read_text(encoding="utf-8"))
+            if m:
+                return m.group(1)
+    return "unknown"
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--release', required=True)
@@ -88,6 +98,9 @@ def main():
     ap.add_argument('--seq', default='001')
     ap.add_argument('--alpha', type=float, default=0.05)
     args = ap.parse_args()
+
+    from pathlib import Path as _P
+    protocol_version = read_protocol_version(_P(args.root))
 
     pub = os.path.join(args.root, 'public', args.release)
     if not os.path.isdir(pub):
@@ -178,7 +191,7 @@ def main():
         "schema_version": "reda-cert-1.0",
         "certificate_id": f"ReDA-C-{args.release}-{args.seq}",
         "issued_at": "2026-11-16T20:45:00+08:00",
-        "issuer": {"name": "Embodied Evaluation Observatory", "protocol_version": "ReDA-1.0"},
+        "issuer": {"name": "Embodied Evaluation Observatory", "protocol_version": protocol_version},
         "supersedes": args.supersedes or None,
         "claim": {
             "id": "C1-repetition-ceiling",
