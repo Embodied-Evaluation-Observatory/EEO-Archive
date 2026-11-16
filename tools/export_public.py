@@ -310,7 +310,7 @@ by anyone. This release was frozen as release `{release}` (release hash
 | Records | {records} attempts, {cells} cells |
 | Models | {models} |
 | Benchmarks | {benchmarks} |
-| Protocol | Repetition and Discernibility Audit (RDA), version 1.0 |
+| Protocol | Repetition and Discernibility Audit (ReDA), version 1.0 |
 
 ## Tables
 
