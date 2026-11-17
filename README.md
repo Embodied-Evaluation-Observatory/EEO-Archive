@@ -76,11 +76,11 @@ Three blocks, not one.
 
 ```
 EEO Archive, release 2026-11-18. Embodied Evaluation Observatory.
-DOI 10.5281/zenodo.24288113 (concept 10.5281/zenodo.24269291)
+DOI 10.5281/zenodo.24325457 (concept 10.5281/zenodo.24269291)
 Snapshot sha256 5d960b810011077725dee438081e0978ee640f71494a84e915c69d87eebff850.
 ```
 
-Version DOI 10.5281/zenodo.24288113 identifies the 2026-11-18 deposit, which carries the
+Version DOI 10.5281/zenodo.24325457 identifies the 2026-11-18 deposit, which carries the
 corrected 2026-11-17 tables and the redistributed snapshot. The earlier deposit
 (10.5281/zenodo.24269292) remains citable for the 2026-11-15 bytes and is not withdrawn.
 When citing the archive as a continuing series rather than a single release, use the concept

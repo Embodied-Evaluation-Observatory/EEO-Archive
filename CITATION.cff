@@ -1,8 +1,8 @@
 cff-version: 1.2.0
-message: "If you use these tables, cite this release: DOI 10.5281/zenodo.24288113."
+message: "If you use these tables, cite this release: DOI 10.5281/zenodo.24325457."
 title: "EEO Archive, release 2026-11-15: public tables of the Repetition and Discernibility Audit"
 type: dataset
-doi: "10.5281/zenodo.24288113"
+doi: "10.5281/zenodo.24325457"
 authors:
   - name: "Embodied Evaluation Observatory"
 version: "2026-11-15"
