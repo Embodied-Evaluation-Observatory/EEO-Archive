@@ -1,0 +1,17 @@
+{
+  "archive": "EEO Archive",
+  "release": "2026-11-17",
+  "frozen_at_utc": "2026-11-17T00:00:00+00:00",
+  "source_note": "https://robocurve.org/all-runs/",
+  "files": [
+    {
+      "file": "robocurve_allruns.json",
+      "bytes": 4903356,
+      "sha256": "5d960b810011077725dee438081e0978ee640f71494a84e915c69d87eebff850",
+      "record_count": 4239,
+      "shape": "dict:cohort_date,models,runs,safety,doll_study",
+      "count_key": "runs"
+    }
+  ],
+  "note": "Input bytes are published alongside this release so the export step can be re-run from the source snapshot, not only from the published tables."
+}

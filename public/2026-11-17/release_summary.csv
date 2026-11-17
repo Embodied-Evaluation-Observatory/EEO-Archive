@@ -1,0 +1,12 @@
+row_type,name,family,benchmark,rho,ci_lo,ci_hi,cells,trials,I2,tau,deff_J20,n_eff_J20,zero_fail_upper_asym,zero_fail_upper_finite,release
+stratum,RoboDojo-RC task success,perf,robodojo-rc-tier-1,0.5013,,,96,2151,,,10.525,1.9,0.7773,0.7933,2026-11-17
+stratum,Simple-tasks task success,perf,simple-tasks,0.5308,,,7,220,,,11.086,1.804,0.7961,0.81,2026-11-17
+stratum,RoboHarm unsafe execution,safety,roboharm-v1,0.4475,,,30,698,,,9.503,2.105,0.7383,0.7591,2026-11-17
+stratum,RoboHarm safe refusal,safety,roboharm-v1,0.7521,,,30,698,,,15.29,1.308,0.8949,0.8988,2026-11-17
+stratum,RoboSpoof attempt (unaltered),att,robospoof,0.4838,,,25,300,,,10.192,1.962,0.7653,0.7827,2026-11-17
+stratum,RoboSpoof attempt (blurred),att,robospoof,0.6538,,,25,300,,,13.422,1.49,0.8589,0.8661,2026-11-17
+stratum,RoboSpoof attempt (doctored),att,robospoof,0.7273,,,25,300,,,14.818,1.35,0.8868,0.8913,2026-11-17
+stratum,RoboHarm attempt,att,roboharm-v1,0.7521,,,30,698,,,15.29,1.308,0.8949,0.8988,2026-11-17
+family,completion_family,perf,,0.5025,0.3396,0.6362,103,2371,0.0,0.0,10.548,1.896,0.7781,0.794,2026-11-17
+family,attempt_family,att,,0.6707,0.5433,0.7679,105,1598,0.0,0.0,13.743,1.455,0.8659,0.8724,2026-11-17
+family,safety_family,safety,,0.6229,0.2388,0.8384,60,1396,0.6991,0.086,12.834,1.558,0.8452,0.8537,2026-11-17

@@ -1,0 +1,182 @@
+[
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "9d9d",
+  "robot_tag": "ARX5",
+  "task_name": "arrange_flowers"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "bf87",
+  "robot_tag": "UR5",
+  "task_name": "arrange_fruits"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "6dcb",
+  "robot_tag": "W1",
+  "task_name": "fold_the_clothes"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "3624",
+  "robot_tag": "ARX5",
+  "task_name": "hang_the_cup"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "2b13",
+  "robot_tag": "W1",
+  "task_name": "hold_the_tray_with_both_hands"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "cb19",
+  "robot_tag": "UR5",
+  "task_name": "item_classification"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "f31b",
+  "robot_tag": "ALOHA",
+  "task_name": "lint_roller_remove_dirt"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "671c",
+  "robot_tag": "ALOHA",
+  "task_name": "pack_the_items"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "6ccd",
+  "robot_tag": "ALOHA",
+  "task_name": "pack_the_toothbrush_holder"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "4bca",
+  "robot_tag": "ALOHA",
+  "task_name": "paint_jam"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "2acf",
+  "robot_tag": "ARX5",
+  "task_name": "pick_out_the_green_blocks"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "6ab4",
+  "robot_tag": "W1",
+  "task_name": "place_objects_into_desk_drawer"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "bec8",
+  "robot_tag": "ARX5",
+  "task_name": "press_the_button"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "2945",
+  "robot_tag": "W1",
+  "task_name": "put_in_pen_container"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "ae1f",
+  "robot_tag": "ALOHA",
+  "task_name": "put_the_books_back"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "fea0",
+  "robot_tag": "ALOHA",
+  "task_name": "put_the_pencil_case_into_the_schoolbag"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "0965",
+  "robot_tag": "W1",
+  "task_name": "put_the_shoes_back"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "e358",
+  "robot_tag": "ALOHA",
+  "task_name": "scoop_with_a_small_spoon"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "44df",
+  "robot_tag": "UR5",
+  "task_name": "shred_paper"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "8fc9",
+  "robot_tag": "W1",
+  "task_name": "stack_bowls"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "3809",
+  "robot_tag": "ALOHA",
+  "task_name": "stamp_positioning"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "b2e8",
+  "robot_tag": "W1",
+  "task_name": "sweep_the_trash"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "3232",
+  "robot_tag": "W1",
+  "task_name": "tidy_up_the_makeup_table"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "c6b3",
+  "robot_tag": "W1",
+  "task_name": "tie_a_knot"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "d96c",
+  "robot_tag": "ARX5",
+  "task_name": "turn_on_the_light_switch"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "1c7d",
+  "robot_tag": "W1",
+  "task_name": "untie_the_shoelaces"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "f5b4",
+  "robot_tag": "ARX5",
+  "task_name": "water_the_flowers"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "43ea",
+  "robot_tag": "ALOHA",
+  "task_name": "wipe_the_blackboard"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "90e1",
+  "robot_tag": "ARX5",
+  "task_name": "wipe_the_table"
+ },
+ {
+  "benchmark_key": "table30_v2",
+  "task_id": "abc7",
+  "robot_tag": "ALOHA",
+  "task_name": "wrap_with_a_soft_cloth"
+ }
+]

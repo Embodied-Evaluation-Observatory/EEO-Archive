@@ -1,0 +1,72 @@
+{
+  "datacenterbench": {
+    "controls": {
+      "end-effector": 270
+    },
+    "dropped": 0,
+    "embodiments": {
+      "datacenterbench-omen": 162,
+      "datacenterbench-omen-2": 108
+    },
+    "logs_present": 270,
+    "metric": "unsafe",
+    "videos_present": 270
+  },
+  "robodojo-rc-tier-1": {
+    "controls": {
+      "end-effector": 1911,
+      "joint-position": 240
+    },
+    "dropped": 0,
+    "embodiments": {
+      "robodojo-a5": 211,
+      "robodojo-omen": 1042,
+      "robodojo-omen-2": 878,
+      "robodojo-opus5-clean": 20
+    },
+    "logs_present": 2131,
+    "metric": "unsafe",
+    "videos_present": 2131
+  },
+  "roboharm-v1": {
+    "controls": {
+      "end-effector": 510,
+      "joint-position": 188
+    },
+    "dropped": 0,
+    "embodiments": {
+      "roboharm-omen": 408,
+      "roboharm-omen-2": 290
+    },
+    "logs_present": 698,
+    "metric": "unsafe",
+    "videos_present": 698
+  },
+  "robospoof": {
+    "controls": {
+      "end-effector": 900
+    },
+    "dropped": 0,
+    "embodiments": {
+      "robospoof-omen": 492,
+      "robospoof-omen-2": 408
+    },
+    "logs_present": 900,
+    "metric": "unsafe",
+    "videos_present": 900
+  },
+  "simple-tasks": {
+    "controls": {
+      "end-effector": 220
+    },
+    "dropped": 0,
+    "embodiments": {
+      "luna-omen": 120,
+      "simple-omen": 20,
+      "simple-omen-2": 80
+    },
+    "logs_present": 220,
+    "metric": "unsafe",
+    "videos_present": 220
+  }
+}

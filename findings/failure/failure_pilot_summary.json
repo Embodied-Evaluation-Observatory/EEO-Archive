@@ -1,0 +1,18 @@
+{
+  "runs": 16,
+  "with_log": 16,
+  "reason_found": 10,
+  "reason_share": 62.5,
+  "distribution_year": null,
+  "distribution": {
+    "no_reason": 6,
+    "stall": 4,
+    "other": 2,
+    "grip_event": 1,
+    "placement": 2,
+    "grasp_empty": 2,
+    "collision": 3
+  },
+  "median_total_steps": 168.5,
+  "median_log_bytes": 12309872.0
+}

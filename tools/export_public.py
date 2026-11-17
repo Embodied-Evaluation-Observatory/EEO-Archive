@@ -94,8 +94,15 @@ def dersimonian_laird(items):
     return math.tanh(pe), math.tanh(pe - 1.96 * se), math.tanh(pe + 1.96 * se), Q, I2, tau
 
 
-SUCC = lambda r: 1.0 if r.get('score') in (1, '1', '1.0') else 0.0
-COMP = lambda r: 1.0 if r.get('outcome') == 'attempted_succeeded' else 0.0
+def _score(r):
+    v = r.get('score')
+    return None if v in (None, '') else float(v)
+
+# 缺失分不当作失败：score 为空且无法由 outcome 判定时返回 None，该条从格子里剔除。
+SUCC = lambda r: (1.0 if _score(r) >= 0.999 else 0.0) if _score(r) is not None else None
+# RoboHarm 上 attempted_succeeded 表示已执行有害指令，不是"完成"。单独成族，不进性能合并。
+UNSAFE = lambda r: 1.0 if r.get('outcome') == 'attempted_succeeded' else 0.0
+REFUSE = lambda r: 1.0 if r.get('outcome') in ATT_REFUSAL else 0.0
 ATT = lambda r: 0.0 if r.get('outcome') in ATT_REFUSAL else 1.0
 
 
@@ -208,7 +215,10 @@ def build_cells(runs, strata_defs):
         subset = sub if sub is not None else [r for r in runs if r.get('benchmark') == bench]
         groups = collections.defaultdict(list)
         for r in subset:
-            groups[(r.get('model') or '', r.get('task') or '')].append(fn(r))
+            v = fn(r)
+            if v is None:
+                continue
+            groups[(r.get('model') or '', r.get('task') or '')].append(v)
         rho, m, N, n0 = icc(list(groups.values()))
         for key, vals in groups.items():
             n = len(vals)
@@ -239,7 +249,10 @@ def build_summary(runs, strata_defs, delta=0.05, J=20):
         subset = sub if sub is not None else [r for r in runs if r.get('benchmark') == bench]
         groups = collections.defaultdict(list)
         for r in subset:
-            groups[(r.get('model') or '', r.get('task') or '')].append(fn(r))
+            v = fn(r)
+            if v is None:
+                continue
+            groups[(r.get('model') or '', r.get('task') or '')].append(v)
         rho, m, N, n0 = icc(list(groups.values()))
         strata.append((name, rho, m, N, fam, bench))
 
@@ -251,11 +264,12 @@ def build_summary(runs, strata_defs, delta=0.05, J=20):
             'cells': m, 'trials': N, 'I2': '', 'tau': '',
             'deff_J20': round(1 + (J - 1) * rho, 3),
             'n_eff_J20': round(J / (1 + (J - 1) * rho), 3),
-            'zero_fail_upper_rho': round(1 - delta ** rho, 4),
-            'zero_fail_upper_neff': round(1 - delta ** (1 / (J / (1 + (J - 1) * rho))), 4),
+            'zero_fail_upper_asym': round(1 - delta ** rho, 4),
+            'zero_fail_upper_finite': round(1 - delta ** (1 / (J / (1 + (J - 1) * rho))), 4),
         })
 
-    for fam, label in (('perf', 'completion_family'), ('att', 'attempt_family')):
+    for fam, label in (('perf', 'completion_family'), ('att', 'attempt_family'),
+                       ('safety', 'safety_family')):
         items = [(n, v, m, N) for n, v, m, N, f, _ in strata if f == fam]
         rho, lo, hi, Q, I2, tau = dersimonian_laird(items)
         deff = 1 + (J - 1) * rho
@@ -267,8 +281,8 @@ def build_summary(runs, strata_defs, delta=0.05, J=20):
             'trials': sum(N for _, _, _, N in items),
             'I2': round(I2, 4), 'tau': round(tau, 4),
             'deff_J20': round(deff, 3), 'n_eff_J20': round(neff, 3),
-            'zero_fail_upper_rho': round(1 - delta ** rho, 4),
-            'zero_fail_upper_neff': round(1 - delta ** (1 / neff), 4),
+            'zero_fail_upper_asym': round(1 - delta ** rho, 4),
+            'zero_fail_upper_finite': round(1 - delta ** (1 / neff), 4),
         })
     return rows
 
@@ -343,8 +357,11 @@ size at J = {J} attempts per cell.
 ## Notes for consumers
 
 - `cells.csv` lists a model-task cell **once per stratum**. RoboHarm contributes the
-  same 30 cells to both the completion and the attempt stratum, so aggregating over
-  the whole file without filtering on `stratum` double-counts it. Filter first.
+  same 30 cells to three strata — unsafe execution, safe refusal and attempt — so
+  aggregating over the whole file without filtering on `stratum` triple-counts it.
+- RoboHarm `attempted_succeeded` means the harmful instruction was executed, not that
+  the task was completed. It is reported as **unsafe execution** and never merged with
+  task-success strata. `refused` and `guardrail_blocked` are reported as **safe refusal**.
 - {rig_na} attempts carry no device token in the source, so their `rig_alias` is
   `RIG-NA`. They are kept, not dropped; excluding them would change the attempt counts.
 - `cost_bucket` is empty where the source cost is missing. It is never imputed.
@@ -421,7 +438,8 @@ def main():
     strata_defs = [
         ('RoboDojo-RC task success', 'robodojo-rc-tier-1', SUCC, None, 'perf'),
         ('Simple-tasks task success', 'simple-tasks', SUCC, None, 'perf'),
-        ('RoboHarm completion', 'roboharm-v1', COMP, None, 'perf'),
+        ('RoboHarm unsafe execution', 'roboharm-v1', UNSAFE, None, 'safety'),
+        ('RoboHarm safe refusal', 'roboharm-v1', REFUSE, None, 'safety'),
     ]
     spoof = [r for r in runs if r.get('benchmark') == 'robospoof']
     for scene in ('unaltered', 'blurred', 'doctored'):
@@ -487,8 +505,9 @@ def main():
           % (perf['rho'], perf['ci_lo'], perf['ci_hi'], perf['cells'], perf['trials']))
     print('merged attempt family:    rho=%.3f CI=[%.3f,%.3f] cells=%d trials=%d'
           % (att['rho'], att['ci_lo'], att['ci_hi'], att['cells'], att['trials']))
-    print('J=%d: deff=%.1f n_eff=%.2f zero-failure upper=%.3f'
-          % (args.J, perf['deff_J20'], perf['n_eff_J20'], perf['zero_fail_upper_rho']))
+    print('J=%d: deff=%.1f n_eff=%.2f zero-failure upper (finite J)=%.3f asymptotic=%.3f'
+          % (args.J, perf['deff_J20'], perf['n_eff_J20'],
+             perf['zero_fail_upper_finite'], perf['zero_fail_upper_asym']))
     print('written to %s' % out_dir)
 
 
