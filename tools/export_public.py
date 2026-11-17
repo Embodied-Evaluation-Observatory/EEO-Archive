@@ -508,6 +508,16 @@ def main():
     perf, att = fam.get('perf'), fam.get('att')
     print('attempts rows: %d (rig alias resolved on %d)' % (len(attempts), rig_hits))
     print('cells rows: %d' % len(cells))
+    zv = [c for c in cells if str(c.get('p_hat')) in ('0.0', '1.0', '0', '1')]
+    with open(os.path.join(out_dir, 'zero_variance_cells.csv'), 'w', newline='', encoding='utf-8') as f:
+        w = csv.DictWriter(f, fieldnames=['benchmark', 'model', 'task', 'n_attempts', 'p_hat'])
+        w.writeheader()
+        for c in zv:
+            w.writerow({'benchmark': c.get('benchmark'), 'model': c.get('model'),
+                        'task': c.get('task'), 'n_attempts': c.get('n_attempts'),
+                        'p_hat': c.get('p_hat')})
+    print('zero-variance cells: %d of %d (constant outcome; listed separately, still in the pooled estimate)'
+          % (len(zv), len(cells)))
     thin = [c for c in cells if int(float(c.get('n_attempts') or 0)) < MIN_TRIALS]
     if thin:
         print('WARNING: %d of %d cells have fewer than %d attempts; their correlations '

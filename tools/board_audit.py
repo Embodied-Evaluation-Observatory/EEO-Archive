@@ -90,6 +90,27 @@ def ingest_robochallenge(raw, out, snapshot):
             "source_url": src}
 
 
+
+def _p_two_sided(z):
+    return math.erfc(abs(z) / math.sqrt(2))
+
+
+def holm_adjust(pairs, pkey, alpha):
+    """Step-down Holm across all pairs of one board; rewrites 'separated'."""
+    live = [p for p in pairs if p.get(pkey) is not None]
+    order = sorted(range(len(live)), key=lambda i: live[i][pkey])
+    m = len(order)
+    last = -1
+    for rank, idx in enumerate(order):
+        if live[idx][pkey] <= alpha / (m - rank):
+            last = rank
+        else:
+            break
+    for rank, idx in enumerate(order):
+        live[idx]['p_adjusted'] = round(min(1.0, (m - rank) * live[idx][pkey]), 6)
+        live[idx]['separated'] = rank <= last
+    return len([p for p in live if p['separated']])
+
 def sign_test(k, m):
     if m < 2:
         return 1.0
@@ -98,7 +119,7 @@ def sign_test(k, m):
     return min(1.0, p)
 
 
-def run_sign(path, out, min_shared=4, alpha=0.05):
+def run_sign(path, out, min_shared=4, alpha=0.05, adjust=True):
     rows = list(csv.DictReader(open(path, encoding="utf-8")))
     by_task = defaultdict(dict)
     for r in rows:
@@ -131,13 +152,16 @@ def run_sign(path, out, min_shared=4, alpha=0.05):
                            ["model_a", "model_b", "shared_tasks", "a_wins", "b_wins", "ties", "sign_p", "separated"])
         w.writeheader()
         w.writerows(pairs)
-    sep = sum(1 for p in pairs if p["separated"])
-    return {"pairs": len(pairs), "separated": sep,
+    if adjust:
+        sep = holm_adjust(pairs, "sign_p", alpha)
+    else:
+        sep = sum(1 for p in pairs if p["separated"])
+    return {"pairs": len(pairs), "separated": sep, "adjust": "holm" if adjust else "none",
             "undiscernible_share": round(100 * (1 - sep / len(pairs)), 1) if pairs else None,
             "min_shared": min_shared, "alpha": alpha}
 
 
-def ingest_roboarena(raw, out, snapshot):
+def ingest_roboarena(raw, out, snapshot, adjust=True, alpha=0.05):
     src = "https://roboarena-api-domain-name.online/api/leaderboard"
     d = json.load(open(os.path.join(raw, "roboarena_leaderboard.json"), encoding="utf-8"))
     board = d["board"]
@@ -162,15 +186,21 @@ def ingest_roboarena(raw, out, snapshot):
             pairs.append({"policy_a": a["policy"], "policy_b": b["policy"],
                           "delta_elo": round(delta, 1), "se": round(se, 1),
                           "sep_threshold": round(1.96 * se, 1),
+                          "elo_p": round(_p_two_sided(delta / se), 6),
+                          "p": round(_p_two_sided(delta / se), 6),
                           "separated": abs(delta) > 1.96 * se})
     with open(os.path.join(out, "roboarena_pairs.csv"), "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(pairs[0].keys()))
         w.writeheader()
         w.writerows(pairs)
-    sep = sum(1 for p in pairs if p["separated"])
+    if adjust:
+        sep = holm_adjust(pairs, "elo_p", alpha)
+    else:
+        sep = sum(1 for p in pairs if p["separated"])
     thin = [r["policy"] for r in rows if r["num_evals"] < 50]
     return {"board": "roboarena", "policies": len(rows), "source_url": src,
             "pairs": len(pairs), "separated": sep,
+            "adjust": "holm" if adjust else "none",
             "undiscernible_share": round(100 * (1 - sep / len(pairs)), 1),
             "thin_evidence_policies": thin,
             "median_num_evals": statistics.median([r["num_evals"] for r in rows]),
@@ -178,7 +208,7 @@ def ingest_roboarena(raw, out, snapshot):
 
 
 
-def ingest_robotwin(raw, out, snapshot):
+def ingest_robotwin(raw, out, snapshot, adjust=True, alpha=0.05):
     """RoboTwin 2.0 publishes per-task success rates with 100 trials per task,
     so cells carry a real n."""
     src = "https://robotwin-platform.github.io/data/robotwin_leaderboard.json"
@@ -222,13 +252,19 @@ def ingest_robotwin(raw, out, snapshot):
             pairs.append({"model_a": a, "model_b": b, "shared_tasks": m,
                           "p_a": round(pa, 4), "p_b": round(pb, 4),
                           "delta_pp": round(100 * delta, 2), "se_pp": round(100 * se, 2),
+                          "elo_p": round(_p_two_sided(delta / se), 6),
+                          "p": round(_p_two_sided(delta / se), 6),
                           "separated": abs(delta) > 1.96 * se})
     with open(os.path.join(out, "robotwin_pairs.csv"), "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(pairs[0].keys()) if pairs else
                            ["model_a", "model_b", "shared_tasks", "p_a", "p_b", "delta_pp", "se_pp", "separated"])
         w.writeheader(); w.writerows(pairs)
-    sep = sum(1 for p in pairs if p["separated"])
+    if adjust:
+        sep = holm_adjust(pairs, "p", alpha)
+    else:
+        sep = sum(1 for p in pairs if p["separated"])
     return {"board": "robotwin", "methods": len(models), "tasks": len(tasks),
+            "adjust": "holm" if adjust else "none",
             "cells": len(cells), "n_per_cell": trials, "n_reported": len(cells),
             "pairs": len(pairs), "separated": sep,
             "undiscernible_share": round(100 * (1 - sep / len(pairs)), 1) if pairs else None,
@@ -249,6 +285,9 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--snapshot", default="2026-11-17")
     ap.add_argument("--min-shared", type=int, default=4)
+    ap.add_argument("--adjust", default="holm", choices=["holm", "none"],
+                    help="holm: step-down correction across all pairs of a board (default); "
+                         "none: per-pair 95%% intervals, as in the 2026-11-17 release")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
 
@@ -257,9 +296,11 @@ def main():
         summary["raw_hashes"][f] = sha256(os.path.join(a.raw, f))
 
     rc = ingest_robochallenge(a.raw, a.out, a.snapshot)
-    rc.update(run_sign(os.path.join(a.out, "robochallenge_cells.csv"), a.out, min_shared=a.min_shared))
-    ra = ingest_roboarena(a.raw, a.out, a.snapshot)
-    rt = ingest_robotwin(a.raw, a.out, a.snapshot)
+    adj = (a.adjust == "holm")
+    rc.update(run_sign(os.path.join(a.out, "robochallenge_cells.csv"), a.out,
+                       min_shared=a.min_shared, adjust=adj))
+    ra = ingest_roboarena(a.raw, a.out, a.snapshot, adjust=adj)
+    rt = ingest_robotwin(a.raw, a.out, a.snapshot, adjust=adj)
     summary["boards"] = {"robochallenge": rc, "roboarena": ra, "robotwin": rt}
 
     with open(os.path.join(a.out, "board_summary.json"), "w", encoding="utf-8") as f:

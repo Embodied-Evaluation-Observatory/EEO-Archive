@@ -1,13 +1,15 @@
-# Discernibility under Holm correction
 
-This directory re-runs the archive's own pair tests on the 2026-11-17 snapshot with
-multiplicity control, which the protocol section 4 has always specified and the
-published 2026-11-17 tables did not apply.
+## All four boards, same correction
 
-- `--adjust none` reproduces the 2026-11-17 figures (143 pairs, 57 separated, 60.1% undiscernible).
-- `--adjust holm` (new default) controls the family-wise error rate across all pairs in a board.
+Applied to every board that yields pair tests, not only the archive's own snapshot:
 
-The difference is large and is the point: without a multiplicity correction, dozens of
-pairs clear a 95% interval by chance alone. The published 2026-11-17 release is not
-rewritten; it stays citable with its own method stated, and this directory records what
-the corrected method yields on the same bytes.
+| Board | pairs | separated (none) | separated (Holm) | undiscernible (none → Holm) |
+|---|---|---|---|---|
+| robocurve (archive strata) | 143 | 57 | 12 | 60.1% → 91.6% |
+| RoboChallenge | 681 | 172 | 15 | 74.7% → 97.8% |
+| RoboArena | 276 | 53 | 25 | 80.8% → 90.9% |
+| RoboTwin | 630 | 601 | 584 | 4.6% → 7.3% |
+
+RoboTwin barely moves because each cell carries 100 trials; the others move a lot because
+their cells carry few or unstated counts. That contrast is the evidence-density point,
+now measured under one correction rather than four different tests.

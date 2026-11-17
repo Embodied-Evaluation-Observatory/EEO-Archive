@@ -29,7 +29,9 @@ the bytes.
 
 Where a release is hash-only, the asymmetry is real: only the holder can finish
 the chain. `governance/verification_partners.csv` records who can, on what terms,
-so that the gap is stated rather than hidden. Entries are added at the request of
+so that the gap is stated rather than hidden. The table is currently empty: no holder
+has registered as of 2026-11-18, and the archive does not list parties that have not
+agreed. Entries are added at the request of
 the holder; the archive does not claim a partner has verified anything beyond the
 scope recorded there.
 

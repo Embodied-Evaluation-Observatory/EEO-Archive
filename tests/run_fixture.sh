@@ -10,7 +10,7 @@ python3 tools/export_public.py --release 2026-01-01 --root tests/fixture --J 3
 python3 tools/verify_public.py --release 2026-01-01 --root tests/fixture --J 3 \
         --input tests/fixture/releases/2026-01-01/robocurve_allruns.json
 
-for f in attempts.csv cells.csv release_summary.csv quality_flags.json; do
+for f in attempts.csv cells.csv release_summary.csv quality_flags.json zero_variance_cells.csv; do
   if ! diff -q "tests/fixture/public/2026-01-01/$f" "tests/fixture/expected/$f" >/dev/null; then
     echo "FAIL: $f differs from the committed golden output"
     diff "tests/fixture/expected/$f" "tests/fixture/public/2026-01-01/$f" | head -20

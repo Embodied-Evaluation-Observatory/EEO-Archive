@@ -1,7 +1,7 @@
 {
  "certificate_id": "LAYER-2026-11-17",
  "schema_version": "EEO-LAYER-1",
- "issued_at": "2026-11-17T18:03:32Z",
+ "issued_at": "2026-11-17T19:30:57Z",
  "issuer": {
   "name": "Embodied Evaluation Observatory",
   "role": "archive operator"
@@ -56,7 +56,7 @@
  },
  "protocol": {
   "file": "reda-protocol.md",
-  "sha256": "304e8b71bdfb90fa454da76b0d6c0a8b6551b98b1f3810fe741d3eac4dc53029"
+  "sha256": "844040b08bf914211444ec30cb8c8809b9c638a565f7cad173ae217e2b07fad2"
  },
  "not_certified": [
   "model capability",
@@ -67,5 +67,5 @@
  "verification": {
   "rerun": "python3 tools/certify.py --release 2026-11-17"
  },
- "certificate_hash": "60e6e336f6bb05f49c989652ead4dc3ade4288e4bf2d269238f85c143a1d5990"
+ "certificate_hash": "7d37b5b7e96d5c23e248660c917730bda97cc1fd93b5ed0a654bf2f7bfbe6663"
 }

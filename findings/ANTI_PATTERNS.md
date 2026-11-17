@@ -41,14 +41,17 @@ where these are all false should say that repeats were never run, not leave it a
 
 Measure: for each claimed ordering, the gap against the floor implied by the cell
 count and dispersion.
-Current evidence: at rho about 0.49 and n = 1,000 the floor is roughly 34
-percentage points; most leaderboard gaps are single digits.
+Current evidence: 1,000 attempts at 20 per cell is 50 cells; with rho = 0.491 the
+design effect is 10.3, the effective count per cell is 1.94, and the two-sided floor at
+p = 0.5 is 1.96 * sqrt(2 * 0.5 * 0.5 / (50 * 1.94)) = 0.141, or about 14 percentage
+points. Most leaderboard gaps are single digits.
 
 Why it matters: a "new SOTA" separated by less than the floor is indistinguishable
 from the previous entry at the stated evidence level.
 
-Check: `ReDA自查表` or `public/<date>/release_summary.csv` plus the floor formula in
-`reda-protocol.md` section 5.
+Check: take `cells`, `n_eff_J20` and rho from `public/<date>/release_summary.csv`, or
+compute them from `reda-protocol.md` section 3: units = cells * n_eff, floor =
+1.96 * sqrt(2 * p * (1 - p) / units).
 
 ## A5 — Autonomy is not stated
 

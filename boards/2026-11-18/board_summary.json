@@ -1,0 +1,76 @@
+{
+  "snapshot": "2026-11-17",
+  "raw_hashes": {
+    "roboarena_leaderboard.json": "515d1f9c91a807a06d97cc5f63e63a36d7e075a725df8782a96c52d860fa1d38",
+    "robochallenge_benchmark_list_v1.json": "ca3b1611022aaff5f3ae0898fb57fe67658ced6a355a374354339822962219f8",
+    "robochallenge_benchmark_list_v2.json": "5a920dbc4024da17719223505e4cbb606bf18d083c1ba45979790269b1b75928",
+    "robochallenge_leaderboard_task_all.json": "7ecea15cf650da202811fb92bef856cc01a500dbe9c00aad168fa118af7a5751",
+    "robochallenge_task_meta.json": "14f29a9a87f8bfb2a10fa036ec378a5f30c5b0c7438f43ea503b6e32782524e1",
+    "robotwin_leaderboard.json": "bf926c5484250428e404a78390f3567cbbe51cdf9c25dac99c19c2bb01b8dd87"
+  },
+  "boards": {
+    "robochallenge": {
+      "board": "robochallenge",
+      "benchmark": "Table 30 V2 (v2)",
+      "cells": 769,
+      "models": 65,
+      "tasks": 30,
+      "embodiments": [
+        "ALOHA",
+        "ARX5",
+        "UR5",
+        "W1"
+      ],
+      "n_reported": 0,
+      "benchmark_episodes": 32980,
+      "source_url": "https://robochallenge.ai/api/v2/leaderboard/leaderboard_task_all.json",
+      "pairs": 681,
+      "separated": 15,
+      "adjust": "holm",
+      "undiscernible_share": 97.8,
+      "min_shared": 4,
+      "alpha": 0.05
+    },
+    "roboarena": {
+      "board": "roboarena",
+      "policies": 24,
+      "source_url": "https://roboarena-api-domain-name.online/api/leaderboard",
+      "pairs": 276,
+      "separated": 25,
+      "adjust": "holm",
+      "undiscernible_share": 90.9,
+      "thin_evidence_policies": [
+        "j2-vla",
+        "ReDROID-0.0",
+        "allenai/MolmoAct2-DROID",
+        "floppy_bagel_195k_temp1p0",
+        "G0.5-Droid-AR",
+        "floppy_bagel_525k_temp1p0",
+        "pi05_TTA",
+        "paligemma_norm_droid",
+        "floppy_bagel_420k",
+        "floppy_bagel_285k_temp1p0",
+        "floppy_bagel_90k_temp1p0",
+        "Cosmos3-Nano-Policy",
+        "Phoenix"
+      ],
+      "median_num_evals": 39.0,
+      "top_policy": "j2-vla",
+      "top_elo": 1788.0,
+      "top_evals": 25
+    },
+    "robotwin": {
+      "board": "robotwin",
+      "methods": 36,
+      "tasks": 50,
+      "adjust": "holm",
+      "cells": 3600,
+      "n_per_cell": 100,
+      "n_reported": 3600,
+      "pairs": 630,
+      "separated": 584,
+      "undiscernible_share": 7.3,
+      "source_url": "https://robotwin-platform.github.io/data/robotwin_leaderboard.json"
+    }
+  }
+}

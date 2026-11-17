@@ -1,7 +1,7 @@
 {
  "certificate_id": "C7",
  "schema_version": "EEO-CERT-1",
- "issued_at": "2026-11-17T18:46:27Z",
+ "issued_at": "2026-11-17T19:30:57Z",
  "issuer": {
   "name": "Embodied Evaluation Observatory",
   "role": "archive operator"
@@ -52,7 +52,7 @@
    "quantity": "certificate layers",
    "value": "L3",
    "status": "verified",
-   "note": "L1 tables, L2 source bytes, L3 redistributed snapshot; see certificates/2026-11-17/layers.json 60e6e336f6bb"
+   "note": "L1 tables, L2 source bytes, L3 redistributed snapshot; see certificates/2026-11-17/layers.json 7d37b5b7e96d"
   },
   {
    "id": "C7.5",
@@ -72,7 +72,7 @@
  "protocol": {
   "version": "ReDA-1.2",
   "file": "reda-protocol.md",
-  "sha256": "97f1afa36366d5b196be5f65277d0c887732c3df3ec9fb800c0194e2d4e487e6"
+  "sha256": "844040b08bf914211444ec30cb8c8809b9c638a565f7cad173ae217e2b07fad2"
  },
  "input": {
   "manifest": "releases/2026-11-17/manifest.json",
@@ -92,5 +92,5 @@
    "python3 tools/provenance_check.py --snapshot 2026-11-17"
   ]
  },
- "certificate_hash": "fcc32021f3bf37f6745f470b3289043b82a54330e60b441f13be1ba0aacec2a7"
+ "certificate_hash": "e2ec3b63b3a509acfa4025b5b4099a70791ec160d240f7c7e00d61f48de5e083"
 }

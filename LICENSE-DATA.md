@@ -21,8 +21,9 @@ Their rights remain with the source. This repository cites them as facts, not as
 licensed content, and grants no rights over them. Anyone redistributing those fields
 must comply with the source's terms, which may differ from CC-BY-4.0.
 
-The sealed source bytes are not redistributed here at all. Their hashes are published
-so that a holder can verify a copy.
+Release 2026-11-15 redistributes no source bytes: only hashes are published, so a
+holder can verify a copy. From 2026-11-17 the snapshot is redistributed as a cited copy
+under block 4, which is the single exception to this rule.
 
 ## Block 3 — quoted text
 

@@ -1,0 +1,13 @@
+{
+ "release": "2026-11-17",
+ "cells": 268,
+ "zero_variance_cells": 171,
+ "share": 0.638,
+ "by_benchmark": {
+  "robodojo-rc-tier-1": 64,
+  "simple-tasks": 1,
+  "roboharm-v1": 51,
+  "robospoof": 55
+ },
+ "note": "Constant outcome across all attempts in the cell. Carries no information about correlation; listed separately, still included in the pooled estimate of this release. From 2026-01-01 fixtures onward the export writes zero_variance_cells.csv beside the tables."
+}

@@ -7,7 +7,9 @@
 The Audit takes an existing public record of robot evaluations and reports what that
 record can and cannot support: how much correlation sits between attempts in the same
 cell, how many attempts the counts actually buy, which model pairs are separable, and
-whether the record's provenance shows signs of selective submission. It produces no
+whether the record's provenance shows signs of selective submission. It publishes
+safety-related records and statistics where the source records them; that is not a
+safety certification and does not substitute for a compliance assessment. It produces no
 robot performance data. Every number it reports is a statement about an existing
 measurement, not a new measurement.
 
@@ -98,8 +100,8 @@ Five checks run on every release, each reported as a number rather than a verdic
 
 | Check | Status | Where |
 |---|---|---|
-| 1. Share concentration | partial: model-level share of cells and trials, no submitter field | `tools/provenance_check.py` |
-| 2. Temporal clustering | not implemented: boards publish no submission timestamps | — |
+| 1. Share concentration | computed at model level (top-k share of cells and trials); no submitter field exists in the boards, so the unit is the model, not the organisation | `tools/provenance_check.py` |
+| 2. Temporal clustering | computed where timestamps exist: RoboChallenge publishes a submission time per cell | `tools/provenance_check.py` |
 | 3. Pairwise consistency | implemented on per-task cells: a source winning every shared task is flagged | `tools/provenance_check.py` |
 | 4. Selective submission | partial: submitted episodes against retained cells, where the board states both | `tools/provenance_check.py` |
 | 5. Contamination probe | not implemented: no perturbed variant has been run | — |
