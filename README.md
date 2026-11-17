@@ -77,7 +77,7 @@ Three blocks, not one.
 ```
 EEO Archive, release 2026-11-18. Embodied Evaluation Observatory.
 DOI 10.5281/zenodo.24288113 (concept 10.5281/zenodo.24269291)
-Release hash c0bd689f26900f488802ed21159c55c5a40ca5cde6064cb91fbe9795ce93b7db.
+Snapshot sha256 5d960b810011077725dee438081e0978ee640f71494a84e915c69d87eebff850.
 ```
 
 Version DOI 10.5281/zenodo.24288113 identifies the 2026-11-18 deposit, which carries the
