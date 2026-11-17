@@ -28,7 +28,14 @@ h2{font-size:1.05rem;margin:0 0 4px;letter-spacing:.02em;text-transform:uppercas
 .kpi span{display:block;color:var(--muted);font-size:.82rem;margin-top:4px}
 @media(min-width:720px){.kpis{grid-template-columns:repeat(4,1fr)}}
 .chart{background:#fff;border:1px solid var(--line);padding:14px 10px 6px}
-.chart div[data-chart]{width:100%;height:300px}
+.chart{padding:16px 18px 10px}
+.legend{display:flex;gap:16px;font-size:.78rem;color:var(--muted);margin-bottom:12px;flex-wrap:wrap}
+.legend i{display:inline-block;width:12px;height:8px;margin-right:6px;vertical-align:middle}
+.brow{display:grid;grid-template-columns:7.6em 1fr 3.4em;gap:6px 10px;align-items:center;margin:10px 0;font-size:.82rem}
+.bname{grid-row:span 2;color:var(--ink);min-width:0;overflow-wrap:anywhere}
+.btrack{height:10px;background:var(--grid);position:relative;min-width:0}
+.btrack span{position:absolute;left:0;top:0;bottom:0}
+.bval{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
 table{width:100%;border-collapse:collapse;background:#fff;font-size:.88rem;table-layout:fixed}
 caption{caption-side:top;text-align:left;color:var(--muted);font-size:.82rem;padding:0 0 8px}
 th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--grid);vertical-align:top}
@@ -85,7 +92,14 @@ ul.status li:last-child{border-bottom:0}
 <section>
   <h2>Correction on every board</h2>
   <p class="lede">Same bytes, per-pair intervals on the left, Holm step-down on the right. RoboTwin barely moves because each cell carries 100 trials; the boards that move publish few or unstated attempts per cell.</p>
-  <div class="chart"><div data-chart="boards"></div></div>
+  <div class="chart">
+    <div class="legend"><span><i style="background:#c9c4b8"></i>per-pair intervals</span><span><i style="background:#0f5c58"></i>Holm step-down</span></div>
+    <div class="brow"><span class="bname">robocurve</span><span class="btrack"><span style="width:60.1%;background:#c9c4b8"></span></span><span class="bval">60.1%</span><span class="btrack"><span style="width:91.6%;background:#0f5c58"></span></span><span class="bval">91.6%</span></div>
+    <div class="brow"><span class="bname">RoboChallenge</span><span class="btrack"><span style="width:74.7%;background:#c9c4b8"></span></span><span class="bval">74.7%</span><span class="btrack"><span style="width:97.8%;background:#0f5c58"></span></span><span class="bval">97.8%</span></div>
+    <div class="brow"><span class="bname">RoboArena</span><span class="btrack"><span style="width:80.8%;background:#c9c4b8"></span></span><span class="bval">80.8%</span><span class="btrack"><span style="width:90.9%;background:#0f5c58"></span></span><span class="bval">90.9%</span></div>
+    <div class="brow"><span class="bname">RoboTwin</span><span class="btrack"><span style="width:4.6%;background:#c9c4b8"></span></span><span class="bval">4.6%</span><span class="btrack"><span style="width:7.3%;background:#0f5c58"></span></span><span class="bval">7.3%</span></div>
+    <p class="sub" style="margin:10px 0 0">Share of model pairs the record cannot separate, per board.</p>
+  </div>
   <table>
     <caption>Pair tests per board. Separable pairs are those whose ranking the record supports at the stated correction.</caption>
     <thead><tr><th>Board</th><th>Pairs</th><th>Separable, none</th><th>Separable, Holm</th><th>Undiscernible, none → Holm</th></tr></thead>
@@ -184,41 +198,5 @@ The archive audits public records of real-robot evaluations; it runs no robot an
 </p>
 
 </div>
-<script src="https://fastly.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
-<script>
-(function(){
-  if (typeof echarts === 'undefined') {
-    document.querySelectorAll('[data-chart]').forEach(function(el){
-      el.style.height='auto'; el.textContent='Chart library did not load; the table below carries the same figures.';
-    });
-    return;
-  }
-  var el = document.querySelector('[data-chart="boards"]');
-  var boards = ['robocurve','RoboChallenge','RoboArena','RoboTwin'];
-  var none = [60.1,74.7,80.8,4.6], holm = [91.6,97.8,90.9,7.3];
-  var chart = echarts.init(el, null, {renderer:'canvas'});
-  chart.setOption({
-    textStyle:{fontFamily:'-apple-system, "Segoe UI", "Noto Sans SC", sans-serif'},
-    grid:{left:96,right:56,top:28,bottom:36},
-    tooltip:{trigger:'axis',axisPointer:{type:'shadow'},
-      valueFormatter:function(v){return v + '%';}},
-    legend:{data:['per-pair intervals','Holm step-down'],right:0,top:0,itemWidth:12,itemHeight:8,
-      textStyle:{fontSize:11,color:'#5f625c'}},
-    xAxis:{type:'value',max:100,axisLabel:{formatter:'{value}%',fontSize:11},
-      splitLine:{lineStyle:{color:'#e7e3d9'}},axisLine:{show:false},axisTick:{show:false}},
-    yAxis:{type:'category',data:boards,inverse:true,
-      axisLabel:{fontSize:12},axisLine:{show:false},axisTick:{show:false}},
-    series:[
-      {name:'per-pair intervals',type:'bar',data:none,barWidth:9,
-       itemStyle:{color:'#c9c4b8'},label:{show:true,position:'right',fontSize:11,color:'#5f625c',
-         formatter:'{c}%'}},
-      {name:'Holm step-down',type:'bar',data:holm,barWidth:9,
-       itemStyle:{color:'#0f5c58'},label:{show:true,position:'right',fontSize:11,color:'#1a1d1c',
-         formatter:'{c}%'}}
-    ]
-  });
-  window.addEventListener('resize', function(){ chart.resize(); });
-})();
-</script>
 </body>
 </html>
