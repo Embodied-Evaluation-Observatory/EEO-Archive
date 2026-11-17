@@ -51,31 +51,32 @@
   our own.</p>
 
   <div class="kpis">
-    <div class="kpi"><b>0.491</b><span>intra-cluster correlation, completion family, 95% CI [0.346, 0.613]</span></div>
+    <div class="kpi"><b>0.503</b><span>intra-cluster correlation, completion family, 95% CI [0.340, 0.636]</span></div>
     <div class="kpi"><b>10.3</b><span>design effect at 20 attempts per cell</span></div>
     <div class="kpi"><b>1.94</b><span>effective independent samples per cell</span></div>
-    <div class="kpi"><b>96%</b><span>model pairs whose ranking the record cannot separate</span></div>
+    <div class="kpi"><b>92%</b><span>model pairs the record cannot separate after multiplicity correction; 60% under per-pair intervals</span></div>
   </div>
-  <p class="cap">Release 2026-11-15 · 238 cells · 4,667 attempts · 25 models · 5 benchmarks. Reproducible from the
+  <p class="cap">Release 2026-11-17 · 268 cells · 4,239 attempts · 25 models · 5 benchmarks. Reproducible from the
   published tables alone.</p>
 
   <hr class="rule">
 
   <h2>Archive</h2>
   <ul>
-    <li><a href="public/2026-11-15/DATASET_CARD.md">Release 2026-11-15 dataset card</a> — provenance, field dictionary, licence blocks</li>
-    <li><a href="public/2026-11-15/release_summary.csv">release_summary.csv</a> — stratum and merged estimates, design effects</li>
-    <li><a href="public/2026-11-15/cells.csv">cells.csv</a> — one row per model-task cell</li>
-    <li><a href="public/2026-11-15/attempts.csv">attempts.csv</a> — one row per attempt, 4,239 rows</li>
-    <li><a href="releases/2026-11-15/manifest.json">manifest</a> — hashes of the sealed source bytes</li>
+    <li><a href="public/2026-11-17/DATASET_CARD.md">Release 2026-11-17 dataset card</a> — provenance, field dictionary, licence blocks</li>
+    <li><a href="public/2026-11-17/release_summary.csv">release_summary.csv</a> — stratum and merged estimates, design effects</li>
+    <li><a href="public/2026-11-17/cells.csv">cells.csv</a> — one row per model-task cell</li>
+    <li><a href="public/2026-11-17/attempts.csv">attempts.csv</a> — one row per attempt, 4,239 rows</li>
+    <li><a href="releases/2026-11-17/manifest.json">manifest</a> — hashes of the source bytes, which this release also redistributes</li><li><a href="certificates/2026-11-17/C7.json">certificate C7</a> · <a href="ACCESS.md">access per release</a> · <a href="findings/ANTI_PATTERNS.md">six design anti-patterns</a> · <a href="findings/selfcheck_2026-11-17.md">self-check</a></li>
   </ul>
 
   <h2>Verify</h2>
-  <p>Every number on this page is recomputed from the published table, not from the sealed bytes:</p>
-  <pre>python3 tools/verify_public.py --release 2026-11-15
+  <p>Every number on this page is recomputed from the published tables, and the source bytes ship with the release:</p>
+  <pre>python3 tools/verify_public.py --release 2026-11-17 --input releases/2026-11-17/robocurve_allruns.json
 
-completion_family   rho=0.4909 CI=[0.3463, 0.6127]
+completion_family   rho=0.5025 CI=[0.3396, 0.6362]
 attempt_family      rho=0.6707 CI=[0.5433, 0.7679]
+safety_family       rho=0.6229 CI=[0.2388, 0.8384]
 PASS: published summary reproduces from attempts.csv</pre>
 
   <h2>Protocol</h2>
@@ -85,12 +86,12 @@ PASS: published summary reproduces from attempts.csv</pre>
 
   <h2>Licence</h2>
   <p>Three blocks. Our compilation and all computed statistics are CC-BY-4.0. The per-attempt result fields remain
-  under the source archive's terms; we cite them and do not relicense them. The sealed source bytes are not
+  under the source archive's terms; we cite them and do not relicense them. From release 2026-11-17 the snapshot is redistributed so the export can be re-run;
   redistributed — their hashes are published so a holder can verify a copy.
   <a href="LICENSE-DATA.md">Full statement</a>.</p>
 
   <p class="foot">
-    Embodied Evaluation Observatory · release 2026-11-15 ·
+    Embodied Evaluation Observatory · release 2026-11-17 ·
     release hash <code>c0bd689f…93b7db</code><br>
     DOI <a href="https://doi.org/10.5281/zenodo.24269292">10.5281/zenodo.24269292</a> · concept DOI on the Zenodo record
   </p>
