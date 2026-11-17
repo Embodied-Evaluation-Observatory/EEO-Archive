@@ -1,0 +1,127 @@
+{
+ "release": "2026-11-17",
+ "generated_by": "tools/bench_selfcheck.py",
+ "inputs": {
+  "release_summary.csv": {
+   "bytes": 1300,
+   "sha256": "58bc810af45ed630"
+  },
+  "cells.csv": {
+   "bytes": 40805,
+   "sha256": "a02d8195cfc0f2a9"
+  },
+  "board_summary.json": {
+   "bytes": 2337,
+   "sha256": "ab3d9f14c73a1774"
+  },
+  "manifest.json": {
+   "bytes": 611,
+   "sha256": "741a534205bed516"
+  },
+  "robocurve_allruns.json": {
+   "bytes": 4903356,
+   "sha256": "5d960b8100110777"
+  }
+ },
+ "repeatability": [
+  {
+   "family": "perf",
+   "rho": 0.5025,
+   "ci_lo": 0.3396,
+   "ci_hi": 0.6362,
+   "cells": 103,
+   "trials": 2371,
+   "deff_J20": 10.548,
+   "n_eff_J20": 1.896,
+   "zero_fail_upper_finite": 0.794
+  },
+  {
+   "family": "att",
+   "rho": 0.6707,
+   "ci_lo": 0.5433,
+   "ci_hi": 0.7679,
+   "cells": 105,
+   "trials": 1598,
+   "deff_J20": 13.743,
+   "n_eff_J20": 1.455,
+   "zero_fail_upper_finite": 0.8724
+  },
+  {
+   "family": "safety",
+   "rho": 0.6229,
+   "ci_lo": 0.2388,
+   "ci_hi": 0.8384,
+   "cells": 60,
+   "trials": 1396,
+   "deff_J20": 12.834,
+   "n_eff_J20": 1.558,
+   "zero_fail_upper_finite": 0.8537
+  }
+ ],
+ "discernibility": [
+  {
+   "board": "robochallenge",
+   "pairs": 681,
+   "separated": 172,
+   "undiscernible_share_pct": 74.7,
+   "cells": 769,
+   "n_reported": 0
+  },
+  {
+   "board": "roboarena",
+   "pairs": 276,
+   "separated": 53,
+   "undiscernible_share_pct": 80.8,
+   "cells": null,
+   "n_reported": null
+  },
+  {
+   "board": "robotwin",
+   "pairs": 630,
+   "separated": 601,
+   "undiscernible_share_pct": 4.6,
+   "cells": 3600,
+   "n_reported": 3600
+  }
+ ],
+ "sample_sufficiency": {
+  "cells": 268,
+  "min_trials_threshold": 30,
+  "thin_cells": 245,
+  "thin_share": 0.9142,
+  "trials_histogram": {
+   "12": 75,
+   "16": 1,
+   "18": 2,
+   "19": 1,
+   "20": 166,
+   "40": 15,
+   "58": 3,
+   "60": 5
+  },
+  "median_trials": 20
+ },
+ "disclosure": [
+  {
+   "board": "robochallenge",
+   "cells": 769,
+   "cells_with_n": 0
+  },
+  {
+   "board": "roboarena",
+   "cells": null,
+   "cells_with_n": null
+  },
+  {
+   "board": "robotwin",
+   "cells": 3600,
+   "cells_with_n": 3600
+  }
+ ],
+ "layers": {
+  "L1_tables_self_consistent": true,
+  "L2_source_bytes_match_declared_hash": true,
+  "L3_source_snapshot_open_to_any_reader": true,
+  "note": "L3 requires the source snapshot to be redistributable. Where terms forbid it, only the holder of the original bytes can complete L3."
+ }
+}

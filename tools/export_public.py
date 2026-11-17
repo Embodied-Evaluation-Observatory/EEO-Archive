@@ -276,6 +276,8 @@ def build_summary(runs, strata_defs, delta=0.05, J=20):
     for fam, label in (('perf', 'completion_family'), ('att', 'attempt_family'),
                        ('safety', 'safety_family')):
         items = [(n, v, m, N) for n, v, m, N, f, _ in strata if f == fam]
+        if not items:
+            continue                 # family absent in this release; no empty row is written
         rho, lo, hi, Q, I2, tau = dersimonian_laird(items)
         deff = 1 + (J - 1) * rho
         neff = J / deff
@@ -502,8 +504,8 @@ def main():
                 continue
             f.write('%s  %s\n' % (sha256(os.path.join(out_dir, name)), name))
 
-    perf = next(s for s in summary if s['row_type'] == 'family' and s['family'] == 'perf')
-    att = next(s for s in summary if s['row_type'] == 'family' and s['family'] == 'att')
+    fam = {s['family']: s for s in summary if s['row_type'] == 'family'}
+    perf, att = fam.get('perf'), fam.get('att')
     print('attempts rows: %d (rig alias resolved on %d)' % (len(attempts), rig_hits))
     print('cells rows: %d' % len(cells))
     thin = [c for c in cells if int(float(c.get('n_attempts') or 0)) < MIN_TRIALS]
@@ -516,13 +518,14 @@ def main():
                    'flag': [{'benchmark': c.get('benchmark'), 'model': c.get('model'),
                              'task': c.get('task'), 'n_attempts': c.get('n_attempts')} for c in thin[:200]]},
                   f, ensure_ascii=False, indent=1)
-    print('merged completion family: rho=%.3f CI=[%.3f,%.3f] cells=%d trials=%d'
-          % (perf['rho'], perf['ci_lo'], perf['ci_hi'], perf['cells'], perf['trials']))
-    print('merged attempt family:    rho=%.3f CI=[%.3f,%.3f] cells=%d trials=%d'
-          % (att['rho'], att['ci_lo'], att['ci_hi'], att['cells'], att['trials']))
-    print('J=%d: deff=%.1f n_eff=%.2f zero-failure upper (finite J)=%.3f asymptotic=%.3f'
-          % (args.J, perf['deff_J20'], perf['n_eff_J20'],
-             perf['zero_fail_upper_finite'], perf['zero_fail_upper_asym']))
+    for label, row in (('completion family', perf), ('attempt family', att)):
+        if row:
+            print('merged %-17s rho=%.3f CI=[%.3f,%.3f] cells=%d trials=%d'
+                  % (label, row['rho'], row['ci_lo'], row['ci_hi'], row['cells'], row['trials']))
+    if perf:
+        print('J=%d: deff=%.1f n_eff=%.2f zero-failure upper (finite J)=%.3f asymptotic=%.3f'
+              % (args.J, perf['deff_J20'], perf['n_eff_J20'],
+                 perf['zero_fail_upper_finite'], perf['zero_fail_upper_asym']))
     print('written to %s' % out_dir)
 
 

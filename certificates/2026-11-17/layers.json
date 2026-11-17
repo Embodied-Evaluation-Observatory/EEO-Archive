@@ -1,0 +1,71 @@
+{
+ "certificate_id": "LAYER-2026-11-17",
+ "schema_version": "EEO-LAYER-1",
+ "issued_at": "2026-11-17T18:03:32Z",
+ "issuer": {
+  "name": "Embodied Evaluation Observatory",
+  "role": "archive operator"
+ },
+ "release": "2026-11-17",
+ "layers": {
+  "L1": true,
+  "L2": true,
+  "L3": true,
+  "highest": "L3"
+ },
+ "assertions": [
+  {
+   "id": "L1",
+   "quantity": "published summary reproduces from the published tables",
+   "status": "verified",
+   "evidence": {
+    "command": "python3 tools/verify_public.py --release 2026-11-17",
+    "exit": 0,
+    "tail": [
+     "PASS: published summary reproduces from attempts.csv"
+    ]
+   }
+  },
+  {
+   "id": "L2",
+   "quantity": "local source bytes match the declared hash and size",
+   "status": "verified",
+   "evidence": {
+    "declared_sha256": "5d960b810011077725dee438081e0978ee640f71494a84e915c69d87eebff850",
+    "declared_bytes": 4903356,
+    "measured_sha256": "5d960b810011077725dee438081e0978ee640f71494a84e915c69d87eebff850",
+    "measured_bytes": 4903356,
+    "size_matches": true,
+    "hash_matches": true
+   }
+  },
+  {
+   "id": "L3",
+   "quantity": "redistributed snapshot reproduces the declared record count",
+   "status": "verified",
+   "evidence": {
+    "record_count_declared": 4239,
+    "record_count_measured": 4239,
+    "redistributed_by_this_repository": true
+   }
+  }
+ ],
+ "input": {
+  "manifest": "releases/2026-11-17/manifest.json",
+  "snapshot": "releases/2026-11-17/robocurve_allruns.json"
+ },
+ "protocol": {
+  "file": "reda-protocol.md",
+  "sha256": "304e8b71bdfb90fa454da76b0d6c0a8b6551b98b1f3810fe741d3eac4dc53029"
+ },
+ "not_certified": [
+  "model capability",
+  "benchmark validity",
+  "safety of any deployed system",
+  "completeness of the upstream source"
+ ],
+ "verification": {
+  "rerun": "python3 tools/certify.py --release 2026-11-17"
+ },
+ "certificate_hash": "60e6e336f6bb05f49c989652ead4dc3ade4288e4bf2d269238f85c143a1d5990"
+}

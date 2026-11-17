@@ -166,6 +166,8 @@ def main():
     merged = {}
     for fam in ('perf', 'att', 'safety'):
         items = [(n, v[0], v[1], v[2]) for n, v in got.items() if v[3] == fam]
+        if not items:
+            continue
         merged[fam] = dersimonian_laird(items)
 
     ref = {r['name']: r for r in csv.DictReader(open(os.path.join(pub, 'release_summary.csv'),
@@ -198,6 +200,8 @@ def main():
 
     for fam, label in (('perf', 'completion_family'), ('att', 'attempt_family'),
                        ('safety', 'safety_family')):
+        if fam not in merged:
+            continue                 # family absent in this release
         rho, lo, hi = merged[fam]
         r = ref[label]
         if abs(float(r['rho']) - rho) > TOL:

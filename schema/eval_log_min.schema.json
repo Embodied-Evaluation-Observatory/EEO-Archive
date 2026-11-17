@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EEO minimal EvalLog record",
+  "description": "One line per attempt. A benchmark that emits these fields at evaluation time can be ingested by tools/ingest_evallog.py without post-hoc assembly. Additional fields are permitted and ignored.",
+  "type": "object",
+  "required": ["attempt_id", "benchmark", "model", "task", "trial", "outcome", "seed", "init_state_digest", "termination_cause", "operator_mode"],
+  "properties": {
+    "attempt_id": {"type": "string", "description": "Stable unique id for this attempt; must not be reused across reruns"},
+    "benchmark": {"type": "string"},
+    "model": {"type": "string"},
+    "task": {"type": "string"},
+    "trial": {"type": "integer", "minimum": 0},
+    "seed": {"type": "integer", "description": "Environment and policy seed; required so a replay can be attempted"},
+    "init_state_digest": {"type": "string", "description": "Hash of the initial scene/state, so two attempts are not silently run from different starts"},
+    "termination_cause": {"type": "string", "enum": ["success", "timeout", "step_limit", "llm_call_limit", "collision", "grasp_failure", "give_up", "safety_block", "error", "other"]},
+    "outcome": {"type": "string", "description": "Benchmark-defined outcome label, copied verbatim"},
+    "score": {"type": ["number", "null"]},
+    "operator_mode": {"type": "string", "enum": ["autonomous", "teleop", "mixed", "unstated"]},
+    "embodiment": {"type": "string"},
+    "rig_id": {"type": "string"},
+    "started_at": {"type": "string", "format": "date-time"},
+    "ended_at": {"type": "string", "format": "date-time"},
+    "log_uri": {"type": "string"},
+    "video_count": {"type": "integer", "minimum": 0},
+    "steps": {"type": "integer", "minimum": 0},
+    "llm_calls": {"type": "integer", "minimum": 0},
+    "cost_usd": {"type": ["number", "null"]}
+  }
+}

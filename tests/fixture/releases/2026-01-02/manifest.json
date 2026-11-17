@@ -1,0 +1,17 @@
+{
+  "archive": "EEO Archive",
+  "release": "2026-01-02",
+  "frozen_at_utc": "2026-11-17T18:04:41+00:00",
+  "source_note": "eval log ingest: sample.jsonl",
+  "files": [
+    {
+      "file": "robocurve_allruns.json",
+      "bytes": 15462,
+      "sha256": "7887ab46f16ae03910fb266686a109fc5a4ba42b86844c24a40bf98e86aa68d2",
+      "record_count": 24,
+      "count_key": "runs",
+      "shape": "dict:cohort_date,models,runs"
+    }
+  ],
+  "note": "Records carry seed, initial-state digest and termination cause; these are the fields a replay needs."
+}
