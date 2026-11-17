@@ -1,6 +1,6 @@
 # ReDA Protocol — Repetition and Discernibility Audit
 
-**Version** ReDA-1.1 · **Institution** Embodied Evaluation Observatory · **Status** public draft
+**Version** ReDA-1.2 · **Institution** Embodied Evaluation Observatory · **Status** public draft
 
 ## 1. What this protocol does
 
@@ -42,7 +42,9 @@ and J = 20, deff = 10.3 and n_eff = 1.94 — twenty attempts buy about two.
 
 Zero-failure reporting uses the effective count: with zero failures the upper bound at
 level δ is `1 − δ^(1/n_eff)`. At J = 20, δ = 0.05 the independent reading gives 0.139;
-the correlation-adjusted reading gives about 0.77. Both are shown, because the gap
+the correlation-adjusted reading gives 0.787 at these settings (the figure 0.770 is
+its J→\infty limit and differs because the two are not the same quantity). Both are shown,
+because the gap
 between them is the point.
 
 Substituting `n_eff` into the Clopper–Pearson bound is a first-order move, since that
@@ -59,7 +61,11 @@ the gap in points. Two models are **discernible** at level α when their differe
 intervals do not overlap after the design effect is applied; a group of models whose
 intervals mutually overlap is reported as one **tier** with no internal ordering.
 Tiers are cut by a step-down max-T procedure that controls the probability of any
-false split.
+false split: pair differences are converted to normal-approximation p-values, passed
+through Holm's step-down correction across every pair in a board, and only pairs that
+survive are allowed to separate a tier (`tools/discriminate.py --adjust holm`, default).
+The unadjusted mode remains available (`--adjust none`) for comparison with earlier
+releases, and any release computed that way says so in its output.
 
 Required cells: to certify a bound λ with zero failures at level δ under correlation ρ,
 with J attempts per cell, `n ≥ deff · ln δ / (J · ln(1 − λ))`, where
@@ -87,6 +93,20 @@ Five checks run on every release, each reported as a number rather than a verdic
    evaluations.
 5. **Contamination probe** — a perturbed variant of the task text or scene, with a
    positive control proving the probe can detect memorisation at all.
+
+### 5.1 What is implemented, and what is not
+
+| Check | Status | Where |
+|---|---|---|
+| 1. Share concentration | partial: model-level share of cells and trials, no submitter field | `tools/provenance_check.py` |
+| 2. Temporal clustering | not implemented: boards publish no submission timestamps | — |
+| 3. Pairwise consistency | implemented on per-task cells: a source winning every shared task is flagged | `tools/provenance_check.py` |
+| 4. Selective submission | partial: submitted episodes against retained cells, where the board states both | `tools/provenance_check.py` |
+| 5. Contamination probe | not implemented: no perturbed variant has been run | — |
+
+The archive reports the checks it can compute and names the ones it cannot. A
+provenance card with three of five rows filled is more useful than a card that implies
+five checks were run.
 
 A failed check produces a flag and a number, never a deletion. Deletions, if any, are
 made by the record's owner, and the Audit reports the before/after counts.
@@ -137,3 +157,9 @@ statement. No definition, threshold or certificate output changes.
 The corrected counts are larger than the draft's, so any figure computed from §4 under
 ReDA-1.0 should be recomputed; figures produced by §3 are unaffected in direction and
 remain quotable as upper bounds.
+
+ReDA-1.2 (2026-11-18) is a documentation revision. It corrects the zero-failure figure in
+§3 (0.787 finite-J, against 0.770 as its limit), states that §4's max-T step is now
+implemented with Holm correction, and adds §5.1 recording which provenance checks exist
+and which do not. No estimator, threshold or certificate output changes; releases frozen
+under 1.1 remain citable and are not recomputed.

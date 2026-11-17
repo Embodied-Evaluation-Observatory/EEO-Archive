@@ -8,7 +8,8 @@ what happens to older conclusions when the protocol changes.
 | Release | Protocol | Protocol file hash | Toolchain commit | Certificate |
 |---|---|---|---|---|
 | 2026-11-15 | ReDA-1.0 | not retained under that name; the file was later renamed and revised | `cd96990` | `certificates/2026-11-15/C1..C6` |
-| 2026-11-17 | ReDA-1.1 | `304e8b71bdfb90fa…` (`reda-protocol.md`) | `ffce49f` | `certificates/2026-11-17/layers.json` |
+| 2026-11-17 | ReDA-1.1 | `304e8b71bdfb90fa…` (`reda-protocol.md`) | `ffce49f` | `certificates/2026-11-17/layers.json`, `C7.json` |
+| 2026-11-18 | ReDA-1.2 | `97f1afa36366…` (documentation revision: 0.787 figure, max-T implemented with Holm, §5.1 status) | current | `C7` binds the revision |
 
 `tools/certify.py` writes the protocol hash into every certificate, so a
 certificate cannot silently point at a protocol that has since been edited.

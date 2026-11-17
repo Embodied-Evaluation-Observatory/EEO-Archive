@@ -67,3 +67,13 @@ RoboTwin 是唯一能直接与 robocurve 比口径的榜单，先把它做成纵
 RoboChallenge 补抓 `leaderboard_tag_*.json`，把本体内与本体间的对子分开算。
 FlagEval-Robo 需要登录态，若要接入，走浏览器会话，不硬猜接口。
 RoboDojo 与 RoboColiseum 暂列不可接入，记录原因即可。
+
+## Comparability warning
+
+The undiscernible shares in this directory are not directly comparable across boards:
+RoboChallenge uses an exact sign test on shared tasks, RoboArena uses Elo differences
+against self-reported standard deviations, RoboTwin uses a pooled two-proportion test,
+and the archive's own stratum work uses cluster intervals. A figure such as 74.7% or
+4.6% answers "how much of this board's ordering is separable under the test this board
+permits", not "how much of robot evaluation is reproducible". Cross-board statements
+should quote the method alongside the number.

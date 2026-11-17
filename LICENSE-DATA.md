@@ -34,3 +34,15 @@ the text is quoted, not asserted. Quotation does not make it our claim or our li
 No licence here covers any third-party log file, video, or image. Those are not
 redistributed. Only their availability is reported, as two flags: whether a log exists
 and how many videos were attached.
+
+## Block 4 — redistributed source snapshot (from 2026-11-17)
+
+`releases/2026-11-17/robocurve_allruns.json` is a copy of a third-party public snapshot,
+published so that the export step can be re-run by any reader. It is **not** relicensed
+here: the fields remain the source's facts, and redistribution follows the source site's
+terms. The archive's own contribution — table structure, de-identification, estimates —
+is covered by block 1.
+
+If a source withdraws redistribution permission, later releases stop carrying the copy
+and this block records the change; earlier releases are not rewritten, and the hash in
+their manifests still identifies the bytes concerned.

@@ -106,6 +106,10 @@ def main():
     ap.add_argument('--min-per-cell', type=int, default=1)
     ap.add_argument('--force-metric', default='', choices=['', 'perf', 'refusal', 'unsafe', 'claimed'],
                     help='强制指标，用于把安全基准拆成拒绝率与有害执行率两次计算')
+    ap.add_argument('--adjust', default='holm', choices=['holm', 'none'],
+                    help='holm: step-down max-T correction across all pairs in a board (default); '
+                         'none: per-pair 95%% intervals, as in releases before 2026-11-18')
+    ap.add_argument('--alpha', type=float, default=0.05)
     ap.add_argument('--pool-embodiment', action='store_true',
                     help='不按本体分层，回到合并口径（仅用于复现旧数）')
     a = ap.parse_args()
@@ -126,37 +130,65 @@ def main():
             vals = [cell[k]['mean'] for k in cell if k[3] == m]
             score[m] = sum(vals) / len(vals) if vals else 0.0
 
-        n_pairs = n_ok = 0
+        stats = []
         for i in range(len(models)):
             for j in range(i + 1, len(models)):
                 st = compare(models[i], models[j], keys, cell)
                 if st is None:
                     continue
                 mean, se, nt, shared = st
-                n_pairs += 1
-                lo, hi = mean - 1.96 * se, mean + 1.96 * se
-                ok = (lo > 0) or (hi < 0)
-                n_ok += int(ok)
-                pairs.append({
-                    'benchmark': bench, 'metric': metric, 'model_a': models[i],
-                    'model_b': models[j], 'tasks': nt, 'delta_pp': round(mean * 100, 2),
-                    'ci_lo_pp': round(max(lo, -1) * 100, 2), 'ci_hi_pp': round(min(hi, 1) * 100, 2),
-                    'discernible': bool(ok),
-                    'embodiments': '|'.join(sorted({e for _, e in shared})),
-                })
+                stats.append({'a': models[i], 'b': models[j], 'mean': mean,
+                              'se': max(se, 1e-12), 'tasks': nt, 'shared': shared})
+
+        p_raw = [math.erfc(abs(x['mean'] / x['se']) / math.sqrt(2)) for x in stats]
+        rejected, p_adj = set(), [1.0] * len(stats)
+        if a.adjust == 'holm' and stats:
+            order = sorted(range(len(stats)), key=lambda i: p_raw[i])
+            m = len(order)
+            last = -1
+            for rank, idx in enumerate(order):
+                if p_raw[idx] <= a.alpha / (m - rank):
+                    last = rank
+                else:
+                    break
+            for rank, idx in enumerate(order):
+                p_adj[idx] = min(1.0, (m - rank) * p_raw[idx])
+                if rank <= last:
+                    rejected.add(idx)
+        else:
+            for idx, pv in enumerate(p_raw):
+                p_adj[idx] = pv
+                if pv <= a.alpha:
+                    rejected.add(idx)
+
+        decision = {}
+        for idx, st in enumerate(stats):
+            ok = idx in rejected
+            lo, hi = st['mean'] - 1.96 * st['se'], st['mean'] + 1.96 * st['se']
+            decision[frozenset((st['a'], st['b']))] = ok
+            pairs.append({
+                'benchmark': bench, 'metric': metric, 'model_a': st['a'], 'model_b': st['b'],
+                'tasks': st['tasks'], 'delta_pp': round(st['mean'] * 100, 2),
+                'ci_lo_pp': round(max(lo, -1) * 100, 2), 'ci_hi_pp': round(min(hi, 1) * 100, 2),
+                'p_raw': round(p_raw[idx], 6), 'p_adjusted': round(p_adj[idx], 6),
+                'adjust': a.adjust, 'discernible': bool(ok),
+                'embodiments': '|'.join(sorted({e for _, e in st['shared']})),
+            })
+        n_pairs, n_ok = len(stats), len(rejected)
 
         order = sorted(models, key=lambda m: -score[m])
         t, leader, cur = [], None, []
         for m in order:
             if leader is None:
-                leader, cur = m, [m]; continue
-            st = compare(leader, m, keys, cell)
-            if st is None:
+                leader, cur = m, [m]
+                continue
+            key = frozenset((leader, m))
+            if key not in decision:
                 t.append({'tier': len(t) + 1, 'leader': leader, 'models': cur,
                           'basis': 'no_shared_cell'})
-                leader, cur = m, [m]; continue
-            mean, se, _, _ = st
-            if mean - 1.96 * se > 0:
+                leader, cur = m, [m]
+                continue
+            if decision[key]:
                 t.append({'tier': len(t) + 1, 'leader': leader, 'models': cur})
                 leader, cur = m, [m]
             else:

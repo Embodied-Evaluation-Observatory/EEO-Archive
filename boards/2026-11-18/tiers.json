@@ -1,0 +1,214 @@
+{
+  "datacenterbench": {
+    "metric": "perf",
+    "models_pp": {
+      "claude-opus-5-5": 21.67,
+      "deepseek-v4.1-flash": 11.67,
+      "gemini-4-argon": 35.0,
+      "glm-5.3-flash": 15.0,
+      "gpt-6-astra": 40.0,
+      "gpt-6.1-sol": 38.33,
+      "grok-4.7": 13.33,
+      "kimi-k3": 15.0,
+      "muse-wonder-1.0": 16.67
+    },
+    "tiers": [
+      {
+        "basis": "shared",
+        "leader": "gpt-6-astra",
+        "models": [
+          "gpt-6-astra",
+          "gpt-6.1-sol",
+          "gemini-4-argon",
+          "claude-opus-5-5",
+          "muse-wonder-1.0",
+          "glm-5.3-flash",
+          "kimi-k3",
+          "grok-4.7",
+          "deepseek-v4.1-flash"
+        ],
+        "tier": 1
+      }
+    ]
+  },
+  "robodojo-rc-tier-1": {
+    "metric": "perf",
+    "models_pp": {
+      "claude-fable-5-2": 57.3,
+      "claude-opus-5": 21.29,
+      "claude-opus-5-5": 32.24,
+      "dream-1": 59.25,
+      "gemini-3.8-flash": 36.24,
+      "gemini-4-argon": 42.39,
+      "gemini-4-carbon-eap": 53.58,
+      "gpt-5.6-sol": 13.35,
+      "gpt-5.6-terra": 11.94,
+      "gpt-6-astra": 34.89,
+      "gpt-6-sol": 20.01,
+      "gpt-6.1-sol": 41.69,
+      "gpt-6.1-terra": 43.94,
+      "gr00t-n1.7": 9.51,
+      "kimi-k3.1-pro": 8.91,
+      "molmoact2-yam": 18.9
+    },
+    "tiers": [
+      {
+        "basis": "no_shared_cell",
+        "leader": "dream-1",
+        "models": [
+          "dream-1"
+        ],
+        "tier": 1
+      },
+      {
+        "basis": "no_shared_cell",
+        "leader": "claude-fable-5-2",
+        "models": [
+          "claude-fable-5-2",
+          "gemini-4-carbon-eap"
+        ],
+        "tier": 2
+      },
+      {
+        "basis": "no_shared_cell",
+        "leader": "gpt-6.1-terra",
+        "models": [
+          "gpt-6.1-terra",
+          "gemini-4-argon",
+          "gpt-6.1-sol",
+          "gemini-3.8-flash",
+          "gpt-6-astra",
+          "claude-opus-5-5",
+          "claude-opus-5",
+          "gpt-6-sol"
+        ],
+        "tier": 3
+      },
+      {
+        "basis": "no_shared_cell",
+        "leader": "molmoact2-yam",
+        "models": [
+          "molmoact2-yam"
+        ],
+        "tier": 4
+      },
+      {
+        "basis": "no_shared_cell",
+        "leader": "gpt-5.6-sol",
+        "models": [
+          "gpt-5.6-sol",
+          "gpt-5.6-terra"
+        ],
+        "tier": 5
+      },
+      {
+        "basis": "no_shared_cell",
+        "leader": "gr00t-n1.7",
+        "models": [
+          "gr00t-n1.7"
+        ],
+        "tier": 6
+      },
+      {
+        "basis": "shared",
+        "leader": "kimi-k3.1-pro",
+        "models": [
+          "kimi-k3.1-pro"
+        ],
+        "tier": 7
+      }
+    ]
+  },
+  "roboharm-v1": {
+    "metric": "refusal",
+    "models_pp": {
+      "claude-fable-5-1": 38.06,
+      "claude-opus-5-5": 22.73,
+      "gemini-3.8-flash": 44.81,
+      "gpt-5.6-sol": 0.0,
+      "gpt-6-astra": 42.85,
+      "gpt-6-sol": 0.0
+    },
+    "tiers": [
+      {
+        "basis": "shared",
+        "leader": "gemini-3.8-flash",
+        "models": [
+          "gemini-3.8-flash",
+          "gpt-6-astra",
+          "claude-fable-5-1",
+          "claude-opus-5-5",
+          "gpt-5.6-sol",
+          "gpt-6-sol"
+        ],
+        "tier": 1
+      }
+    ]
+  },
+  "robospoof": {
+    "metric": "claimed",
+    "models_pp": {
+      "claude-fable-5-1": 17.82,
+      "claude-opus-5-5": 18.98,
+      "gemini-4-argon": 22.67,
+      "gpt-6-astra": 6.48,
+      "gpt-6.1-sol": 13.33
+    },
+    "tiers": [
+      {
+        "basis": "shared",
+        "leader": "gemini-4-argon",
+        "models": [
+          "gemini-4-argon",
+          "claude-opus-5-5",
+          "claude-fable-5-1",
+          "gpt-6.1-sol",
+          "gpt-6-astra"
+        ],
+        "tier": 1
+      }
+    ]
+  },
+  "simple-tasks": {
+    "metric": "perf",
+    "models_pp": {
+      "claude-haiku-4-5-20251001": 2.5,
+      "claude-haiku-5-5": 49.17,
+      "gpt-6-astra": 98.75,
+      "gpt-6-luna": 6.67
+    },
+    "tiers": [
+      {
+        "basis": "no_shared_cell",
+        "leader": "gpt-6-astra",
+        "models": [
+          "gpt-6-astra"
+        ],
+        "tier": 1
+      },
+      {
+        "leader": "claude-haiku-5-5",
+        "models": [
+          "claude-haiku-5-5"
+        ],
+        "tier": 2
+      },
+      {
+        "basis": "no_shared_cell",
+        "leader": "gpt-6-luna",
+        "models": [
+          "gpt-6-luna"
+        ],
+        "tier": 3
+      },
+      {
+        "basis": "shared",
+        "leader": "claude-haiku-4-5-20251001",
+        "models": [
+          "claude-haiku-4-5-20251001"
+        ],
+        "tier": 4
+      }
+    ]
+  }
+}

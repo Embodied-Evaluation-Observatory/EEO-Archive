@@ -24,36 +24,41 @@ reader can recompute every number we quote.
 | `tools/export_public.py` | produces the public tables from sealed bytes |
 | `tools/verify_public.py` | recomputes the summary from the public table alone |
 | `tools/freeze_release.py` | creates an immutable release; refuses to overwrite one |
-| `reda-protocol.md` | the ReDA protocol specification, version 1.0 |
+| `reda-protocol.md` | the ReDA protocol specification, version 1.2 |
 
 ## Check it
 
 ```
-python3 tools/verify_public.py --release 2026-11-15
+python3 tools/verify_public.py --release 2026-11-17 --input releases/2026-11-17/robocurve_allruns.json
 ```
 
 This verifies every published file against `checksums.txt`, then recomputes the seven
 strata and both family merges from `attempts.csv` alone, and compares them with
-`release_summary.csv`. On release `2026-11-15` it prints:
+`release_summary.csv`. On release `2026-11-17` it prints:
 
 ```
-completion_family   rho=0.4909 CI=[0.3463, 0.6127]
+completion_family   rho=0.5025 CI=[0.3396, 0.6362]
 attempt_family      rho=0.6707 CI=[0.5433, 0.7679]
+safety_family       rho=0.6229 CI=[0.2388, 0.8384]
 PASS: published summary reproduces from attempts.csv
 ```
 
 If the numbers we quote cannot be reproduced from what we publish, that is a defect and
 should be filed as an issue.
 
-## Sealed bytes
+## Source bytes
 
-The source bytes are held sealed rather than redistributed here. Publishing hashes and
-sizes lets anyone holding the same copy prove it matches this release; redistributing
-third-party records is a different act, and one this project does not do. See
-`releases/2026-11-15/manifest.json` for the hashes.
+Access differs by release, and `ACCESS.md` states it per release.
 
-`tools/export_public.py` therefore needs the sealed bytes to run. `tools/verify_public.py`
-does not: it works from the published tables.
+- `2026-11-15`: hash only. The snapshot is not redistributed; a reader holding the same
+  bytes can prove they match the manifest, but cannot rebuild the tables from source.
+- `2026-11-17` onward: open. The snapshot is redistributed with the release, so
+  `tools/export_public.py` can be run by anyone and the published tables compared against
+  a fresh export. Redistribution of third-party records is stated as a cited copy rather
+  than a relicensed work; see `LICENSE-DATA.md` block 4.
+
+`tools/verify_public.py` works from the published tables alone; `--input` adds a check
+of the redistributed bytes against the manifest hash.
 
 ## Licence
 
@@ -70,12 +75,14 @@ Three blocks, not one.
 ## Citing
 
 ```
-EEO Archive, release 2026-11-15. Embodied Evaluation Observatory.
+EEO Archive, release 2026-11-17. Embodied Evaluation Observatory.
 DOI 10.5281/zenodo.24269292
 Release hash c0bd689f26900f488802ed21159c55c5a40ca5cde6064cb91fbe9795ce93b7db.
 ```
 
-This release is archived on Zenodo under DOI 10.5281/zenodo.24269292. When citing the archive as a
+The Zenodo record under version DOI 10.5281/zenodo.24269292 was deposited with the 2026-11-15
+bytes; the 2026-11-17 corrections are published in this repository and in its release notes,
+and the DOI will be updated at the next deposit. When citing the archive as a
 continuing series rather than this single release, use the concept DOI printed on the
 Zenodo record page; the version DOI above identifies exactly these bytes.
 

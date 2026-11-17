@@ -1,0 +1,57 @@
+{
+  "datacenterbench": {
+    "cells": 90,
+    "discernible_pairs": 0,
+    "dropped": 0,
+    "metric": "perf",
+    "models": 9,
+    "pairs": 36,
+    "runs": 270,
+    "tiers": 1,
+    "undiscernible_share": 1.0
+  },
+  "robodojo-rc-tier-1": {
+    "cells": 106,
+    "discernible_pairs": 10,
+    "dropped": 0,
+    "metric": "perf",
+    "models": 16,
+    "pairs": 80,
+    "runs": 2151,
+    "tiers": 7,
+    "undiscernible_share": 0.875
+  },
+  "roboharm-v1": {
+    "cells": 48,
+    "discernible_pairs": 0,
+    "dropped": 0,
+    "metric": "refusal",
+    "models": 6,
+    "pairs": 15,
+    "runs": 698,
+    "tiers": 1,
+    "undiscernible_share": 1.0
+  },
+  "robospoof": {
+    "cells": 31,
+    "discernible_pairs": 0,
+    "dropped": 0,
+    "metric": "claimed",
+    "models": 5,
+    "pairs": 10,
+    "runs": 900,
+    "tiers": 1,
+    "undiscernible_share": 1.0
+  },
+  "simple-tasks": {
+    "cells": 7,
+    "discernible_pairs": 2,
+    "dropped": 0,
+    "metric": "perf",
+    "models": 4,
+    "pairs": 2,
+    "runs": 220,
+    "tiers": 4,
+    "undiscernible_share": 0.0
+  }
+}

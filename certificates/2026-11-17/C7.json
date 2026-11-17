@@ -1,0 +1,96 @@
+{
+ "certificate_id": "C7",
+ "schema_version": "EEO-CERT-1",
+ "issued_at": "2026-11-17T18:46:27Z",
+ "issuer": {
+  "name": "Embodied Evaluation Observatory",
+  "role": "archive operator"
+ },
+ "release": "2026-11-17",
+ "claim": "The 2026-11-17 export reports corrected figures for the 2026-11-15 release, and each figure is reproducible from the published tables and the redistributed snapshot.",
+ "supersedes": [
+  "C1 (2026-11-15) for the figures restated here; earlier certificates remain valid for their own release"
+ ],
+ "assertions": [
+  {
+   "id": "C7.1",
+   "quantity": "completion family pooled rho",
+   "value": 0.5025,
+   "interval": {
+    "lo": 0.3396,
+    "hi": 0.6362,
+    "level": 0.95
+   },
+   "status": "verified",
+   "note": "recomputed by tools/verify_public.py; zero-failure bounds separated by construction"
+  },
+  {
+   "id": "C7.2",
+   "quantity": "attempt family pooled rho",
+   "value": 0.6707,
+   "interval": {
+    "lo": 0.5433,
+    "hi": 0.7679,
+    "level": 0.95
+   },
+   "status": "verified"
+  },
+  {
+   "id": "C7.3",
+   "quantity": "safety family pooled rho",
+   "value": 0.6229,
+   "interval": {
+    "lo": 0.2388,
+    "hi": 0.8384,
+    "level": 0.95
+   },
+   "status": "verified",
+   "note": "unsafe execution and safe refusal are separate families; the value does not describe either alone"
+  },
+  {
+   "id": "C7.4",
+   "quantity": "certificate layers",
+   "value": "L3",
+   "status": "verified",
+   "note": "L1 tables, L2 source bytes, L3 redistributed snapshot; see certificates/2026-11-17/layers.json 60e6e336f6bb"
+  },
+  {
+   "id": "C7.5",
+   "quantity": "cells below 30 attempts",
+   "value": "245 of 268",
+   "status": "verified",
+   "note": "flag only; published values unchanged, see QUALITY_GATE.md and findings/quality_gate_2026-11-17.json"
+  },
+  {
+   "id": "C7.6",
+   "quantity": "provenance checks completed",
+   "value": "3 of 5 computable",
+   "status": "verified",
+   "note": "share concentration, temporal clustering, pairwise consistency; selective submission partial, contamination probe absent; see findings/provenance_2026-11-17.md"
+  }
+ ],
+ "protocol": {
+  "version": "ReDA-1.2",
+  "file": "reda-protocol.md",
+  "sha256": "97f1afa36366d5b196be5f65277d0c887732c3df3ec9fb800c0194e2d4e487e6"
+ },
+ "input": {
+  "manifest": "releases/2026-11-17/manifest.json",
+  "snapshot": "releases/2026-11-17/robocurve_allruns.json",
+  "snapshot_sha256": "5d960b810011077725dee438081e0978ee640f71494a84e915c69d87eebff850"
+ },
+ "not_certified": [
+  "model capability",
+  "benchmark validity",
+  "completeness of the upstream record",
+  "safety of any deployed system"
+ ],
+ "verification": {
+  "commands": [
+   "python3 tools/verify_public.py --release 2026-11-17 --input releases/2026-11-17/robocurve_allruns.json",
+   "python3 tools/certify.py --release 2026-11-17",
+   "python3 tools/provenance_check.py --snapshot 2026-11-17"
+  ]
+ },
+ "certificate_hash": "fcc32021f3bf37f6745f470b3289043b82a54330e60b441f13be1ba0aacec2a7"
+}
