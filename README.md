@@ -5,6 +5,9 @@ Audit (ReDA).
 
 **We do not evaluate robots. We audit the evaluations.**
 
+Live site: https://embodied-evaluation-observatory.github.io/EEO-Archive/ ·
+dashboard: https://embodied-evaluation-observatory.github.io/EEO-Archive/dashboard.html
+
 This repository publishes the derived tables for each archive release: per-attempt
 records re-published in flat form, cell-level summaries, and the correlation estimates
 with their design consequences. It also publishes the tooling that produces them, so a
