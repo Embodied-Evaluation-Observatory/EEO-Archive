@@ -75,16 +75,16 @@ Three blocks, not one.
 ## Citing
 
 ```
-EEO Archive, release 2026-11-17. Embodied Evaluation Observatory.
+EEO Archive, release 2026-11-18. Embodied Evaluation Observatory.
 DOI 10.5281/zenodo.24288113 (concept 10.5281/zenodo.24269291)
 Release hash c0bd689f26900f488802ed21159c55c5a40ca5cde6064cb91fbe9795ce93b7db.
 ```
 
-The Zenodo record under version DOI 10.5281/zenodo.24288113 (concept 10.5281/zenodo.24269291) was deposited with the 2026-11-15
-bytes; the 2026-11-17 corrections are published in this repository and in its release notes,
-and the DOI will be updated at the next deposit. When citing the archive as a
-continuing series rather than this single release, use the concept DOI printed on the
-Zenodo record page; the version DOI above identifies exactly these bytes.
+Version DOI 10.5281/zenodo.24288113 identifies the 2026-11-18 deposit, which carries the
+corrected 2026-11-17 tables and the redistributed snapshot. The earlier deposit
+(10.5281/zenodo.24269292) remains citable for the 2026-11-15 bytes and is not withdrawn.
+When citing the archive as a continuing series rather than a single release, use the concept
+DOI 10.5281/zenodo.24269291.
 
 ## Scope
 
