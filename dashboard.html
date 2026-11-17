@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EEO Archive — audit dashboard, release 2026-11-17</title>
+<style>
+:root{
+  --ink:#1a1d1c; --paper:#f6f4ef; --line:#d9d5cb; --muted:#5f625c;
+  --accent:#0f5c58; --warn:#b4551f; --grid:#e7e3d9;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:16px/1.6 -apple-system,"Segoe UI","Noto Sans SC",sans-serif;}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 20px 72px}
+header{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:28px}
+h1{font-size:1.6rem;line-height:1.3;margin:0 0 6px;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:.95rem;margin:0}
+nav{margin-top:14px;font-size:.9rem;display:flex;flex-wrap:wrap;gap:14px}
+nav a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--line)}
+nav a:hover{border-color:var(--accent)}
+section{margin:40px 0 0}
+h2{font-size:1.05rem;margin:0 0 4px;letter-spacing:.02em;text-transform:uppercase}
+.lede{color:var(--muted);font-size:.9rem;margin:0 0 18px;max-width:62ch}
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.kpi{background:#fff;padding:16px 18px}
+.kpi b{display:block;font-size:1.75rem;line-height:1.15;font-weight:600;font-variant-numeric:tabular-nums}
+.kpi span{display:block;color:var(--muted);font-size:.82rem;margin-top:4px}
+@media(min-width:720px){.kpis{grid-template-columns:repeat(4,1fr)}}
+.chart{background:#fff;border:1px solid var(--line);padding:14px 10px 6px}
+.chart div[data-chart]{width:100%;height:300px}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:.88rem;table-layout:fixed}
+caption{caption-side:top;text-align:left;color:var(--muted);font-size:.82rem;padding:0 0 8px}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--grid);vertical-align:top}
+th:first-child,td:first-child{text-align:left;width:30%}
+thead th{font-weight:600;border-bottom:1px solid var(--line);background:#fbfaf6}
+tbody tr:last-child td{border-bottom:1px solid var(--line)}
+.num{font-variant-numeric:tabular-nums}
+.panels{display:grid;grid-template-columns:1fr;gap:18px}
+@media(min-width:780px){.panels{grid-template-columns:1fr 1fr}}
+.panel{background:#fff;border:1px solid var(--line);padding:16px 18px}
+.panel h3{font-size:.92rem;margin:0 0 10px;font-weight:600}
+.bar{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:.84rem}
+.bar .name{width:8.5em;flex:none;color:var(--muted)}
+.bar .track{flex:1;height:14px;background:var(--grid);position:relative;min-width:0}
+.bar .fill{position:absolute;left:0;top:0;bottom:0;background:var(--accent)}
+.bar .val{width:3.2em;text-align:right;font-variant-numeric:tabular-nums}
+ul.status{list-style:none;margin:0;padding:0;font-size:.86rem}
+ul.status li{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid var(--grid)}
+ul.status li:last-child{border-bottom:0}
+.tag{flex:none;width:6.2em;font-size:.76rem;letter-spacing:.04em;text-transform:uppercase;padding-top:2px}
+.tag.c{color:var(--accent)}
+.tag.p{color:var(--warn)}
+.tag.n{color:#8b2f2f}
+.foot{margin-top:44px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:.82rem}
+.foot code{background:#fff;border:1px solid var(--grid);padding:1px 4px;font-size:.8rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>EEO Archive — audit dashboard</h1>
+  <p class="sub">Release 2026-11-17, corrected 2026-11-18. Four leaderboards, 268 cells, 4,239 attempts, 25 models. Every figure below is recomputed from published tables; nothing is read off a chart.</p>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="reda-protocol.md">Protocol</a>
+    <a href="public/2026-11-17/release_summary.csv">release_summary.csv</a>
+    <a href="certificates/2026-11-17/C7.json">Certificate C7</a>
+    <a href="findings/ANTI_PATTERNS.md">Anti-patterns</a>
+  </nav>
+</header>
+
+<section>
+  <h2>Headline</h2>
+  <p class="lede">The share of model pairs a record cannot separate, after multiplicity correction. The uncorrected figure is shown beside it because the difference is the finding.</p>
+  <div class="kpis">
+    <div class="kpi"><b>92%</b><span>pairs not separable, Holm-corrected (60% uncorrected)</span></div>
+    <div class="kpi"><b>268</b><span>model–task cells in this release</span></div>
+    <div class="kpi"><b>4,239</b><span>attempts behind them</span></div>
+    <div class="kpi"><b>64%</b><span>cells with a constant outcome across all attempts</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Correction on every board</h2>
+  <p class="lede">Same bytes, per-pair intervals on the left, Holm step-down on the right. RoboTwin barely moves because each cell carries 100 trials; the boards that move publish few or unstated attempts per cell.</p>
+  <div class="chart"><div data-chart="boards"></div></div>
+  <table>
+    <caption>Pair tests per board. Separable pairs are those whose ranking the record supports at the stated correction.</caption>
+    <thead><tr><th>Board</th><th>Pairs</th><th>Separable, none</th><th>Separable, Holm</th><th>Undiscernible, none → Holm</th></tr></thead>
+    <tbody>
+      <tr><td>robocurve (archive strata)</td><td class="num">143</td><td class="num">57</td><td class="num">12</td><td class="num">60.1% → 91.6%</td></tr>
+      <tr><td>RoboChallenge</td><td class="num">681</td><td class="num">172</td><td class="num">15</td><td class="num">74.7% → 97.8%</td></tr>
+      <tr><td>RoboArena</td><td class="num">276</td><td class="num">53</td><td class="num">25</td><td class="num">80.8% → 90.9%</td></tr>
+      <tr><td>RoboTwin</td><td class="num">630</td><td class="num">601</td><td class="num">584</td><td class="num">4.6% → 7.3%</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Estimates by stratum</h2>
+  <p class="lede">ρ is the intra-cluster correlation between attempts inside a cell. deff is the design effect at 20 attempts per cell; n_eff is how many independent observations one cell is worth.</p>
+  <table>
+    <caption>Public release tables, 2026-11-17. Intervals are 95%, family rows are the pooled estimate.</caption>
+    <thead><tr><th>Stratum</th><th>ρ</th><th>95% CI</th><th>Cells</th><th>Attempts</th><th>deff</th><th>n_eff</th></tr></thead>
+    <tbody>
+      <tr><td>completion family</td><td class="num">0.503</td><td class="num">0.340–0.636</td><td class="num">103</td><td class="num">2,371</td><td class="num">10.5</td><td class="num">1.90</td></tr>
+      <tr><td>attempt family</td><td class="num">0.671</td><td class="num">0.543–0.768</td><td class="num">105</td><td class="num">1,598</td><td class="num">13.7</td><td class="num">1.46</td></tr>
+      <tr><td>safety family</td><td class="num">0.623</td><td class="num">0.239–0.838</td><td class="num">60</td><td class="num">1,396</td><td class="num">12.8</td><td class="num">1.56</td></tr>
+      <tr><td>RoboDojo-RC task success</td><td class="num">0.501</td><td class="num">—</td><td class="num">96</td><td class="num">2,151</td><td class="num">10.5</td><td class="num">1.90</td></tr>
+      <tr><td>Simple-tasks task success</td><td class="num">0.531</td><td class="num">—</td><td class="num">7</td><td class="num">220</td><td class="num">11.1</td><td class="num">1.80</td></tr>
+      <tr><td>RoboHarm unsafe execution</td><td class="num">0.448</td><td class="num">—</td><td class="num">30</td><td class="num">698</td><td class="num">9.5</td><td class="num">2.11</td></tr>
+      <tr><td>RoboHarm safe refusal</td><td class="num">0.752</td><td class="num">—</td><td class="num">30</td><td class="num">698</td><td class="num">15.3</td><td class="num">1.31</td></tr>
+      <tr><td>RoboSpoof attempt, unaltered</td><td class="num">0.484</td><td class="num">—</td><td class="num">25</td><td class="num">300</td><td class="num">10.2</td><td class="num">1.96</td></tr>
+      <tr><td>RoboSpoof attempt, blurred</td><td class="num">0.654</td><td class="num">—</td><td class="num">25</td><td class="num">300</td><td class="num">13.4</td><td class="num">1.49</td></tr>
+      <tr><td>RoboSpoof attempt, doctored</td><td class="num">0.727</td><td class="num">—</td><td class="num">25</td><td class="num">300</td><td class="num">14.8</td><td class="num">1.35</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>What limits these numbers</h2>
+  <p class="lede">Two limits travel with every figure above. They are reported, not corrected away.</p>
+  <div class="panels">
+    <div class="panel">
+      <h3>Constant-outcome cells</h3>
+      <p class="sub" style="margin:0 0 12px">171 of 268 cells end the same way on every attempt. They carry no information about correlation, are listed separately, and remain in the pooled estimate.</p>
+      <div class="bar"><span class="name">RoboDojo-RC</span><span class="track"><span class="fill" style="width:66.7%"></span></span><span class="val">64</span></div>
+      <div class="bar"><span class="name">RoboHarm</span><span class="track"><span class="fill" style="width:53.1%"></span></span><span class="val">51</span></div>
+      <div class="bar"><span class="name">RoboSpoof</span><span class="track"><span class="fill" style="width:57.3%"></span></span><span class="val">55</span></div>
+      <div class="bar"><span class="name">Simple-tasks</span><span class="track"><span class="fill" style="width:1%"></span></span><span class="val">1</span></div>
+      <p class="sub" style="margin:12px 0 0">Per benchmark, in cells. Source: <a href="findings/zero_variance_2026-11-17.json">zero_variance_2026-11-17.json</a>.</p>
+    </div>
+    <div class="panel">
+      <h3>Cells below the 30-attempt gate</h3>
+      <p class="sub" style="margin:0 0 12px">245 of 268 cells hold fewer than 30 attempts, median 20. Their correlations and zero-failure bounds are unstable; the published values stand, with a flag.</p>
+      <div class="bar"><span class="name">12 attempts</span><span class="track"><span class="fill" style="width:45%"></span></span><span class="val">75</span></div>
+      <div class="bar"><span class="name">20 attempts</span><span class="track"><span class="fill" style="width:99%"></span></span><span class="val">166</span></div>
+      <div class="bar"><span class="name">40 attempts</span><span class="track"><span class="fill" style="width:9%"></span></span><span class="val">15</span></div>
+      <div class="bar"><span class="name">58–60 attempts</span><span class="track"><span class="fill" style="width:5%"></span></span><span class="val">8</span></div>
+      <p class="sub" style="margin:12px 0 0">Per cell, by attempts. Source: <a href="findings/quality_gate_2026-11-17.json">quality_gate_2026-11-17.json</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Provenance card</h2>
+  <p class="lede">Five submission checks. Three are computable from published data, one is partial, one is not implemented. A flag never deletes a record.</p>
+  <div class="panels">
+    <div class="panel">
+      <h3>Status</h3>
+      <ul class="status">
+        <li><span class="tag c">computed</span><span>Share concentration — top three models hold 8.3% of RoboTwin trials</span></li>
+        <li><span class="tag c">computed</span><span>Temporal clustering — 769 RoboChallenge cells with timestamps; 10 in the busiest hour, 15 sharing a minute</span></li>
+        <li><span class="tag c">computed</span><span>Pairwise consistency — 192 RoboTwin pairs agree on every shared task</span></li>
+        <li><span class="tag p">partial</span><span>Selective submission — 32,980 episodes against 769 cells, 42.9 per cell; per-cell counts unstated</span></li>
+        <li><span class="tag n">absent</span><span>Contamination probe — no perturbed task variant has been run</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>What the flags do not say</h3>
+      <p class="sub" style="margin:0">A high concentration share can be a single large lab publishing many runs. A batch of submissions in one hour can be one evaluation sweep. Perfect pairwise consistency can mean the tasks are too easy to separate models. Each pattern is reported with its reading, not as a verdict.</p>
+      <p class="sub" style="margin:12px 0 0">Full card: <a href="findings/provenance_2026-11-17.md">provenance_2026-11-17.md</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Reproduce</h2>
+  <p class="lede">Three commands regenerate everything on this page from the repository.</p>
+  <div class="panel" style="font-size:.85rem">
+    <code>python3 tools/verify_public.py --release 2026-11-17 --input releases/2026-11-17/robocurve_allruns.json</code><br>
+    <code>python3 tools/board_audit.py --raw boards/2026-11-17/raw --out boards/2026-11-18</code><br>
+    <code>python3 tools/provenance_check.py --snapshot 2026-11-17</code>
+  </div>
+</section>
+
+<p class="foot">
+EEO Archive · release 2026-11-17, corrected 2026-11-18 · DOI
+<a href="https://doi.org/10.5281/zenodo.24325457">10.5281/zenodo.24325457</a> ·
+concept DOI <a href="https://doi.org/10.5281/zenodo.24269291">10.5281/zenodo.24269291</a>.
+The archive audits public records of real-robot evaluations; it runs no robot and certifies no system.
+</p>
+
+</div>
+<script src="https://fastly.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script>
+(function(){
+  if (typeof echarts === 'undefined') {
+    document.querySelectorAll('[data-chart]').forEach(function(el){
+      el.style.height='auto'; el.textContent='Chart library did not load; the table below carries the same figures.';
+    });
+    return;
+  }
+  var el = document.querySelector('[data-chart="boards"]');
+  var boards = ['robocurve','RoboChallenge','RoboArena','RoboTwin'];
+  var none = [60.1,74.7,80.8,4.6], holm = [91.6,97.8,90.9,7.3];
+  var chart = echarts.init(el, null, {renderer:'canvas'});
+  chart.setOption({
+    textStyle:{fontFamily:'-apple-system, "Segoe UI", "Noto Sans SC", sans-serif'},
+    grid:{left:96,right:56,top:28,bottom:36},
+    tooltip:{trigger:'axis',axisPointer:{type:'shadow'},
+      valueFormatter:function(v){return v + '%';}},
+    legend:{data:['per-pair intervals','Holm step-down'],right:0,top:0,itemWidth:12,itemHeight:8,
+      textStyle:{fontSize:11,color:'#5f625c'}},
+    xAxis:{type:'value',max:100,axisLabel:{formatter:'{value}%',fontSize:11},
+      splitLine:{lineStyle:{color:'#e7e3d9'}},axisLine:{show:false},axisTick:{show:false}},
+    yAxis:{type:'category',data:boards,inverse:true,
+      axisLabel:{fontSize:12},axisLine:{show:false},axisTick:{show:false}},
+    series:[
+      {name:'per-pair intervals',type:'bar',data:none,barWidth:9,
+       itemStyle:{color:'#c9c4b8'},label:{show:true,position:'right',fontSize:11,color:'#5f625c',
+         formatter:'{c}%'}},
+      {name:'Holm step-down',type:'bar',data:holm,barWidth:9,
+       itemStyle:{color:'#0f5c58'},label:{show:true,position:'right',fontSize:11,color:'#1a1d1c',
+         formatter:'{c}%'}}
+    ]
+  });
+  window.addEventListener('resize', function(){ chart.resize(); });
+})();
+</script>
+</body>
+</html>
