@@ -152,8 +152,13 @@ def main():
                 continue
             groups[(r['model'], r['task'])].append(v)
         dropped[name] = d
+        if len(groups) < 2:
+            continue                     # stratum empty in this release; nothing to check
         rho, m, N = icc(list(groups.values()))
         got[name] = (rho, m, N, fam)
+    thin = [k for k, v in got.items() if v[2] < 30]
+    if thin:
+        print('WARNING: strata with under 30 attempts per cell: %s' % ', '.join(sorted(thin)))
     if any(dropped.values()):
         print('dropped (undecidable, not counted as failure): %s'
               % {k: v for k, v in dropped.items() if v})

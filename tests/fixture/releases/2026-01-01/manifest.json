@@ -1,0 +1,16 @@
+{
+  "archive": "EEO Archive",
+  "release": "2026-01-01",
+  "frozen_at_utc": "2026-01-01T00:00:00+00:00",
+  "source_note": "synthetic",
+  "note": "synthetic fixture, no third-party data",
+  "files": [
+    {
+      "file": "robocurve_allruns.json",
+      "bytes": 40097,
+      "sha256": "09baaa1737ba1f19d5c4323072d8c02f95402a994f142cdebebf115bf29fc097",
+      "record_count": 60,
+      "count_key": "runs"
+    }
+  ]
+}

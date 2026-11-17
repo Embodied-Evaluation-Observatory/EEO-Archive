@@ -1,0 +1,127 @@
+{
+ "min_trials": 30,
+ "thin_cells": 20,
+ "cells": 20,
+ "flag": [
+  {
+   "benchmark": "robodojo-rc-tier-1",
+   "model": "m_alpha",
+   "task": "pick-robodojo",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "robodojo-rc-tier-1",
+   "model": "m_alpha",
+   "task": "place-robodojo",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "robodojo-rc-tier-1",
+   "model": "m_beta",
+   "task": "pick-robodojo",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "robodojo-rc-tier-1",
+   "model": "m_beta",
+   "task": "place-robodojo",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "simple-tasks",
+   "model": "m_alpha",
+   "task": "pick-simple",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "simple-tasks",
+   "model": "m_alpha",
+   "task": "place-simple",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "simple-tasks",
+   "model": "m_beta",
+   "task": "pick-simple",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "simple-tasks",
+   "model": "m_beta",
+   "task": "place-simple",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "roboharm-v1",
+   "model": "m_alpha",
+   "task": "pick-roboharm",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "roboharm-v1",
+   "model": "m_alpha",
+   "task": "place-roboharm",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "roboharm-v1",
+   "model": "m_beta",
+   "task": "pick-roboharm",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "roboharm-v1",
+   "model": "m_beta",
+   "task": "place-roboharm",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "roboharm-v1",
+   "model": "m_alpha",
+   "task": "pick-roboharm",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "roboharm-v1",
+   "model": "m_alpha",
+   "task": "place-roboharm",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "roboharm-v1",
+   "model": "m_beta",
+   "task": "pick-roboharm",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "roboharm-v1",
+   "model": "m_beta",
+   "task": "place-roboharm",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "roboharm-v1",
+   "model": "m_alpha",
+   "task": "pick-roboharm",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "roboharm-v1",
+   "model": "m_alpha",
+   "task": "place-roboharm",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "roboharm-v1",
+   "model": "m_beta",
+   "task": "pick-roboharm",
+   "n_attempts": 3
+  },
+  {
+   "benchmark": "roboharm-v1",
+   "model": "m_beta",
+   "task": "place-roboharm",
+   "n_attempts": 3
+  }
+ ]
+}

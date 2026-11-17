@@ -33,6 +33,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)          # eeo-archive/
 RIG_RE = re.compile(r'rig[-_]([A-Za-z0-9]+)')
 ATT_REFUSAL = ('refused', 'refused_capability', 'guardrail_blocked')
+MIN_TRIALS = 30          # below this a cell is flagged, never silently trusted
 
 
 # ---------------------------------------------------------------- integrity
@@ -219,6 +220,8 @@ def build_cells(runs, strata_defs):
             if v is None:
                 continue
             groups[(r.get('model') or '', r.get('task') or '')].append(v)
+        if len(groups) < 2:
+            continue                      # stratum has no usable cells in this release
         rho, m, N, n0 = icc(list(groups.values()))
         for key, vals in groups.items():
             n = len(vals)
@@ -253,6 +256,8 @@ def build_summary(runs, strata_defs, delta=0.05, J=20):
             if v is None:
                 continue
             groups[(r.get('model') or '', r.get('task') or '')].append(v)
+        if len(groups) < 2:
+            continue                      # stratum has no usable cells in this release
         rho, m, N, n0 = icc(list(groups.values()))
         strata.append((name, rho, m, N, fam, bench))
 
@@ -501,6 +506,16 @@ def main():
     att = next(s for s in summary if s['row_type'] == 'family' and s['family'] == 'att')
     print('attempts rows: %d (rig alias resolved on %d)' % (len(attempts), rig_hits))
     print('cells rows: %d' % len(cells))
+    thin = [c for c in cells if int(float(c.get('n_attempts') or 0)) < MIN_TRIALS]
+    if thin:
+        print('WARNING: %d of %d cells have fewer than %d attempts; their correlations '
+              'and zero-failure bounds are unstable (see QUALITY_GATE.md)'
+              % (len(thin), len(cells), MIN_TRIALS))
+    with open(os.path.join(out_dir, 'quality_flags.json'), 'w', encoding='utf-8') as f:
+        json.dump({'min_trials': MIN_TRIALS, 'thin_cells': len(thin), 'cells': len(cells),
+                   'flag': [{'benchmark': c.get('benchmark'), 'model': c.get('model'),
+                             'task': c.get('task'), 'n_attempts': c.get('n_attempts')} for c in thin[:200]]},
+                  f, ensure_ascii=False, indent=1)
     print('merged completion family: rho=%.3f CI=[%.3f,%.3f] cells=%d trials=%d'
           % (perf['rho'], perf['ci_lo'], perf['ci_hi'], perf['cells'], perf['trials']))
     print('merged attempt family:    rho=%.3f CI=[%.3f,%.3f] cells=%d trials=%d'
