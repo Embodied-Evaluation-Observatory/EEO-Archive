@@ -1,7 +1,7 @@
 {
  "certificate_id": "LAYER-2026-11-17",
  "schema_version": "EEO-LAYER-1",
- "issued_at": "2026-11-17T19:30:57Z",
+ "issued_at": "2026-11-18T00:07:26Z",
  "issuer": {
   "name": "Embodied Evaluation Observatory",
   "role": "archive operator"
@@ -67,5 +67,5 @@
  "verification": {
   "rerun": "python3 tools/certify.py --release 2026-11-17"
  },
- "certificate_hash": "7d37b5b7e96d5c23e248660c917730bda97cc1fd93b5ed0a654bf2f7bfbe6663"
+ "certificate_hash": "e004419ab73d6c920ec8c879747c48d85c52b968c2651399dec3e4e0509d2fe8"
 }

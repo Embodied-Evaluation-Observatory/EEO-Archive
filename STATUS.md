@@ -14,3 +14,24 @@
   users yet. Treat the outputs as a working record, not as an authority.
 - Corrections are published as new releases; earlier releases stay citable and
   are not rewritten.
+
+## Deposit identifiers
+
+| Record | Version DOI | Holds | Status |
+|---|---|---|---|
+| 2026-11-15 | `10.5281/zenodo.24269292` | the 2026-11-15 bytes | citable, not withdrawn |
+| intermediate | `10.5281/zenodo.24288113` | the 2026-11-15 files under 2026-11-18 metadata | superseded: published before its files were replaced |
+| 2026-11-18 | `10.5281/zenodo.24325457` | the corrected 2026-11-17 tables and the redistributed snapshot | current |
+
+Concept DOI `10.5281/zenodo.24269291` covers the series. Cite the version DOI for a
+specific release, the concept DOI for the series. The intermediate record is kept online
+because Zenodo does not allow a published deposit to be edited or deleted; its description
+states which bytes it serves.
+
+## Verification state
+
+- Commits through 2026-11-18 are unsigned, because the repository was operated from a
+  workspace without a private key. GitHub marks them `Unverified`. They cannot be signed
+  retroactively without rewriting hashes. Policy from here: `SIGNING.md`.
+- Each release runs the gate in `RELEASE_GATE.md` before publication; the gate record sits
+  beside the release.

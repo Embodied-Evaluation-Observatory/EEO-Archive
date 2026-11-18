@@ -89,6 +89,10 @@ corrected 2026-11-17 tables and the redistributed snapshot. The earlier deposit
 When citing the archive as a continuing series rather than a single release, use the concept
 DOI 10.5281/zenodo.24269291.
 
+Publication order and the pre-publication gate are in `RELEASE_GATE.md`; run it with
+`python3 tools/preflight.py --release <date> --input <snapshot> --zenodo-dir <download>`.
+Signing policy is in `SIGNING.md`.
+
 ## Scope
 
 This repository does not contain evaluation conclusions about any robot or model. It
