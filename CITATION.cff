@@ -1,36 +1,45 @@
 cff-version: 1.2.0
-message: "If you use these tables, cite this release: DOI 10.5281/zenodo.24325457."
-title: "EEO Archive, release 2026-11-15: public tables of the Repetition and Discernibility Audit"
+message: "If you use these tables, cite this archive: concept DOI 10.5281/zenodo.24269291 resolves to the latest release."
+title: "EEO Archive, release 2026-11-19: public tables of the Repetition and Discernibility Audit"
 type: dataset
-doi: "10.5281/zenodo.24325457"
+doi: "10.5281/zenodo.24269291"
 authors:
   - name: "Embodied Evaluation Observatory"
-version: "2026-11-15"
-date-released: "2026-11-15"
+  - family-names: "Li"
+    given-names: "Zimo"
+    affiliation: "Guangdong Technion-Israel Institute of Technology"
+    website: "https://github.com/lee8745"
+version: "2026-11-19"
+date-released: "2026-11-19"
 license: "CC-BY-4.0"
 notes: >-
   CC-BY-4.0 covers the compilation and the computed statistics only. Per-attempt result
-  fields remain under the terms of the source archive; the sealed source bytes are not
-  redistributed. See LICENSE-DATA.md.
-url: "https://embodied-evaluation.org"
+  fields remain under the terms of the source archive. See LICENSE-DATA.md.
+  Zimo Li originated the insertion experiment from which the archive's comparability
+  question derives; his contribution predates the repository and is documented in
+  CONTRIBUTORS.md and contributions/2026-09-04-insertion-experiment.md.
+  Authorship here applies from release 2026-11-19 and is not backdated.
+url: "https://embodied-evaluation-observatory.github.io/EEO-Archive/"
 abstract: >-
   Per-attempt records of public robot evaluations, re-published as flat tables, together
   with the intra-cluster correlation estimates, design effects and effective sample sizes
-  that follow from them. The observatory does not evaluate robots; it audits published
-  evaluations for statistical reliability. Every quoted estimate can be recomputed from
-  the published table with tools/verify_public.py.
+  that follow from them. Cells are keyed on model, task and scene; comparability fields
+  are published as a separate split. Every quoted estimate can be recomputed from the
+  published table with tools/verify_public.py.
 keywords:
   - robot benchmarking
   - evaluation variance
   - intra-cluster correlation
   - design effect
-  - zero-failure certification
-  - rank stability
+  - comparability
+  - capability frontier
 preferred-citation:
   type: dataset
-  title: "EEO Archive, release 2026-11-15"
+  title: "EEO Archive, release 2026-11-19"
   authors:
     - name: "Embodied Evaluation Observatory"
-  version: "2026-11-15"
+    - family-names: "Li"
+      given-names: "Zimo"
+      affiliation: "Guangdong Technion-Israel Institute of Technology"
+  version: "2026-11-19"
   year: 2026
-  notes: "Release hash c0bd689f26900f488802ed21159c55c5a40ca5cde6064cb91fbe9795ce93b7db"

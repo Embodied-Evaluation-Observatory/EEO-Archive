@@ -19,7 +19,7 @@ SSH signing is used here because it needs no GPG agent. GPG works the same way w
 `gpg.format=openpgp`.
 
 ```
-ssh-keygen -t ed25519 -C "maintainer@embodied-evaluation.org" -f ~/.ssh/eeo_signing
+ssh-keygen -t ed25519 -C "EEO signing 2026-11" -f ~/.ssh/eeo_signing
 git config --global gpg.format ssh
 git config --global user.signingkey ~/.ssh/eeo_signing.pub
 git config --global commit.gpgsign true
@@ -27,9 +27,9 @@ git config --global tag.gpgsign true
 ```
 
 Register the public key on GitHub: Settings → SSH and GPG keys → New SSH key → Key type
-`Signing key`, paste `~/.ssh/eeo_signing.pub`. The email in the key and in
-`git config user.email` must match an address on the account, or GitHub shows the commit
-but not the `Verified` badge.
+`Signing key`, paste `~/.ssh/eeo_signing.pub`. Matching is by key fingerprint; the comment
+field in the key is cosmetic. `git config user.email` must be an address verified on the
+account, or GitHub shows the commit but not the `Verified` badge.
 
 Verify locally before pushing:
 
