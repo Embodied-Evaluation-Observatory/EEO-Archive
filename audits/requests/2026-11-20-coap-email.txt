@@ -1,0 +1,68 @@
+Subject: Request for per-task results and run manifest — arXiv:2610.12369 (RoboDojo table)
+
+Dear authors,
+
+We maintain the EEO Archive, a public archive that republishes per-attempt records of robot
+evaluations and checks the numbers published on top of them for reproducibility and
+comparability. Your paper reports results on RoboDojo, which is also one of the boards the
+archive holds; we cover six of its 42 tasks.
+
+We recomputed the Overall column of Table 2 from the five domain columns. In all 24 rows the
+reported Overall equals the unweighted mean of the five domain success rates, reproducing
+within 0.03 percentage points, so the table is arithmetically consistent. Two observations
+came out of the recomputation.
+
+First, the domains hold unequal task counts (Memory 6, Precision 8, Open 8, Generalization 12,
+Long-Horizon 8). A task-weighted mean differs from the reported one: COAP 68.87 against
+70.24, PhysicalRSI 29.15 against 31.38, DM0.5 17.20 against 19.34. Whether the macro mean or
+the weighted mean is the intended headline is a choice, but the choice moves the number by
+one to two points and is not stated in the text.
+
+Second, from the five aggregates alone the 95% interval around 70.24 is about ±11 pp. Applying
+the archive's RoboDojo intra-cluster correlation (0.5013) to the design described in your
+Section 4 — 42 tasks, three seeds, 50 layouts each, 6,300 episodes — gives about ±10 pp. The
+two routes agree, which suggests the aggregate route does not overstate precision, but both
+remain approximations.
+
+Neither observation is a criticism of the result. Both stop at the same place: the paper
+reports aggregates, and aggregates cannot be checked against the episodes they summarise.
+
+We would therefore ask for four things, in descending order of how much they would settle:
+
+1. A per-task table of 42 rows: task name, domain, number of attempts, number of successes,
+   and the success rule applied. This alone lets any reader reproduce the five domain values
+   and the Overall column, and settles the weighting question.
+
+2. A run manifest, one row per evaluated run: task id, seed, layout id, library or code
+   version used, date, and outcome, with the failure stage or reason where the run failed.
+   Videos and trajectories are not needed; identifiers and outcomes are enough to check
+   aggregation and to measure between-task variance.
+
+3. The success rule for partial completions: whether a task counts as failed unless it
+   completes, or whether the benchmark's progress score is used; and how the reattempt
+   policy described in Table 3 interacts with that rule.
+
+4. The library version that produced Table 2, so the reported numbers attach to a commit
+   rather than to a development process.
+
+How we would use the material: we would recompute the headline from your record, report
+whether it matches, and cite the paper together with the release. We would not redistribute
+your logs; the archive publishes derived tables and hashes, not source records, and the same
+policy would apply here. If a discrepancy appeared, we would send it to you before publishing
+anything, and we would publish your reply alongside it if you wished.
+
+If releasing logs is not possible, the per-task table alone would raise this check from the
+aggregate level to the table level, and we would record that level with the constraint stated
+rather than treat the paper as unverifiable.
+
+The note we wrote from the published table is at
+https://github.com/Embodied-Evaluation-Observatory/EEO-Archive/blob/main/audits/2026-11-20-coap-2610.12369.md
+and we are glad to correct it if we have misread anything.
+
+Thank you for considering this.
+
+Kind regards,
+
+Embodied Evaluation Observatory
+archive@embodied-evaluation.org
+https://embodied-evaluation-observatory.github.io/EEO-Archive/
