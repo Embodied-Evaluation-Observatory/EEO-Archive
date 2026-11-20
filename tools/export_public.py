@@ -26,8 +26,10 @@ import hashlib
 import json
 import math
 import os
+import random
 import re
 import sys
+import zlib
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)          # eeo-archive/
@@ -75,6 +77,31 @@ def icc(groups):
     n0 = (N - sum(len(x) ** 2 for x in g) / N) / (m - 1)
     den = msb + (n0 - 1) * msw
     return (max(0.0, (msb - msw) / den) if den > 0 else 0.0), m, N, n0
+
+
+MIX_FIELDS = (('grading_method', 'grading'), ('source_tag', 'source'),
+              ('effort', 'effort'), ('mode', 'mode'))
+
+
+def mixed_fields(cell_runs):
+    """Which of the comparability fields vary inside one cell."""
+    mixed = [pub for pub, raw in MIX_FIELDS
+             if len({(r.get(raw) or '') for r in cell_runs}) > 1]
+    return ';'.join(mixed)
+
+
+def boot_ci(groups, reps=500):
+    """Percentile interval over cells; deterministic given the same groups."""
+    keys = sorted(groups)
+    if len(keys) < 2:
+        return '', ''
+    rng = random.Random(zlib.crc32(('|'.join(str(k) for k in keys)).encode('utf-8')) % 100000)
+    vals = []
+    for _ in range(reps):
+        pick = [keys[rng.randrange(len(keys))] for _ in keys]
+        vals.append(icc([groups[k] for k in pick])[0])
+    vals.sort()
+    return round(vals[int(0.025 * reps)], 4), round(vals[int(0.975 * reps) - 1], 4)
 
 
 def dersimonian_laird(items):
@@ -215,11 +242,14 @@ def build_cells(runs, strata_defs):
     for name, bench, fn, sub, fam in strata_defs:
         subset = sub if sub is not None else [r for r in runs if r.get('benchmark') == bench]
         groups = collections.defaultdict(list)
+        cell_runs = collections.defaultdict(list)
         for r in subset:
             v = fn(r)
             if v is None:
                 continue
-            groups[(r.get('model') or '', r.get('task') or '')].append(v)
+            k = (r.get('model') or '', r.get('task') or '', r.get('scene') or '')
+            groups[k].append(v)
+            cell_runs[k].append(r)
         if len(groups) < 2:
             continue                      # stratum has no usable cells in this release
         rho, m, N, n0 = icc(list(groups.values()))
@@ -230,7 +260,8 @@ def build_cells(runs, strata_defs):
                 'benchmark': bench,
                 'model': key[0],
                 'task': key[1],
-                'scene': (subset[0].get('scene') or '') if subset else '',
+                'scene': key[2],
+                'key_fields': 'model;task;scene',
                 'family': fam,
                 'stratum': name,
                 'stratum_rho': round(rho, 4),
@@ -241,6 +272,7 @@ def build_cells(runs, strata_defs):
                 'n_eff_cell': round(n / deff, 3) if deff > 0 else '',
                 'n_cells_in_stratum': m,
                 'n_attempts_in_stratum': N,
+                'mixed_fields': mixed_fields(cell_runs[key]),
             })
     return out
 
@@ -255,17 +287,29 @@ def build_summary(runs, strata_defs, delta=0.05, J=20):
             v = fn(r)
             if v is None:
                 continue
-            groups[(r.get('model') or '', r.get('task') or '')].append(v)
+            groups[(r.get('model') or '', r.get('task') or '',
+                    r.get('scene') or '')].append(v)
         if len(groups) < 2:
             continue                      # stratum has no usable cells in this release
         rho, m, N, n0 = icc(list(groups.values()))
-        strata.append((name, rho, m, N, fam, bench))
+        constant = {k for k, v in groups.items() if sum(v) in (0, len(v))}
+        keep = {k: v for k, v in groups.items() if k not in constant}
+        excl = round(icc(list(keep.values()))[0], 4) if len(keep) >= 2 else ''
+        lo, hi = boot_ci(groups)
+        strata.append((name, rho, m, N, fam, bench, excl, lo, hi))
+
+    def family_excl(items, strata):
+        ex = {s[0]: s[6] for s in strata}
+        keep = [(n, ex[n], m, N) for n, _, m, N in items if ex.get(n, '') != '']
+        if len(keep) < 2:
+            return round(keep[0][1], 4) if keep else ''
+        return round(dersimonian_laird(keep)[0], 4)
 
     rows = []
-    for name, rho, m, N, fam, bench in strata:
+    for name, rho, m, N, fam, bench, excl, lo, hi in strata:
         rows.append({
             'row_type': 'stratum', 'name': name, 'family': fam, 'benchmark': bench,
-            'rho': round(rho, 4), 'ci_lo': '', 'ci_hi': '',
+            'rho': round(rho, 4), 'ci_lo': lo, 'ci_hi': hi, 'rho_excl_constant': excl,
             'cells': m, 'trials': N, 'I2': '', 'tau': '',
             'deff_J20': round(1 + (J - 1) * rho, 3),
             'n_eff_J20': round(J / (1 + (J - 1) * rho), 3),
@@ -275,7 +319,7 @@ def build_summary(runs, strata_defs, delta=0.05, J=20):
 
     for fam, label in (('perf', 'completion_family'), ('att', 'attempt_family'),
                        ('safety', 'safety_family')):
-        items = [(n, v, m, N) for n, v, m, N, f, _ in strata if f == fam]
+        items = [(n, v, m, N) for n, v, m, N, f, _, _, _, _ in strata if f == fam]
         if not items:
             continue                 # family absent in this release; no empty row is written
         rho, lo, hi, Q, I2, tau = dersimonian_laird(items)
@@ -284,6 +328,7 @@ def build_summary(runs, strata_defs, delta=0.05, J=20):
         rows.append({
             'row_type': 'family', 'name': label, 'family': fam, 'benchmark': '',
             'rho': round(rho, 4), 'ci_lo': round(lo, 4), 'ci_hi': round(hi, 4),
+            'rho_excl_constant': family_excl(items, strata),
             'cells': sum(m for _, _, m, _ in items),
             'trials': sum(N for _, _, _, N in items),
             'I2': round(I2, 4), 'tau': round(tau, 4),
@@ -339,13 +384,25 @@ by anyone. This release was frozen as release `{release}` (release hash
 the stratum it belongs to, its attempt count, its success count and the design
 consequences of that stratum's correlation. `release_summary.csv` — stratum estimates,
 family merges, and the same estimates expressed as design effect and effective sample
-size at J = {J} attempts per cell.
+size at J = {J} attempts per cell. `by_key.csv` — the same cells split on
+`grading_method`, `source_tag`, `effort` and `mode`, for readers who want the
+comparability-clean subset. `frontier.csv` — cells with zero successes and at least
+30 attempts, the capability boundary. `probe.json` — five provenance checks on
+`attempts.csv`, each labelled computed, partial or not implemented.
+
+Two columns answer questions the earlier releases left open. `cells.csv::mixed_fields`
+names the comparability fields that vary inside the cell (`grading_method`, `source_tag`,
+`effort`, `mode`), so a reader can tell a clean cell from a pooled one.
+`release_summary.csv::rho_excl_constant` repeats each estimate with constant-outcome
+cells dropped; `ci_lo`/`ci_hi` are percentile intervals from resampling cells within the
+stratum, not attempts.
 
 ## Fields
 
 | Field | Meaning |
 |---|---|
-| benchmark / task / scene | evaluation unit and condition |
+| benchmark / task / scene | evaluation unit and condition; the cell key is model+task+scene |
+| key_fields | `cells.csv` column stating what the cell key contains |
 | model / model_display | internal identifier and public name |
 | effort / mode / control | configuration, needed for comparability |
 | trial | index within the cell |
@@ -364,7 +421,7 @@ size at J = {J} attempts per cell.
 ## Notes for consumers
 
 - `cells.csv` lists a model-task cell **once per stratum**. RoboHarm contributes the
-  same 30 cells to three strata — unsafe execution, safe refusal and attempt — so
+  same model-task-scene cells to three strata — unsafe execution, safe refusal and attempt — so
   aggregating over the whole file without filtering on `stratum` triple-counts it.
 - RoboHarm `attempted_succeeded` means the harmful instruction was executed, not that
   the task was completed. It is reported as **unsafe execution** and never merged with

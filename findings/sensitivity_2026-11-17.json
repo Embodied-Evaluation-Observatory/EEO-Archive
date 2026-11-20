@@ -1,0 +1,187 @@
+{
+ "release": "2026-11-17",
+ "bootstrap": {
+  "unit": "cell within stratum",
+  "reps": 2000,
+  "interval": "percentile 2.5-97.5"
+ },
+ "strata": {
+  "RoboDojo-RC task success": {
+   "family": "perf",
+   "rho": 0.5013,
+   "cells": 96,
+   "attempts": 2151,
+   "ci": [
+    0.3417,
+    0.6258
+   ],
+   "zero_variance_cells": 64,
+   "rho_excluding_zero_variance": 0.3372,
+   "ci_excluding_zero_variance": [
+    0.1924,
+    0.4532
+   ]
+  },
+  "Simple-tasks task success": {
+   "family": "perf",
+   "rho": 0.5308,
+   "cells": 7,
+   "attempts": 220,
+   "ci": [
+    0.1785,
+    0.816
+   ],
+   "zero_variance_cells": 1,
+   "rho_excluding_zero_variance": 0.5164,
+   "ci_excluding_zero_variance": [
+    0.1602,
+    0.7773
+   ]
+  },
+  "RoboHarm unsafe execution": {
+   "family": "safety",
+   "rho": 0.4475,
+   "cells": 30,
+   "attempts": 698,
+   "ci": [
+    0.2921,
+    0.5831
+   ],
+   "zero_variance_cells": 5,
+   "rho_excluding_zero_variance": 0.3384,
+   "ci_excluding_zero_variance": [
+    0.1806,
+    0.4755
+   ]
+  },
+  "RoboHarm safe refusal": {
+   "family": "safety",
+   "rho": 0.7521,
+   "cells": 30,
+   "attempts": 698,
+   "ci": [
+    0.517,
+    0.9132
+   ],
+   "zero_variance_cells": 23,
+   "rho_excluding_zero_variance": 0.2466,
+   "ci_excluding_zero_variance": [
+    0.0084,
+    0.4616
+   ]
+  },
+  "RoboSpoof attempt (unaltered)": {
+   "family": "att",
+   "rho": 0.4838,
+   "cells": 25,
+   "attempts": 300,
+   "ci": [
+    0.2496,
+    0.6711
+   ],
+   "zero_variance_cells": 13,
+   "rho_excluding_zero_variance": 0.1482,
+   "ci_excluding_zero_variance": [
+    0.0,
+    0.2733
+   ]
+  },
+  "RoboSpoof attempt (blurred)": {
+   "family": "att",
+   "rho": 0.6538,
+   "cells": 25,
+   "attempts": 300,
+   "ci": [
+    0.0261,
+    0.8523
+   ],
+   "zero_variance_cells": 18,
+   "rho_excluding_zero_variance": 0.3833,
+   "ci_excluding_zero_variance": [
+    0.0,
+    0.461
+   ]
+  },
+  "RoboSpoof attempt (doctored)": {
+   "family": "att",
+   "rho": 0.7273,
+   "cells": 25,
+   "attempts": 300,
+   "ci": [
+    0.0,
+    0.7273
+   ],
+   "zero_variance_cells": 24,
+   "rho_excluding_zero_variance": null,
+   "ci_excluding_zero_variance": null
+  },
+  "RoboHarm attempt": {
+   "family": "att",
+   "rho": 0.7521,
+   "cells": 30,
+   "attempts": 698,
+   "ci": [
+    0.5244,
+    0.9141
+   ],
+   "zero_variance_cells": 23,
+   "rho_excluding_zero_variance": 0.2466,
+   "ci_excluding_zero_variance": [
+    0.0104,
+    0.461
+   ]
+  }
+ },
+ "families": {
+  "perf": {
+   "family_rho": 0.5025,
+   "ci": [
+    0.3396,
+    0.6362
+   ],
+   "I2": 0.0,
+   "tau": 0.0,
+   "strata": 2,
+   "family_rho_excluding_zero_variance": 0.3452,
+   "strata_kept_after_exclusion": 2
+  },
+  "safety": {
+   "family_rho": 0.6229,
+   "ci": [
+    0.2387,
+    0.8385
+   ],
+   "I2": 0.6992,
+   "tau": 0.0861,
+   "strata": 2,
+   "family_rho_excluding_zero_variance": 0.2932,
+   "strata_kept_after_exclusion": 2
+  },
+  "att": {
+   "family_rho": 0.6707,
+   "ci": [
+    0.5433,
+    0.7679
+   ],
+   "I2": 0.0,
+   "tau": 0.0,
+   "strata": 4,
+   "family_rho_excluding_zero_variance": 0.261,
+   "strata_kept_after_exclusion": 3
+  }
+ },
+ "frontier": {
+  "cells_at_zero_percent": 104,
+  "cells_between": 97,
+  "cells_at_hundred_percent": 67,
+  "zero_by_benchmark": {
+   "robodojo-rc-tier-1": 63,
+   "simple-tasks": 1,
+   "roboharm-v1": 27,
+   "robospoof": 13
+  },
+  "zero_with_30_plus_attempts": 9,
+  "reading": "A 0% cell is a capability boundary, not noise: every recorded attempt failed. Such a cell says nothing about correlation, so it is dropped in the sensitivity column and kept in the published one. Whether that boundary is the policy or the harness is a question this release cannot answer."
+ },
+ "note": "Sensitivity only. release_summary.csv is unchanged. These numbers say what the estimates would be under a different inclusion rule, not what they are."
+}

@@ -22,10 +22,13 @@ import argparse
 import collections
 import csv
 import hashlib
+import importlib.util
 import json
 import math
 import os
+import random
 import sys
+import zlib
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -51,6 +54,26 @@ def icc(groups):
     n0 = (N - sum(len(x) ** 2 for x in g) / N) / (m - 1)
     den = msb + (n0 - 1) * msw
     return (max(0.0, (msb - msw) / den) if den > 0 else 0.0), m, N
+
+
+MIX_FIELDS = ('grading_method', 'source_tag', 'effort', 'mode')
+
+
+def mixed_fields(cell_rows):
+    return ';'.join(f for f in MIX_FIELDS if len({(r.get(f) or '') for r in cell_rows}) > 1)
+
+
+def boot_ci(groups, reps=500):
+    keys = sorted(groups)
+    if len(keys) < 2:
+        return '', ''
+    rng = random.Random(zlib.crc32(('|'.join(str(k) for k in keys)).encode('utf-8')) % 100000)
+    vals = []
+    for _ in range(reps):
+        pick = [keys[rng.randrange(len(keys))] for _ in keys]
+        vals.append(icc([groups[k] for k in pick])[0])
+    vals.sort()
+    return round(vals[int(0.025 * reps)], 4), round(vals[int(0.975 * reps) - 1], 4)
 
 
 def dersimonian_laird(items):
@@ -139,23 +162,38 @@ def main():
         strata.append(('RoboSpoof attempt (%s)' % scene, 'robospoof', 'att', scene, 'att'))
     strata.append(('RoboHarm attempt', 'roboharm-v1', 'att', None, 'att'))
 
+    cells_meta = []
+    _cp = os.path.join(pub, 'cells.csv')
+    if os.path.isfile(_cp):
+        cells_meta = list(csv.DictReader(open(_cp, encoding='utf-8')))
+    scene_in_key = any('scene' in (c.get('key_fields') or '') for c in cells_meta)
+    if scene_in_key:
+        print('cells: key includes scene; rho groups by model+task+scene')
+
     got, dropped = {}, {}
     for name, bench, rule, scene, fam in strata:
         sub = [r for r in rows if r['benchmark'] == bench
                and (scene is None or r['scene'] == scene)]
         groups = collections.defaultdict(list)
+        cell_rows = collections.defaultdict(list)
         d = 0
         for r in sub:
             v = value(r, rule)
             if v is None:
                 d += 1
                 continue
-            groups[(r['model'], r['task'])].append(v)
+            k = (r['model'], r['task'], r['scene']) if scene_in_key else (r['model'], r['task'])
+            groups[k].append(v)
+            cell_rows[k].append(r)
         dropped[name] = d
         if len(groups) < 2:
             continue                     # stratum empty in this release; nothing to check
         rho, m, N = icc(list(groups.values()))
-        got[name] = (rho, m, N, fam)
+        constant = {k for k, v in groups.items() if sum(v) in (0, len(v))}
+        keep = {k: v for k, v in groups.items() if k not in constant}
+        excl = round(icc([v for v in keep.values()])[0], 4) if len(keep) >= 2 else ''
+        lo, hi = boot_ci(groups)
+        got[name] = (rho, m, N, fam, excl, lo, hi)
     thin = [k for k, v in got.items() if v[2] < 30]
     if thin:
         print('WARNING: strata with under 30 attempts per cell: %s' % ', '.join(sorted(thin)))
@@ -170,11 +208,16 @@ def main():
             continue
         merged[fam] = dersimonian_laird(items)
 
-    ref = {r['name']: r for r in csv.DictReader(open(os.path.join(pub, 'release_summary.csv'),
-                                                   encoding='utf-8'))}
+    with open(os.path.join(pub, 'release_summary.csv'), encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        new_schema = 'rho_excl_constant' in (reader.fieldnames or [])
+        ref = {r['name']: r for r in reader}
+    if not new_schema:
+        print('schema: release predates 2026-11-18, comparability and sensitivity columns '
+              'are not checked')
     fails = []
 
-    def check_cols(label, r, rho, m, N):
+    def check_cols(label, r, rho, m, N, excl='', lo='', hi=''):
         if abs(float(r['rho']) - rho) > TOL:
             fails.append('%s rho %.6f vs published %s' % (label, rho, r['rho']))
         deff = 1 + (args.J - 1) * rho
@@ -190,12 +233,25 @@ def main():
         for key, want in (('cells', m), ('trials', N)):
             if key not in r or int(float(r[key])) != want:
                 fails.append('%s %s %s vs published %s' % (label, key, want, r[key]))
+        if new_schema and excl != '':
+            if r.get('rho_excl_constant') in ('', None):
+                fails.append('%s missing column rho_excl_constant' % label)
+            elif abs(float(r['rho_excl_constant']) - excl) > TOL:
+                fails.append('%s rho_excl_constant %.6f vs published %s'
+                             % (label, excl, r['rho_excl_constant']))
+        for key, want in (('ci_lo', lo), ('ci_hi', hi)):
+            if want == '' or not new_schema:
+                continue
+            if r.get(key) in ('', None):
+                fails.append('%s missing column %s' % (label, key))
+            elif abs(float(r[key]) - want) > TOL:
+                fails.append('%s %s %.6f vs published %s' % (label, key, want, r[key]))
 
-    for name, (rho, m, N, fam) in got.items():
+    for name, (rho, m, N, fam, excl, lo, hi) in got.items():
         if name not in ref:
             fails.append('%s missing from release_summary.csv' % name)
             continue
-        check_cols(name, ref[name], rho, m, N)
+        check_cols(name, ref[name], rho, m, N, excl, lo, hi)
         print('  %-34s rho=%.4f cells=%3d trials=%4d  ok' % (name, rho, m, N))
 
     for fam, label in (('perf', 'completion_family'), ('att', 'attempt_family'),
@@ -209,7 +265,112 @@ def main():
         for key, val in (('ci_lo', lo), ('ci_hi', hi)):
             if abs(float(r[key]) - val) > TOL:
                 fails.append('%s %s %.6f vs published %s' % (label, key, val, r[key]))
+        ex = {n: v[4] for n, v in got.items()}
+        keep = [(n, ex[n], v[1], v[2]) for n, v in got.items()
+                if v[3] == fam and ex[n] != '']
+        if new_schema and len(keep) >= 2:
+            want_ex = dersimonian_laird(keep)[0]
+            if r.get('rho_excl_constant') in ('', None):
+                fails.append('%s missing column rho_excl_constant' % label)
+            elif abs(float(r['rho_excl_constant']) - want_ex) > TOL:
+                fails.append('%s rho_excl_constant %.6f vs published %s'
+                             % (label, want_ex, r['rho_excl_constant']))
         print('  %-34s rho=%.4f CI=[%.4f, %.4f]  ok' % (label, rho, lo, hi))
+
+    cells_path = os.path.join(pub, 'cells.csv')
+    if os.path.isfile(cells_path):
+        pub_cells = list(csv.DictReader(open(cells_path, encoding='utf-8')))
+        by_cell = collections.defaultdict(list)
+        for r in rows:
+            by_cell[(r['benchmark'], r['model'], r['task'], r['scene'])].append(r)
+        bad_mixed = 0
+        for c in pub_cells:
+            want = mixed_fields(by_cell[(c['benchmark'], c['model'], c['task'], c['scene'])])
+            if c.get('mixed_fields', '') != want:
+                bad_mixed += 1
+        if not new_schema:
+            pass
+        elif bad_mixed:
+            fails.append('%d cells carry a mixed_fields value that attempts.csv does not support'
+                         % bad_mixed)
+        else:
+            print('cells: %d rows, mixed_fields recomputes' % len(pub_cells))
+
+    bk_path = os.path.join(pub, 'by_key.csv')
+    if os.path.isfile(bk_path):
+        spec2 = importlib.util.spec_from_file_location(
+            'layers', os.path.join(HERE, 'layers.py'))
+        lay = importlib.util.module_from_spec(spec2)
+        spec2.loader.exec_module(lay)
+        want_bk = lay.build_by_key(rows)
+        got_bk = list(csv.DictReader(open(bk_path, encoding='utf-8')))
+        key_cols = list(lay.KEY_FIELDS)
+        def sig(r):
+            return (r['stratum'],) + tuple(r[c] for c in key_cols)
+        want_map = {sig(r): r for r in want_bk}
+        bad = 0
+        if len(got_bk) != len(want_bk):
+            fails.append('by_key.csv has %d rows, attempts.csv implies %d'
+                         % (len(got_bk), len(want_bk)))
+        for r in got_bk:
+            w = want_map.pop(sig(r), None)
+            if w is None:
+                bad += 1
+                continue
+            for k in ('n_attempts', 'n_success'):
+                if int(float(r[k])) != int(w[k]):
+                    bad += 1
+            for k in ('p_hat', 'stratum_rho_by_key'):
+                if abs(float(r[k]) - float(w[k])) > TOL:
+                    bad += 1
+        if want_map:
+            bad += len(want_map)
+        if bad:
+            fails.append('by_key.csv: %d rows disagree with attempts.csv' % bad)
+        else:
+            print('by_key: %d rows recompute (full 8-field key)' % len(got_bk))
+
+    fr_path = os.path.join(pub, 'frontier.csv')
+    if os.path.isfile(fr_path):
+        want_fr = lay.build_frontier(rows)
+        got_fr = list(csv.DictReader(open(fr_path, encoding='utf-8')))
+        wset = {(r['stratum'], r['model'], r['task'], r['scene'], int(r['n_attempts']))
+                for r in want_fr}
+        gset = {(r['stratum'], r['model'], r['task'], r['scene'], int(float(r['n_attempts']))
+                if r['n_attempts'] else 0) for r in got_fr}
+        if wset != gset:
+            fails.append('frontier.csv: %d rows vs %d recomputed, diff %d'
+                         % (len(gset), len(wset), len(wset ^ gset)))
+        else:
+            print('frontier: %d zero-success cells with >=30 attempts recompute' % len(gset))
+
+    pr_path = os.path.join(pub, 'probe.json')
+    if os.path.isfile(pr_path):
+        want_pr = lay.probe(rows)
+        got_pr = json.load(open(pr_path, encoding='utf-8'))
+        checks = got_pr.get('checks', {})
+        diffs = []
+        d = want_pr['checks']['duplicate_records']
+        g = checks.get('duplicate_records', {})
+        if int(g.get('duplicates', -1)) != int(d['duplicates']):
+            diffs.append('duplicates %s vs %s' % (d['duplicates'], g.get('duplicates')))
+        i = want_pr['checks']['identical_outcome_vectors']
+        g = checks.get('identical_outcome_vectors', {})
+        if int(g.get('pairs', -1)) != int(i['pairs']):
+            diffs.append('identical pairs %s vs %s' % (i['pairs'], g.get('pairs')))
+        c = want_pr['checks']['score_outcome_conflict']
+        g = checks.get('score_outcome_conflict', {})
+        if int(g.get('conflicts', -1)) != int(c['conflicts']):
+            diffs.append('conflicts %s vs %s' % (c['conflicts'], g.get('conflicts')))
+        t = want_pr['checks']['temporal_clustering']
+        g = checks.get('temporal_clustering', {})
+        if int(g.get('max_per_minute', -1)) != int(t['max_per_minute']):
+            diffs.append('max_per_minute %s vs %s' % (t['max_per_minute'],
+                                                    g.get('max_per_minute')))
+        if diffs:
+            fails.append('probe.json: %s' % ', '.join(diffs))
+        else:
+            print('probe: duplicate/identical/conflict/timing counts recompute')
 
     if fails:
         print('\nFAIL')

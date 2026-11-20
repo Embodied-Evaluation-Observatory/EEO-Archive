@@ -1,0 +1,176 @@
+{
+ "release": "2026-11-19",
+ "key": "model;task;scene",
+ "strata": [
+  {
+   "stratum": "RoboDojo-RC task success",
+   "cells": 96,
+   "keys": 113,
+   "cells_split": 17,
+   "share_split": 0.1771,
+   "rho_by_key": 0.538,
+   "rho_canonical": 0.5013
+  },
+  {
+   "stratum": "RoboHarm attempt",
+   "cells": 32,
+   "keys": 36,
+   "cells_split": 4,
+   "share_split": 0.125,
+   "rho_by_key": 0.815,
+   "rho_canonical": 0.8167
+  },
+  {
+   "stratum": "RoboHarm safe refusal",
+   "cells": 32,
+   "keys": 36,
+   "cells_split": 4,
+   "share_split": 0.125,
+   "rho_by_key": 0.815,
+   "rho_canonical": 0.8167
+  },
+  {
+   "stratum": "RoboHarm unsafe execution",
+   "cells": 32,
+   "keys": 36,
+   "cells_split": 4,
+   "share_split": 0.125,
+   "rho_by_key": 0.4918,
+   "rho_canonical": 0.4841
+  },
+  {
+   "stratum": "RoboSpoof attempt (blurred)",
+   "cells": 25,
+   "keys": 25,
+   "cells_split": 0,
+   "share_split": 0.0,
+   "rho_by_key": 0.6538,
+   "rho_canonical": 0.6538
+  },
+  {
+   "stratum": "RoboSpoof attempt (doctored)",
+   "cells": 25,
+   "keys": 25,
+   "cells_split": 0,
+   "share_split": 0.0,
+   "rho_by_key": 0.7273,
+   "rho_canonical": 0.7273
+  },
+  {
+   "stratum": "RoboSpoof attempt (unaltered)",
+   "cells": 25,
+   "keys": 26,
+   "cells_split": 1,
+   "share_split": 0.04,
+   "rho_by_key": 0.4842,
+   "rho_canonical": 0.4838
+  },
+  {
+   "stratum": "Simple-tasks task success",
+   "cells": 7,
+   "keys": 11,
+   "cells_split": 2,
+   "share_split": 0.2857,
+   "rho_by_key": 0.5392,
+   "rho_canonical": 0.5308
+  }
+ ],
+ "fields": {
+  "grading_method": {
+   "Autograded": 2108,
+   "Claude Fable 5.1 refusal judge": 899,
+   "Astra autograde": 695,
+   "Report score": 471,
+   "Autograded (re-graded, old rubric)": 25,
+   "Human label": 20
+  },
+  "source_tag": {
+   "robospoof-2026-10-27": 900,
+   "roboharm-latest-2026-10-01": 600,
+   "leaderboard-2026-09-29": 480,
+   "gpt-6-sol-report": 331,
+   "datacenterbench-2026-10-22": 270,
+   "vla-baselines-2026-10-16": 240
+  },
+  "effort": {
+   "high": 2330,
+   "medium": 1069,
+   "vla": 360,
+   "max": 330,
+   "budget-8k": 40,
+   "none": 40
+  },
+  "mode": {
+   "standard": 1451,
+   "fast": 1190,
+   "not-recorded": 698,
+   "ultrafast": 420,
+   "self-hosted": 240,
+   "priority": 120
+  }
+ },
+ "frontier": {
+  "cells": 9
+ },
+ "probe": {
+  "duplicate_records": {
+   "status": "computed",
+   "duplicates": 0,
+   "rate": 0.0
+  },
+  "identical_outcome_vectors": {
+   "status": "partial",
+   "pairs": 627,
+   "note": "identical sequences across models in one task suggest shared records; they also occur naturally in deterministic sandboxes, so this is a flag, not a verdict"
+  },
+  "temporal_clustering": {
+   "status": "partial",
+   "max_per_minute": 9,
+   "max_per_benchmark": {
+    "robodojo-rc-tier-1": 6,
+    "roboharm-v1": 5,
+    "simple-tasks": 3,
+    "datacenterbench": 5,
+    "robospoof": 9
+   },
+   "note": "no test against a submission schedule is available"
+  },
+  "share_concentration": {
+   "status": "computed",
+   "by_benchmark": {
+    "robodojo-rc-tier-1": {
+     "trials": 2151,
+     "top_model_share": 0.1116
+    },
+    "datacenterbench": {
+     "trials": 270,
+     "top_model_share": 0.1111
+    },
+    "simple-tasks": {
+     "trials": 220,
+     "top_model_share": 0.4545
+    },
+    "roboharm-v1": {
+     "trials": 698,
+     "top_model_share": 0.2006
+    },
+    "robospoof": {
+     "trials": 900,
+     "top_model_share": 0.2
+    }
+   }
+  },
+  "score_outcome_conflict": {
+   "status": "computed",
+   "conflicts": 0
+  },
+  "reset_cost": {
+   "status": "not_implemented",
+   "note": "attempts.csv carries no reset timing or reset count"
+  },
+  "contamination_probe": {
+   "status": "not_implemented",
+   "note": "no held-out probe task exists in this archive, so contamination cannot be measured here"
+  }
+ }
+}

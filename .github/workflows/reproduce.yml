@@ -1,0 +1,38 @@
+name: Reproduce a release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Release id, e.g. 2026-11-17
+        required: true
+        default: 2026-11-17
+  push:
+    paths:
+      - 'public/**'
+      - 'tools/verify_public.py'
+      - 'tools/reproduce.py'
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify published tables
+        run: |
+          REL="${{ inputs.release }}"
+          if [ -z "$REL" ]; then REL=2026-11-17; fi
+          SNAP="releases/$REL/robocurve_allruns.json"
+          if [ -f "$SNAP" ]; then
+            python3 tools/reproduce.py --release "$REL" --input "$SNAP" --out "receipts/$REL.json"
+          else
+            python3 tools/reproduce.py --release "$REL" --out "receipts/$REL.json"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reproduction-receipt
+          path: receipts/*.json
+          if-no-files-found: error

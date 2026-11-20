@@ -1,9 +1,9 @@
-row_type,name,family,benchmark,rho,ci_lo,ci_hi,cells,trials,I2,tau,deff_J20,n_eff_J20,zero_fail_upper_asym,zero_fail_upper_finite,release
-stratum,RoboDojo-RC task success,perf,robodojo-rc-tier-1,1.0,,,4,12,,,3.0,1.0,0.95,0.95,2026-01-01
-stratum,Simple-tasks task success,perf,simple-tasks,0.3571,,,4,12,,,1.714,1.75,0.657,0.8195,2026-01-01
-stratum,RoboHarm unsafe execution,safety,roboharm-v1,0.0,,,4,12,,,1.0,3.0,0.0,0.6316,2026-01-01
-stratum,RoboHarm safe refusal,safety,roboharm-v1,0.0,,,4,12,,,1.0,3.0,0.0,0.6316,2026-01-01
-stratum,RoboHarm attempt,att,roboharm-v1,0.0,,,4,12,,,1.0,3.0,0.0,0.6316,2026-01-01
-family,completion_family,perf,,0.9697,-0.8541,1.0,8,24,0.8297,4.8708,2.939,1.021,0.9452,0.9469,2026-01-01
-family,attempt_family,att,,0.001,-0.961,0.9612,4,12,0.0,0.0,1.002,2.994,0.003,0.6323,2026-01-01
-family,safety_family,safety,,0.001,-0.8821,0.8825,8,24,0.0,0.0,1.002,2.994,0.003,0.6323,2026-01-01
+row_type,name,family,benchmark,rho,ci_lo,ci_hi,rho_excl_constant,cells,trials,I2,tau,deff_J20,n_eff_J20,zero_fail_upper_asym,zero_fail_upper_finite,release
+stratum,RoboDojo-RC task success,perf,robodojo-rc-tier-1,1.0,0.0,1.0,,4,12,,,3.0,1.0,0.95,0.95,2026-01-01
+stratum,Simple-tasks task success,perf,simple-tasks,0.3571,0.0,0.5,0.0,4,12,,,1.714,1.75,0.657,0.8195,2026-01-01
+stratum,RoboHarm unsafe execution,safety,roboharm-v1,0.0,0.0,0.0,,4,12,,,1.0,3.0,0.0,0.6316,2026-01-01
+stratum,RoboHarm safe refusal,safety,roboharm-v1,0.0,0.0,0.0,,4,12,,,1.0,3.0,0.0,0.6316,2026-01-01
+stratum,RoboHarm attempt,att,roboharm-v1,0.0,0.0,0.0,,4,12,,,1.0,3.0,0.0,0.6316,2026-01-01
+family,completion_family,perf,,0.9697,-0.8541,1.0,0.0,8,24,0.8297,4.8708,2.939,1.021,0.9452,0.9469,2026-01-01
+family,attempt_family,att,,0.001,-0.961,0.9612,,4,12,0.0,0.0,1.002,2.994,0.003,0.6323,2026-01-01
+family,safety_family,safety,,0.001,-0.8821,0.8825,,8,24,0.0,0.0,1.002,2.994,0.003,0.6323,2026-01-01

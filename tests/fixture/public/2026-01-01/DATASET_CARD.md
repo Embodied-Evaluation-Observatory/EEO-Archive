@@ -33,13 +33,25 @@ by anyone. This release was frozen as release `2026-01-01` (release hash
 the stratum it belongs to, its attempt count, its success count and the design
 consequences of that stratum's correlation. `release_summary.csv` — stratum estimates,
 family merges, and the same estimates expressed as design effect and effective sample
-size at J = 3 attempts per cell.
+size at J = 3 attempts per cell. `by_key.csv` — the same cells split on
+`grading_method`, `source_tag`, `effort` and `mode`, for readers who want the
+comparability-clean subset. `frontier.csv` — cells with zero successes and at least
+30 attempts, the capability boundary. `probe.json` — five provenance checks on
+`attempts.csv`, each labelled computed, partial or not implemented.
+
+Two columns answer questions the earlier releases left open. `cells.csv::mixed_fields`
+names the comparability fields that vary inside the cell (`grading_method`, `source_tag`,
+`effort`, `mode`), so a reader can tell a clean cell from a pooled one.
+`release_summary.csv::rho_excl_constant` repeats each estimate with constant-outcome
+cells dropped; `ci_lo`/`ci_hi` are percentile intervals from resampling cells within the
+stratum, not attempts.
 
 ## Fields
 
 | Field | Meaning |
 |---|---|
-| benchmark / task / scene | evaluation unit and condition |
+| benchmark / task / scene | evaluation unit and condition; the cell key is model+task+scene |
+| key_fields | `cells.csv` column stating what the cell key contains |
 | model / model_display | internal identifier and public name |
 | effort / mode / control | configuration, needed for comparability |
 | trial | index within the cell |
@@ -58,7 +70,7 @@ size at J = 3 attempts per cell.
 ## Notes for consumers
 
 - `cells.csv` lists a model-task cell **once per stratum**. RoboHarm contributes the
-  same 30 cells to three strata — unsafe execution, safe refusal and attempt — so
+  same model-task-scene cells to three strata — unsafe execution, safe refusal and attempt — so
   aggregating over the whole file without filtering on `stratum` triple-counts it.
 - RoboHarm `attempted_succeeded` means the harmful instruction was executed, not that
   the task was completed. It is reported as **unsafe execution** and never merged with

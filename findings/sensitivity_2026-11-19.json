@@ -1,0 +1,219 @@
+{
+ "release": "2026-11-19",
+ "bootstrap": {
+  "unit": "cell within stratum",
+  "reps": 2000,
+  "interval": "percentile 2.5-97.5"
+ },
+ "strata": {
+  "RoboDojo-RC task success": {
+   "family": "perf",
+   "rho": 0.5013,
+   "cells": 96,
+   "attempts": 2151,
+   "ci": [
+    0.3418,
+    0.63
+   ],
+   "zero_variance_cells": 64,
+   "rho_excluding_zero_variance": 0.3372,
+   "ci_excluding_zero_variance": [
+    0.1876,
+    0.4435
+   ],
+   "deff_cluster_J20": 10.023,
+   "deff_naive": 1.0,
+   "ci_width_ratio_cluster_vs_naive": 3.166,
+   "note": "rho is the one-way ANOVA ICC(1); \"naive\" ignores clustering entirely, \"cluster\" uses 1+(J-1)*rho at J=20"
+  },
+  "Simple-tasks task success": {
+   "family": "perf",
+   "rho": 0.5308,
+   "cells": 7,
+   "attempts": 220,
+   "ci": [
+    0.1598,
+    0.819
+   ],
+   "zero_variance_cells": 1,
+   "rho_excluding_zero_variance": 0.5164,
+   "ci_excluding_zero_variance": [
+    0.1298,
+    0.7829
+   ],
+   "deff_cluster_J20": 10.555,
+   "deff_naive": 1.0,
+   "ci_width_ratio_cluster_vs_naive": 3.249,
+   "note": "rho is the one-way ANOVA ICC(1); \"naive\" ignores clustering entirely, \"cluster\" uses 1+(J-1)*rho at J=20"
+  },
+  "RoboHarm unsafe execution": {
+   "family": "safety",
+   "rho": 0.4841,
+   "cells": 32,
+   "attempts": 698,
+   "ci": [
+    0.3358,
+    0.6025
+   ],
+   "zero_variance_cells": 6,
+   "rho_excluding_zero_variance": 0.358,
+   "ci_excluding_zero_variance": [
+    0.1905,
+    0.4862
+   ],
+   "deff_cluster_J20": 9.714,
+   "deff_naive": 1.0,
+   "ci_width_ratio_cluster_vs_naive": 3.117,
+   "note": "rho is the one-way ANOVA ICC(1); \"naive\" ignores clustering entirely, \"cluster\" uses 1+(J-1)*rho at J=20"
+  },
+  "RoboHarm safe refusal": {
+   "family": "safety",
+   "rho": 0.8167,
+   "cells": 32,
+   "attempts": 698,
+   "ci": [
+    0.6377,
+    0.9172
+   ],
+   "zero_variance_cells": 24,
+   "rho_excluding_zero_variance": 0.4249,
+   "ci_excluding_zero_variance": [
+    0.1188,
+    0.6082
+   ],
+   "deff_cluster_J20": 15.701,
+   "deff_naive": 1.0,
+   "ci_width_ratio_cluster_vs_naive": 3.962,
+   "note": "rho is the one-way ANOVA ICC(1); \"naive\" ignores clustering entirely, \"cluster\" uses 1+(J-1)*rho at J=20"
+  },
+  "RoboSpoof attempt (unaltered)": {
+   "family": "att",
+   "rho": 0.4838,
+   "cells": 25,
+   "attempts": 300,
+   "ci": [
+    0.2415,
+    0.6697
+   ],
+   "zero_variance_cells": 13,
+   "rho_excluding_zero_variance": 0.1482,
+   "ci_excluding_zero_variance": [
+    0.0,
+    0.2774
+   ],
+   "deff_cluster_J20": 9.708,
+   "deff_naive": 1.0,
+   "ci_width_ratio_cluster_vs_naive": 3.116,
+   "note": "rho is the one-way ANOVA ICC(1); \"naive\" ignores clustering entirely, \"cluster\" uses 1+(J-1)*rho at J=20"
+  },
+  "RoboSpoof attempt (blurred)": {
+   "family": "att",
+   "rho": 0.6538,
+   "cells": 25,
+   "attempts": 300,
+   "ci": [
+    0.0463,
+    0.8451
+   ],
+   "zero_variance_cells": 18,
+   "rho_excluding_zero_variance": 0.3833,
+   "ci_excluding_zero_variance": [
+    0.0,
+    0.461
+   ],
+   "deff_cluster_J20": 12.768,
+   "deff_naive": 1.0,
+   "ci_width_ratio_cluster_vs_naive": 3.573,
+   "note": "rho is the one-way ANOVA ICC(1); \"naive\" ignores clustering entirely, \"cluster\" uses 1+(J-1)*rho at J=20"
+  },
+  "RoboSpoof attempt (doctored)": {
+   "family": "att",
+   "rho": 0.7273,
+   "cells": 25,
+   "attempts": 300,
+   "ci": [
+    0.0,
+    0.7273
+   ],
+   "zero_variance_cells": 24,
+   "rho_excluding_zero_variance": null,
+   "ci_excluding_zero_variance": null,
+   "deff_cluster_J20": 14.091,
+   "deff_naive": 1.0,
+   "ci_width_ratio_cluster_vs_naive": 3.754,
+   "note": "rho is the one-way ANOVA ICC(1); \"naive\" ignores clustering entirely, \"cluster\" uses 1+(J-1)*rho at J=20"
+  },
+  "RoboHarm attempt": {
+   "family": "att",
+   "rho": 0.8167,
+   "cells": 32,
+   "attempts": 698,
+   "ci": [
+    0.6354,
+    0.9189
+   ],
+   "zero_variance_cells": 24,
+   "rho_excluding_zero_variance": 0.4249,
+   "ci_excluding_zero_variance": [
+    0.1171,
+    0.6048
+   ],
+   "deff_cluster_J20": 15.701,
+   "deff_naive": 1.0,
+   "ci_width_ratio_cluster_vs_naive": 3.962,
+   "note": "rho is the one-way ANOVA ICC(1); \"naive\" ignores clustering entirely, \"cluster\" uses 1+(J-1)*rho at J=20"
+  }
+ },
+ "families": {
+  "perf": {
+   "family_rho": 0.5025,
+   "ci": [
+    0.3396,
+    0.6362
+   ],
+   "I2": 0.0,
+   "tau": 0.0,
+   "strata": 2,
+   "family_rho_excluding_zero_variance": 0.3452,
+   "strata_kept_after_exclusion": 2
+  },
+  "safety": {
+   "family_rho": 0.6845,
+   "ci": [
+    0.2274,
+    0.8944
+   ],
+   "I2": 0.8197,
+   "tau": 0.1568,
+   "strata": 2,
+   "family_rho_excluding_zero_variance": 0.392,
+   "strata_kept_after_exclusion": 2
+  },
+  "att": {
+   "family_rho": 0.695,
+   "ci": [
+    0.5345,
+    0.8071
+   ],
+   "I2": 0.4034,
+   "tau": 0.0286,
+   "strata": 4,
+   "family_rho_excluding_zero_variance": 0.3337,
+   "strata_kept_after_exclusion": 3
+  }
+ },
+ "frontier": {
+  "cells_at_zero_percent": 106,
+  "cells_between": 100,
+  "cells_at_hundred_percent": 68,
+  "zero_by_benchmark": {
+   "robodojo-rc-tier-1": 63,
+   "simple-tasks": 1,
+   "roboharm-v1": 29,
+   "robospoof": 13
+  },
+  "zero_with_30_plus_attempts": 9,
+  "reading": "A 0% cell is a capability boundary, not noise: every recorded attempt failed. Such a cell says nothing about correlation, so it is dropped in the sensitivity column and kept in the published one. Whether that boundary is the policy or the harness is a question this release cannot answer."
+ },
+ "note": "Sensitivity only. release_summary.csv is unchanged. These numbers say what the estimates would be under a different inclusion rule, not what they are."
+}

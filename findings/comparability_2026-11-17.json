@@ -1,0 +1,104 @@
+{
+ "release": "2026-11-17",
+ "cells": 208,
+ "cell_rows_in_table": 268,
+ "cells_with_attempts": 184,
+ "attempts": 4239,
+ "fields": [
+  "grading_method",
+  "source_tag",
+  "effort",
+  "mode"
+ ],
+ "per_field": {
+  "grading_method": {
+   "mixed_cells": 18,
+   "share_cells": 0.087,
+   "distinct_values": 8,
+   "dominant": [
+    [
+     "Autograded",
+     2108
+    ],
+    [
+     "Claude Fable 5.1 refusal judge",
+     899
+    ],
+    [
+     "Astra autograde",
+     695
+    ]
+   ]
+  },
+  "source_tag": {
+   "mixed_cells": 15,
+   "share_cells": 0.072,
+   "distinct_values": 19,
+   "dominant": [
+    [
+     "robospoof-2026-10-27",
+     900
+    ],
+    [
+     "roboharm-latest-2026-10-01",
+     600
+    ],
+    [
+     "leaderboard-2026-09-29",
+     480
+    ]
+   ]
+  },
+  "effort": {
+   "mixed_cells": 14,
+   "share_cells": 0.067,
+   "distinct_values": 8,
+   "dominant": [
+    [
+     "high",
+     2330
+    ],
+    [
+     "medium",
+     1069
+    ],
+    [
+     "vla",
+     360
+    ]
+   ]
+  },
+  "mode": {
+   "mixed_cells": 12,
+   "share_cells": 0.058,
+   "distinct_values": 7,
+   "dominant": [
+    [
+     "standard",
+     1451
+    ],
+    [
+     "fast",
+     1190
+    ],
+    [
+     "not-recorded",
+     698
+    ]
+   ]
+  }
+ },
+ "mixed_cells_any_field": 23,
+ "share_mixed_cells": 0.111,
+ "attempts_in_mixed_cells": 830,
+ "share_attempts_in_mixed_cells": 0.196,
+ "benchmarks_with_multiple_keys": {
+  "robodojo-rc-tier-1": 17,
+  "roboharm-v1": 3,
+  "simple-tasks": 6,
+  "datacenterbench": 8,
+  "robospoof": 4
+ },
+ "comparability_key": "benchmark + grading_method + mode + effort + source_tag",
+ "reading": "A cell marked mixed pools attempts whose grading or inference conditions differ. Its success rate is still a rate, but its variance mixes capability with procedure. The key says what a stricter table would keep apart."
+}

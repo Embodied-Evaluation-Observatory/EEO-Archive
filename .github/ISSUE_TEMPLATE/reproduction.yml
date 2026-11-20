@@ -1,0 +1,51 @@
+name: Reproduction report
+description: Report an independent run of the published verification
+title: "[reproduction] <release> — <your name or anonymous>"
+labels: ["reproduction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Run `python3 tools/reproduce.py --release <id>` in a clean clone, or fork this
+        repository and run the **Reproduce a release** workflow. Attach the receipt JSON
+        below. A failing run is also a valid report and will be recorded as one.
+  - type: input
+    id: release
+    attributes:
+      label: Release
+      placeholder: 2026-11-17
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: What did you check
+      options:
+        - arithmetic (published tables reproduce)
+        - export (rebuild from the redistributed snapshot)
+        - deposit (sealed bytes match the manifest)
+    validations:
+      required: true
+  - type: input
+    id: identity
+    attributes:
+      label: Name or handle, and affiliation
+      description: Write "anonymous" if you prefer not to be named; the run is still recorded.
+    validations:
+      required: true
+  - type: textarea
+    id: receipt
+    attributes:
+      label: Receipt
+      description: Paste the JSON, or attach the file and say so here.
+    validations:
+      required: true
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: Consent
+      options:
+        - label: I agree to be listed in governance/verification_partners.csv
+          required: false
+    validations:
+      required: false

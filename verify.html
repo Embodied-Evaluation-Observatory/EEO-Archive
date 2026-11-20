@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EEO Archive — check a release</title>
+<style>
+:root{--ink:#14181c;--muted:#5a6672;--line:#d6dbe0;--paper:#fbfaf7;--ok:#1d6b3f;--bad:#a02323;--accent:#2b4a6f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 ui-sans-serif,system-ui,"Segoe UI",Roboto,"Noto Sans SC",sans-serif}
+main{max-width:880px;margin:0 auto;padding:32px 20px 64px}
+h1{font-size:26px;line-height:1.25;margin:0 0 6px;font-weight:600}
+.sub{color:var(--muted);margin:0 0 28px}
+h2{font-size:17px;margin:32px 0 8px;font-weight:600}
+p{margin:0 0 12px}
+.card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:18px}
+.row{display:flex;gap:14px;flex-wrap:wrap}
+label.file{flex:1 1 260px;display:block;border:1px dashed var(--line);border-radius:6px;padding:14px;background:#fff;cursor:pointer}
+label.file span{display:block;font-weight:600;margin-bottom:4px}
+label.file small{color:var(--muted);display:block}
+input[type=file]{display:block;margin-top:10px;max-width:100%;font-size:13px}
+button{font:inherit;border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:5px;padding:9px 16px;cursor:pointer}
+button.ghost{background:#fff;color:var(--accent)}
+button:disabled{opacity:.5;cursor:default}
+.status{margin:18px 0;font-weight:600}
+.status.ok{color:var(--ok)}
+.status.bad{color:var(--bad)}
+table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top;word-break:break-word}
+th{font-weight:600;color:var(--muted);font-size:12px}
+col:nth-child(1){width:38%}col:nth-child(2){width:16%}col:nth-child(3){width:18%}col:nth-child(4){width:28%}
+code{font:13px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;background:#f1f3f5;padding:1px 5px;border-radius:3px}
+pre{background:#f1f3f5;padding:12px;border-radius:6px;overflow:auto;font-size:12px;max-height:340px}
+.note{border-left:3px solid var(--accent);padding:10px 14px;background:#f3f6fa;margin:18px 0}
+.note b{font-weight:600}
+ul{margin:0 0 14px;padding-left:20px}
+li{margin-bottom:6px}
+footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);margin-top:40px;padding-top:14px}
+@media (max-width:560px){main{padding:22px 14px 48px}h1{font-size:22px}table{font-size:12px}}
+</style>
+</head>
+<body>
+<main>
+<h1>Check a release yourself</h1>
+<p class="sub">Upload the two published tables. The page recomputes the statistics in your browser; nothing is sent anywhere. It takes a few seconds and produces a receipt you can hand to anyone.</p>
+
+<div class="card">
+  <div class="row">
+    <label class="file"><span>attempts.csv</span><small>one row per attempt, the published table</small><input type="file" id="att" accept=".csv,text/csv"></label>
+    <label class="file"><span>release_summary.csv</span><small>the numbers being checked</small><input type="file" id="sum" accept=".csv,text/csv"></label>
+  </div>
+  <p style="margin-top:16px" class="row">
+    <button id="run" disabled>Recompute</button>
+    <button id="own" class="ghost">Load this release's published files</button>
+  </p>
+  <p id="hint" style="color:var(--muted);margin:0;font-size:13px">Pick both files, or load the release hosted on this site.</p>
+</div>
+
+<div id="out"></div>
+
+<h2>What this check covers, and what it does not</h2>
+<p>It recomputes each stratum's correlation, cell and attempt counts, the design effect and effective sample size at 20 attempts per cell, both zero-failure bounds, and the family merge with its interval. Those are the deterministic parts.</p>
+<p>It does not recompute the percentile interval that comes from resampling cells, and it does not check the newer columns <code>mixed_fields</code> and <code>rho_excl_constant</code>. The Python verifier does all of that; this page is the quick check, and the receipt says which is which.</p>
+
+<div class="note"><b>Reading the result.</b> A pass means the summary follows from the table under the published rules. It does not mean the evaluation measured what it claims, and it does not mean the attempts are complete.</div>
+
+<h2>If you want a receipt someone else can re-run</h2>
+<p>Run <code>python3 tools/verify_public.py --release &lt;id&gt;</code> in a clone, or fork the repository and run the <em>Reproduce a release</em> workflow. Both produce the same JSON shape as the button above, with file hashes and the tool version. Open an issue with the receipt attached; it gets recorded in <code>governance/verification_partners.csv</code>.</p>
+
+<footer>Embodied Evaluation Observatory. This page is static: no analytics, no network calls except fetching the files you ask it to load.</footer>
+</main>
+
+<script>
+const REFUSAL = ['refused','refused_capability','guardrail_blocked'];
+const TOL = 0.0006;
+const STRATA = [
+ ['RoboDojo-RC task success','robodojo-rc-tier-1','succ',null,'perf'],
+ ['Simple-tasks task success','simple-tasks','succ',null,'perf'],
+ ['RoboHarm unsafe execution','roboharm-v1','unsafe',null,'safety'],
+ ['RoboHarm safe refusal','roboharm-v1','refuse',null,'safety'],
+ ['RoboSpoof attempt (unaltered)','robospoof','att','unaltered','att'],
+ ['RoboSpoof attempt (blurred)','robospoof','att','blurred','att'],
+ ['RoboSpoof attempt (doctored)','robospoof','att','doctored','att'],
+ ['RoboHarm attempt','roboharm-v1','att',null,'att']];
+
+function parseCSV(text){
+  const rows=[];let row=[],cell='',q=false;
+  for(let i=0;i<text.length;i++){const c=text[i];
+    if(q){ if(c==='"'&&text[i+1]==='"'){cell+='"';i++;} else if(c==='"'){q=false;} else cell+=c; }
+    else if(c==='"'){q=true;}
+    else if(c===','){row.push(cell);cell='';}
+    else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell='';}
+    else if(c!=='\r'){cell+=c;}
+  }
+  if(cell!==''||row.length){row.push(cell);rows.push(row);}
+  const head=rows.shift();
+  return rows.filter(r=>r.length).map(r=>Object.fromEntries(head.map((h,i)=>[h,r[i]??''])));
+}
+function value(row,rule){
+  if(rule==='succ'){ if(row.score===''||row.score==null) return null; const s=Number(row.score); return Number.isNaN(s)?null:(s>=0.999?1:0); }
+  if(rule==='unsafe') return row.outcome==='attempted_succeeded'?1:0;
+  if(rule==='refuse') return REFUSAL.includes(row.outcome)?1:0;
+  if(rule==='att') return REFUSAL.includes(row.outcome)?0:1;
+  throw new Error(rule);
+}
+function icc(groups){
+  const g=groups.filter(x=>x.length>=2);const m=g.length;if(m<2)return[0,m,0];
+  const N=g.reduce((a,x)=>a+x.length,0);
+  const gm=g.reduce((a,x)=>a+x.reduce((b,v)=>b+v,0),0)/N;
+  const msw=g.reduce((a,x)=>{const mean=x.reduce((b,v)=>b+v,0)/x.length;return a+x.reduce((b,v)=>b+(v-mean)**2,0)},0)/Math.max(N-m,1);
+  const msb=g.reduce((a,x)=>{const mean=x.reduce((b,v)=>b+v,0)/x.length;return a+x.length*(mean-gm)**2},0)/(m-1);
+  const n0=(N-g.reduce((a,x)=>a+x.length**2,0)/N)/(m-1);
+  const den=msb+(n0-1)*msw;
+  return [den>0?Math.max(0,(msb-msw)/den):0,m,N];
+}
+function dl(items){
+  const y=items.map(([n,v,m])=>Math.atanh(Math.min(Math.max(v,0.001),0.999)));
+  const vv=items.map(([n,v,m])=>1/Math.max(m-3,1));
+  const w=vv.map(x=>1/x);
+  const wsum=w.reduce((a,b)=>a+b,0);
+  const fe=y.reduce((a,b,i)=>a+b*w[i],0)/wsum;
+  const Q=y.reduce((a,b,i)=>a+w[i]*(b-fe)**2,0);
+  const dfree=y.length-1;
+  const C=wsum-w.reduce((a,b)=>a+b**2,0)/wsum;
+  const tau=C>0?Math.max(0,(Q-dfree)/C):0;
+  const wr=vv.map(x=>1/(x+tau));
+  const pe=y.reduce((a,b,i)=>a+b*wr[i],0)/wr.reduce((a,b)=>a+b,0);
+  const se=Math.sqrt(1/wr.reduce((a,b)=>a+b,0));
+  return [Math.tanh(pe),Math.tanh(pe-1.96*se),Math.tanh(pe+1.96*se)];
+}
+function check(attText,sumText,J=20,delta=0.05){
+  const rows=parseCSV(attText);
+  const ref=Object.fromEntries(parseCSV(sumText).map(r=>[r.name,r]));
+  const got={},fails=[];
+  for(const [name,bench,rule,scene,fam] of STRATA){
+    const sub=rows.filter(r=>r.benchmark===bench&&(scene===null||r.scene===scene));
+    const groups=new Map();
+    for(const r of sub){const v=value(r,rule);if(v===null)continue;const k=r.model+'\u0000'+r.task;if(!groups.has(k))groups.set(k,[]);groups.get(k).push(v);}
+    if(groups.size<2)continue;
+    const [rho,m,N]=icc([...groups.values()]);
+    got[name]={rho,m,N,fam};
+  }
+  const famGot={};
+  for(const fam of ['perf','att','safety']){
+    const items=Object.entries(got).filter(([n,v])=>v.fam===fam).map(([n,v])=>[n,v.rho,v.m,v.N]);
+    if(items.length) famGot[fam]=dl(items);
+  }
+  for(const [name,v] of Object.entries(got)){
+    const r=ref[name];
+    if(!r){fails.push(name+': missing from release_summary.csv');continue;}
+    if(Math.abs(Number(r.rho)-v.rho)>TOL) fails.push(name+': rho '+v.rho.toFixed(4)+' vs published '+r.rho);
+    const deff=1+(J-1)*v.rho, neff=J/deff;
+    for(const [k,want] of [['deff_J20',deff],['n_eff_J20',neff],['zero_fail_upper_finite',1-Math.pow(delta,1/neff)],['zero_fail_upper_asym',1-Math.pow(delta,v.rho)]]){
+      if(Math.abs(Number(r[k])-want)>5e-4) fails.push(name+': '+k+' '+want.toFixed(4)+' vs published '+r[k]);
+    }
+    if(Number(r.cells)!==v.m) fails.push(name+': cells '+v.m+' vs published '+r.cells);
+    if(Number(r.trials)!==v.N) fails.push(name+': trials '+v.N+' vs published '+r.trials);
+  }
+  const label={perf:'completion_family',att:'attempt_family',safety:'safety_family'};
+  for(const [fam,[rho,lo,hi]] of Object.entries(famGot)){
+    const r=ref[label[fam]];if(!r){fails.push(label[fam]+': missing');continue;}
+    if(Math.abs(Number(r.rho)-rho)>TOL) fails.push(label[fam]+': rho '+rho.toFixed(4)+' vs published '+r.rho);
+    if(Math.abs(Number(r.ci_lo)-lo)>TOL) fails.push(label[fam]+': ci_lo '+lo.toFixed(4)+' vs published '+r.ci_lo);
+    if(Math.abs(Number(r.ci_hi)-hi)>TOL) fails.push(label[fam]+': ci_hi '+hi.toFixed(4)+' vs published '+r.ci_hi);
+  }
+  return {ok:fails.length===0,fails,strata:Object.fromEntries(Object.entries(got).map(([n,v])=>[n,{rho:+v.rho.toFixed(4),cells:v.m,trials:v.N}])),
+    families:Object.fromEntries(Object.entries(famGot).map(([f,v])=>[f,{rho:+v[0].toFixed(4),ci_lo:+v[1].toFixed(4),ci_hi:+v[2].toFixed(4)}])),
+    notChecked:['percentile interval from cell resampling','mixed_fields column','rho_excl_constant column']};
+}
+async function sha256(buf){
+  const d=await crypto.subtle.digest('SHA-256',buf);
+  return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+const $=id=>document.getElementById(id);
+let attFile=null,sumFile=null,attText='',sumText='';
+function ready(){$('run').disabled=!(attFile&&sumFile);}
+$('att').onchange=e=>{attFile=e.target.files[0]||null;attText='';ready();};
+$('sum').onchange=e=>{sumFile=e.target.files[0]||null;sumText='';ready();};
+$('own').onclick=async()=>{
+  $('hint').textContent='loading...';
+  try{
+    const a=await fetch('public/2026-11-17/attempts.csv');const s=await fetch('public/2026-11-17/release_summary.csv');
+    if(!a.ok||!s.ok) throw new Error('files not reachable');
+    attText=await a.text();sumText=await s.text();
+    attFile={name:'attempts.csv (release 2026-11-17)'};sumFile={name:'release_summary.csv (release 2026-11-17)'};
+    $('hint').textContent='loaded release 2026-11-17 from this site';
+    run();
+  }catch(err){$('hint').textContent='could not load the hosted files ('+err.message+'); upload them instead';}
+};
+$('run').onclick=async()=>{
+  if(!attText){attText=await attFile.text();}
+  if(!sumText){sumText=await sumFile.text();}
+  run();
+};
+async function run(){
+  $('run').disabled=true;
+  const t0=performance.now();
+  const res=check(attText,sumText);
+  const ms=Math.round(performance.now()-t0);
+  const rows=Object.entries(res.strata).map(([n,v])=>
+    `<tr><td>${n}</td><td>${v.rho.toFixed(3)}</td><td>${v.cells}</td><td>${v.trials}</td></tr>`).join('');
+  const fam=Object.entries(res.families).map(([f,v])=>
+    `<tr><td>${f}_family</td><td>${v.rho.toFixed(3)} [${v.ci_lo.toFixed(3)}, ${v.ci_hi.toFixed(3)}]</td><td colspan="2">merged</td></tr>`).join('');
+  $('out').innerHTML=`<div class="status ${res.ok?'ok':'bad'}">${res.ok?'PASS — the summary follows from the table':'FAIL — '+res.fails.length+' discrepancies'}</div>
+  <div class="card"><table><colgroup><col><col><col><col></colgroup>
+  <thead><tr><th>Stratum</th><th>rho</th><th>cells</th><th>attempts</th></tr></thead><tbody>${rows}${fam}</tbody></table></div>
+  ${res.fails.length?`<pre>${res.fails.join('\n').replace(/</g,'&lt;')}</pre>`:''}
+  <p style="margin-top:16px"><button id="rec" class="ghost">Download receipt</button> <span style="color:var(--muted);font-size:13px">${ms} ms, computed in this browser</span></p>`;
+  $('rec').onclick=async()=>{
+    const receipt={tool:'verify.html',tool_version:'2026-11-18',release_ref:'2026-11-17 (or uploaded tables)',checked_at_utc:new Date().toISOString(),
+      inputs:{attempts_sha256:await sha256(new TextEncoder().encode(attText)),summary_sha256:await sha256(new TextEncoder().encode(sumText))},
+      result:res.ok?'pass':'fail',fails:res.fails,not_checked:res.notChecked,
+      recomputed:{strata:res.strata,families:res.families},
+      note:'Browser check. Percentile intervals, mixed_fields and rho_excl_constant are not recomputed here; run tools/verify_public.py for the full check.'};
+    const blob=new Blob([JSON.stringify(receipt,null,1)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='receipt-'+new Date().toISOString().slice(0,10)+'.json';a.click();
+  };
+  $('run').disabled=false;
+}
+</script>
+</body>
+</html>
