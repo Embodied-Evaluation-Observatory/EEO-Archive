@@ -99,5 +99,10 @@ computed, partial or not implemented. `tools/preflight.py` passes five of six ga
 the sixth (deposit-file comparison) blocks until the Zenodo upload is downloaded back and
 compared, which is the intended order.
 
+Deposit: `10.5281/zenodo.24395810`. Tag `v2026.11.19` points at `ce801c9`, the release
+commit; `180ebea` carries the data-card correction described above. The gate ran
+against the files downloaded back from the Zenodo draft and passed all six items; see
+`releases/2026-11-19/preflight.json`.
+
 2026-11-19 版把 scene 纳入格键、新增按可比字段拆分的表、能力前沿表与溯源探针，并给出
 零方差格与分层区间的敏感性；task-success 数字不变，RoboHarm 与两个族因格键修正而变动。

@@ -1,0 +1,36 @@
+{
+ "release": "2026-11-19",
+ "gate": "pass",
+ "checks": [
+  {
+   "check": "manifest",
+   "ok": true,
+   "detail": "1 snapshot file(s) match bytes and sha256, 1 by reference to an earlier release"
+  },
+  {
+   "check": "public tables",
+   "ok": true,
+   "detail": "11 published file(s) match checksums.txt"
+  },
+  {
+   "check": "recompute",
+   "ok": true,
+   "detail": "PASS: published summary reproduces from attempts.csv"
+  },
+  {
+   "check": "certificates",
+   "ok": true,
+   "detail": "reached L1, L2, L3"
+  },
+  {
+   "check": "protocol binding",
+   "ok": true,
+   "detail": "certificate 844040b08bf9, protocol 844040b08bf9"
+  },
+  {
+   "check": "deposit files",
+   "ok": true,
+   "detail": "12 file(s) downloaded from the deposit match the release"
+  }
+ ]
+}

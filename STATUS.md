@@ -21,9 +21,13 @@
 |---|---|---|---|
 | 2026-11-15 | `10.5281/zenodo.24269292` | the 2026-11-15 bytes | citable, not withdrawn |
 | intermediate | `10.5281/zenodo.24288113` | the 2026-11-15 files under 2026-11-18 metadata | superseded: published before its files were replaced |
-| 2026-11-18 | `10.5281/zenodo.24325457` | the corrected 2026-11-17 tables and the redistributed snapshot | current |
+| 2026-11-18 | `10.5281/zenodo.24325457` | the corrected 2026-11-17 tables and the redistributed snapshot | previous version, still citable |
+| 2026-11-19 | `10.5281/zenodo.24395810` | the scene-keyed tables, comparability and frontier tables, the probe, the certificates, the board summary and the protocol, 21 files plus a checksum list | current |
 
-Concept DOI `10.5281/zenodo.24269291` covers the series. Cite the version DOI for a
+Concept DOI `10.5281/zenodo.24269291` covers the series. The 2026-11-19 deposit was
+published only after `tools/preflight.py` passed all six gate items against the files
+downloaded back from the Zenodo draft; that run is recorded in
+`releases/2026-11-19/preflight.json`. Cite the version DOI for a
 specific release, the concept DOI for the series. The intermediate record is kept online
 because Zenodo does not allow a published deposit to be edited or deleted; its description
 states which bytes it serves.
