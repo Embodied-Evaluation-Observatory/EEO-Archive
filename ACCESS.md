@@ -24,6 +24,23 @@ the bytes.
 |---|---|---|
 | 2026-11-15 | Hash only | snapshot held, hash published |
 | 2026-11-17 | Open | snapshot redistributed; L3 reachable by any reader |
+| 2026-11-19 | Open | snapshot referenced from the 2026-11-17 release and verified against its manifest; L3 reachable by any reader |
+
+## Contact address
+
+`archive@embodied-evaluation.org` receives mail. It is a forwarding address at the
+registrar, not a mailbox on this archive's own infrastructure: messages are delivered to
+a mailbox operated by the maintainer, and no copy is kept by the archive.
+
+It does not send. Correspondence is written from the maintainer's own address, so a reply
+to a message from this archive shows that address in `From`, not `archive@`. Treat
+`archive@` as the stable way to reach the archive and the `From` address as the person
+answering; do not infer that an identity is operated at the domain.
+
+Forwarding was tested on 2026-11-21 in both directions of the route: a message from the
+maintainer's mailbox and one from an institutional mailbox both arrived. Senders whose
+domain publishes a strict DMARC policy can have forwarded mail rejected downstream without
+a bounce reaching the sender, so an unanswered message is not proof it never arrived.
 
 ## Verification partners
 
