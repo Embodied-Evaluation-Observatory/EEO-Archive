@@ -377,7 +377,8 @@ by anyone. This release was frozen as release `{release}` (release hash
 | Records | {records} attempts, {cells} cells |
 | Models | {models} |
 | Benchmarks | {benchmarks} |
-| Protocol | Repetition and Discernibility Audit (ReDA), version 1.0 |
+| Protocol | Repetition and Discernibility Audit (ReDA), version {protocol_version} |
+| Protocol file | `reda-protocol.md`, sha256 `{protocol_sha}` |
 
 ## Tables
 
@@ -545,6 +546,12 @@ def main():
     except Exception:
         parquet = []
 
+    proto_path = os.path.join(root, 'reda-protocol.md')
+    proto_txt = open(proto_path, encoding='utf-8').read() if os.path.isfile(proto_path) else ''
+    m_proto = re.search(r'ReDA-(\d+\.\d+)', proto_txt)
+    proto_version = m_proto.group(1) if m_proto else 'unknown'
+    proto_sha = hashlib.sha256(open(proto_path, 'rb').read()).hexdigest() if proto_txt else 'not found'
+
     fmt = 'CSV' + (' and parquet' if parquet else '')
     benchmarks = sorted({r.get('benchmark') or '' for r in runs})
     card = CARD.format(
@@ -554,6 +561,7 @@ def main():
         frozen=manifest['frozen_at_utc'],
         records=len(runs), cells=sum(s['cells'] for s in summary if s['row_type'] == 'family'),
         models=len(models), benchmarks=len(benchmarks), J=args.J,
+        protocol_version=proto_version, protocol_sha=proto_sha,
         rig_na=sum(1 for a in attempts if a['rig_alias'] == 'RIG-NA'),
     )
     card += '\n## Format\n\nTables are distributed as %s.\n' % fmt

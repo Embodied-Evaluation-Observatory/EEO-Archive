@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       release:
-        description: Release id, e.g. 2026-11-17
-        required: true
-        default: 2026-11-17
+        description: 'Release id to check, e.g. 2026-11-17. Leave empty to check every published release.'
+        required: false
+        default: ''
   push:
     paths:
       - 'public/**'
@@ -22,16 +22,32 @@ jobs:
         with:
           python-version: '3.12'
       - name: Verify published tables
+        shell: bash
         run: |
-          REL="${{ inputs.release }}"
-          if [ -z "$REL" ]; then REL=2026-11-17; fi
-          SNAP="releases/$REL/robocurve_allruns.json"
-          if [ -f "$SNAP" ]; then
-            python3 tools/reproduce.py --release "$REL" --input "$SNAP" --out "receipts/$REL.json"
+          set -u
+          status=0
+          if [ -n "${{ inputs.release }}" ]; then
+            releases="${{ inputs.release }}"
           else
-            python3 tools/reproduce.py --release "$REL" --out "receipts/$REL.json"
+            releases=$(for d in public/*/; do basename "$d"; done | grep -v '^fixture$')
           fi
+          echo "releases to check: $releases"
+          for rel in $releases; do
+            echo "== $rel"
+            if ! head -1 "public/$rel/release_summary.csv" | grep -q zero_fail_upper_asym; then
+              echo "skip $rel: summary predates the current zero-failure bound columns, so this verifier cannot check it"
+              continue
+            fi
+            snap="releases/$rel/robocurve_allruns.json"
+            if [ -f "$snap" ]; then
+              python3 tools/reproduce.py --release "$rel" --input "$snap" --out "receipts/$rel.json" || status=1
+            else
+              python3 tools/reproduce.py --release "$rel" --out "receipts/$rel.json" || status=1
+            fi
+          done
+          exit $status
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: reproduction-receipt
           path: receipts/*.json

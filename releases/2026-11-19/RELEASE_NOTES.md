@@ -67,6 +67,14 @@ was wrong — no cell in this release exceeds 40 attempts. The measured count is
 | reset cost | not implemented | attempts.csv has no reset timing |
 | contamination probe | not implemented | the archive has no held-out probe task |
 
+## Correction after publication
+
+The data card in this release says "ReDA, version 1.0". That was a literal in the export
+template that survived the protocol revision; the certificate binds ReDA-1.2 at sha256
+844040b0. `public/2026-11-19/CORRECTION.md` records it. The card is not rewritten, because
+the release is tagged and the published bytes should keep matching it; `tools/export_public.py`
+now reads the version and hash from `reda-protocol.md`, so later cards cannot drift.
+
 ## Verification
 
 ```
