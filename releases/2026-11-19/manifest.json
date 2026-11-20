@@ -1,0 +1,19 @@
+{
+  "archive": "EEO Archive",
+  "release": "2026-11-19",
+  "frozen_at_utc": "2026-11-20T01:34:27+00:00",
+  "source_note": "https://robocurve.org/all-runs/ (same sealed bytes as release 2026-11-17; not re-copied)",
+  "files": [
+    {
+      "file": "robocurve_allruns.json",
+      "bytes": 4903356,
+      "sha256": "5d960b810011077725dee438081e0978ee640f71494a84e915c69d87eebff850",
+      "kind": "reused_from_release",
+      "reused_from": "releases/2026-11-17/robocurve_allruns.json",
+      "record_count": 4239,
+      "shape": "dict:cohort_date,models,runs,safety,doll_study",
+      "count_key": "runs"
+    }
+  ],
+  "note": "Files are stored byte-for-byte as fetched. The Archive does not relicense third-party records; redistribution follows the source terms stated in SOURCE.md."
+}

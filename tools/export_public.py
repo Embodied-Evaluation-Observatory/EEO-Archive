@@ -57,7 +57,8 @@ def verified_release(release, root=None):
         m = json.load(f)
     bad = []
     for entry in m['files']:
-        p = os.path.join(rel_dir, entry['file'])
+        p = os.path.join(root or ROOT, entry['reused_from']) if entry.get('reused_from') \
+            else os.path.join(rel_dir, entry['file'])
         if not os.path.isfile(p) or sha256(p) != entry['sha256']:
             bad.append(entry['file'])
     if bad:
@@ -481,7 +482,11 @@ def main():
     if os.path.isdir(out_dir):
         sys.exit('REFUSED: public output for %s already exists. Publish a new release id.' % release)
 
-    with open(os.path.join(rel_dir, 'robocurve_allruns.json'), encoding='utf-8') as f:
+    snap = os.path.join(rel_dir, 'robocurve_allruns.json')
+    for e in manifest['files']:
+        if e['file'] == 'robocurve_allruns.json' and e.get('reused_from'):
+            snap = os.path.join(root, e['reused_from'])
+    with open(snap, encoding='utf-8') as f:
         data = json.load(f)
     runs = data.get('runs') or []
     models = data.get('models') or {}

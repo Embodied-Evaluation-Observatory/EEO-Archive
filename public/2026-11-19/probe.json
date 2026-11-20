@@ -1,0 +1,65 @@
+{
+ "release": "2026-11-19",
+ "attempts": 4239,
+ "checks": {
+  "duplicate_records": {
+   "status": "computed",
+   "duplicates": 0,
+   "rate": 0.0
+  },
+  "identical_outcome_vectors": {
+   "status": "partial",
+   "pairs": 627,
+   "note": "identical sequences across models in one task suggest shared records; they also occur naturally in deterministic sandboxes, so this is a flag, not a verdict"
+  },
+  "temporal_clustering": {
+   "status": "partial",
+   "max_per_minute": 9,
+   "max_per_benchmark": {
+    "robodojo-rc-tier-1": 6,
+    "roboharm-v1": 5,
+    "simple-tasks": 3,
+    "datacenterbench": 5,
+    "robospoof": 9
+   },
+   "note": "no test against a submission schedule is available"
+  },
+  "share_concentration": {
+   "status": "computed",
+   "by_benchmark": {
+    "robodojo-rc-tier-1": {
+     "trials": 2151,
+     "top_model_share": 0.1116
+    },
+    "robospoof": {
+     "trials": 900,
+     "top_model_share": 0.2
+    },
+    "datacenterbench": {
+     "trials": 270,
+     "top_model_share": 0.1111
+    },
+    "simple-tasks": {
+     "trials": 220,
+     "top_model_share": 0.4545
+    },
+    "roboharm-v1": {
+     "trials": 698,
+     "top_model_share": 0.2006
+    }
+   }
+  },
+  "score_outcome_conflict": {
+   "status": "computed",
+   "conflicts": 0
+  },
+  "reset_cost": {
+   "status": "not_implemented",
+   "note": "attempts.csv carries no reset timing or reset count"
+  },
+  "contamination_probe": {
+   "status": "not_implemented",
+   "note": "no held-out probe task exists in this archive, so contamination cannot be measured here"
+  }
+ }
+}

@@ -70,13 +70,26 @@ was wrong — no cell in this release exceeds 40 attempts. The measured count is
 ## Verification
 
 ```
-python3 tools/verify_public.py --release 2026-11-19 --input releases/2026-11-19/robocurve_allruns.json
+python3 tools/verify_public.py --release 2026-11-19 --input releases/2026-11-17/robocurve_allruns.json
 bash tests/run_fixture.sh
 ```
 
 Both pass: the summary, the comparability columns, `by_key.csv`, `frontier.csv` and
-`probe.json` all recompute from `attempts.csv`. The fixture golden files are updated for
+`probe.json` all recompute from `attempts.csv`.
+
+The snapshot is referenced, not re-copied: `manifest.json` records
+`kind: reused_from_release` and `reused_from: releases/2026-11-17/robocurve_allruns.json`,
+and every tool that reads the snapshot resolves that path (`freeze_release.py --reuse`,
+`export_public.py`, `certify.py`, `preflight.py`). The bytes are the ones already frozen
+on 2026-11-17, verified against that release's own manifest before this one was written. The fixture golden files are updated for
 the new key column and still reproduce byte-for-byte.
+
+`certificates/2026-11-19/` holds the layers record (L1, L2, L3 reached) and the C7
+conformance card (`tools/conformance_card.py`), which states the three family estimates,
+the level reached, 251 of 274 cells under 30 attempts, and which provenance checks are
+computed, partial or not implemented. `tools/preflight.py` passes five of six gate items;
+the sixth (deposit-file comparison) blocks until the Zenodo upload is downloaded back and
+compared, which is the intended order.
 
 2026-11-19 版把 scene 纳入格键、新增按可比字段拆分的表、能力前沿表与溯源探针，并给出
 零方差格与分层区间的敏感性；task-success 数字不变，RoboHarm 与两个族因格键修正而变动。

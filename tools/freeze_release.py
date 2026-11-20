@@ -71,9 +71,13 @@ def load_manifest(root):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--release', required=True, help='release id, e.g. 2026-11-15')
-    ap.add_argument('--files', nargs='+', required=True)
+    ap.add_argument('--files', nargs='*', default=[],
+                    help='source files to copy in; may be empty when --reuse covers the snapshot')
     ap.add_argument('--source-note', default='')
     ap.add_argument('--provenance', default='', help='provenance note copied in as SOURCE.md')
+    ap.add_argument('--reuse', nargs='*', default=[],
+                    help='release:file — reference bytes already frozen in an earlier release '
+                         'instead of copying them again, e.g. 2026-11-17:robocurve_allruns.json')
     ap.add_argument('--root', default=ARCHIVE_ROOT)
     args = ap.parse_args()
 
@@ -105,6 +109,38 @@ def main():
             'kind': 'provenance',
             'record_count': None,
         })
+    for spec in args.reuse:
+        if ':' not in spec:
+            print('BAD --reuse value: %s (expected release:file)' % spec, file=sys.stderr)
+            return 4
+        src_rel, name = spec.split(':', 1)
+        src_man = os.path.join(args.root, 'releases', src_rel, 'manifest.json')
+        if not os.path.isfile(src_man):
+            print('MISSING: %s' % src_man, file=sys.stderr)
+            return 3
+        sm = json.load(open(src_man, encoding='utf-8'))
+        src = next((e for e in sm.get('files', []) if e.get('file') == name), None)
+        if src is None:
+            print('MISSING: %s not in releases/%s/manifest.json' % (name, src_rel), file=sys.stderr)
+            return 3
+        target = os.path.join(args.root, 'releases', src_rel, name)
+        if not os.path.isfile(target):
+            print('MISSING: %s' % target, file=sys.stderr)
+            return 3
+        if sha256(target) != src['sha256']:
+            print('HASH MISMATCH: %s no longer matches its own manifest' % target, file=sys.stderr)
+            return 5
+        entries.append({
+            'file': name,
+            'bytes': src['bytes'],
+            'sha256': src['sha256'],
+            'kind': 'reused_from_release',
+            'reused_from': 'releases/%s/%s' % (src_rel, name),
+            'record_count': src.get('record_count'),
+            'shape': src.get('shape'),
+            'count_key': src.get('count_key'),
+        })
+
     for src in args.files:
         if not os.path.isfile(src):
             print('MISSING: %s' % src, file=sys.stderr)

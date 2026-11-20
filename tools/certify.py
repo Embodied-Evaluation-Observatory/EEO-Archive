@@ -52,14 +52,19 @@ def main():
 
     # L2 / L3
     snap = os.path.join(rel_dir, 'robocurve_allruns.json')
+    reused_from = None
     if os.path.isfile(man_p):
         m = json.load(open(man_p, encoding='utf-8'))
         entry = next((e for e in m.get('files', []) if e.get('file') == 'robocurve_allruns.json'), None)
+        if entry and entry.get('reused_from') and not os.path.isfile(snap):
+            snap = os.path.join(root, entry['reused_from'])
+            reused_from = entry['reused_from']
         if entry and os.path.isfile(snap):
             size_ok = os.path.getsize(snap) == entry.get('bytes')
             hash_ok = sha256(snap) == entry.get('sha256')
             ok2 = bool(size_ok and hash_ok)
             evidence['L2'] = {'declared_sha256': entry.get('sha256'), 'declared_bytes': entry.get('bytes'),
+                              'path_checked': reused_from or ('releases/%s/robocurve_allruns.json' % rel),
                               'measured_sha256': sha256(snap), 'measured_bytes': os.path.getsize(snap),
                               'size_matches': size_ok, 'hash_matches': hash_ok}
             try:
@@ -69,7 +74,8 @@ def main():
                 ok3 = ok2 and counted == entry.get('record_count')
                 evidence['L3'] = {'record_count_declared': entry.get('record_count'),
                                   'record_count_measured': counted,
-                                  'redistributed_by_this_repository': True}
+                                  'redistributed_by_this_repository': True,
+                                  'reused_from': reused_from}
             except Exception as e:
                 evidence['L3'] = {'error': str(e)}
         else:
@@ -95,7 +101,7 @@ def main():
         'layers': {'L1': ok1, 'L2': ok2, 'L3': ok3, 'highest': 'L3' if ok3 else ('L2' if ok2 else ('L1' if ok1 else None))},
         'assertions': a_list,
         'input': {'manifest': 'releases/%s/manifest.json' % rel,
-                  'snapshot': 'releases/%s/robocurve_allruns.json' % rel},
+                  'snapshot': reused_from or ('releases/%s/robocurve_allruns.json' % rel)},
         'protocol': {'file': 'reda-protocol.md', 'sha256': sha256(os.path.join(root, 'reda-protocol.md'))
                      if os.path.isfile(os.path.join(root, 'reda-protocol.md')) else None},
         'not_certified': ['model capability', 'benchmark validity', 'safety of any deployed system',

@@ -1,0 +1,73 @@
+{
+ "certificate_id": "LAYER-2026-11-19",
+ "schema_version": "EEO-LAYER-1",
+ "issued_at": "2026-11-20T01:34:42Z",
+ "issuer": {
+  "name": "Embodied Evaluation Observatory",
+  "role": "archive operator"
+ },
+ "release": "2026-11-19",
+ "layers": {
+  "L1": true,
+  "L2": true,
+  "L3": true,
+  "highest": "L3"
+ },
+ "assertions": [
+  {
+   "id": "L1",
+   "quantity": "published summary reproduces from the published tables",
+   "status": "verified",
+   "evidence": {
+    "command": "python3 tools/verify_public.py --release 2026-11-19",
+    "exit": 0,
+    "tail": [
+     "PASS: published summary reproduces from attempts.csv"
+    ]
+   }
+  },
+  {
+   "id": "L2",
+   "quantity": "local source bytes match the declared hash and size",
+   "status": "verified",
+   "evidence": {
+    "declared_sha256": "5d960b810011077725dee438081e0978ee640f71494a84e915c69d87eebff850",
+    "declared_bytes": 4903356,
+    "path_checked": "releases/2026-11-17/robocurve_allruns.json",
+    "measured_sha256": "5d960b810011077725dee438081e0978ee640f71494a84e915c69d87eebff850",
+    "measured_bytes": 4903356,
+    "size_matches": true,
+    "hash_matches": true
+   }
+  },
+  {
+   "id": "L3",
+   "quantity": "redistributed snapshot reproduces the declared record count",
+   "status": "verified",
+   "evidence": {
+    "record_count_declared": 4239,
+    "record_count_measured": 4239,
+    "redistributed_by_this_repository": true,
+    "reused_from": "releases/2026-11-17/robocurve_allruns.json"
+   }
+  }
+ ],
+ "input": {
+  "manifest": "releases/2026-11-19/manifest.json",
+  "snapshot": "releases/2026-11-17/robocurve_allruns.json"
+ },
+ "protocol": {
+  "file": "reda-protocol.md",
+  "sha256": "844040b08bf914211444ec30cb8c8809b9c638a565f7cad173ae217e2b07fad2"
+ },
+ "not_certified": [
+  "model capability",
+  "benchmark validity",
+  "safety of any deployed system",
+  "completeness of the upstream source"
+ ],
+ "verification": {
+  "rerun": "python3 tools/certify.py --release 2026-11-19"
+ },
+ "certificate_hash": "061e0d236ed0f139676404466d70ff00663674647770a97a53279fe353eeb03f"
+}

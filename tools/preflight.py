@@ -89,7 +89,8 @@ def main():
     else:
         man = json.load(open(man_path, encoding='utf-8'))
         for entry in man.get('files', []):
-            p = os.path.join(ROOT, 'releases', a.release, entry['file'])
+            p = os.path.join(ROOT, entry['reused_from']) if entry.get('reused_from') \
+                else os.path.join(ROOT, 'releases', a.release, entry['file'])
             if not os.path.exists(p):
                 ok, detail = False, 'missing snapshot %s' % entry['file']
                 break
@@ -99,7 +100,10 @@ def main():
                     entry['file'], size, entry['bytes'], digest[:12], entry['sha256'][:12])
                 break
         else:
-            detail = '%d snapshot file(s) match bytes and sha256' % len(man.get('files', []))
+            reused = sum(1 for e in man.get('files', []) if e.get('reused_from'))
+            detail = '%d snapshot file(s) match bytes and sha256%s' % (
+                len(man.get('files', [])),
+                ', %d by reference to an earlier release' % reused if reused else '')
     check('manifest', ok, detail)
 
     # 2. published tables against checksums.txt
