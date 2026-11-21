@@ -28,6 +28,11 @@ reader can recompute every number we quote.
 | `tools/verify_public.py` | recomputes the summary from the public table alone |
 | `tools/freeze_release.py` | creates an immutable release; refuses to overwrite one |
 | `reda-protocol.md` | the ReDA protocol specification, version 1.2 |
+| `governance/ROLES.md` | who can publish, what a contributor cannot do, and where the single point of failure sits |
+| `governance/PARTNERS.md` | what a named verification partner entry means, and what it does not |
+| `governance/DOMAIN_TRANSFER.md` | when a measured correlation may be used outside its own stratum, and how to measure one |
+| `governance/DATA_TERMS.md` | terms for partner logs: de-identification, no redistribution, review rights |
+| `governance/IN_LOOP.md` | auditing an evaluation loop that improves its own judge: correlated judging, ceiling-pinned skills, pruned suites |
 
 ## Check it
 

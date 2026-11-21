@@ -1,0 +1,41 @@
+# Code owners
+#
+# Review is requested from the maintainer for every path. Today the maintainer is the
+# account that merges and signs; other members of the organisation may hold write access.
+# Paths are listed separately so that release-critical paths can be restricted while prose
+# opens up, whatever the membership looks like.
+
+*                                   @JiaxiLEE622
+
+# Release-critical: published bytes, frozen manifests, certificates.
+/public/                            @JiaxiLEE622
+/releases/                          @JiaxiLEE622
+/certificates/                      @JiaxiLEE622
+/MANIFEST.json                      @JiaxiLEE622
+/reda-protocol.md                   @JiaxiLEE622
+
+# Tooling that produces the above.
+/tools/                             @JiaxiLEE622
+/.github/workflows/                 @JiaxiLEE622
+
+# Governance and provenance records.
+/governance/                        @JiaxiLEE622
+/STATUS.md                          @JiaxiLEE622
+/SIGNING.md                         @JiaxiLEE622
+/CONTRIBUTORS.md                    @JiaxiLEE622
+
+# Prose and analysis: reviewed, not release-blocking.
+/README.md                          @JiaxiLEE622
+/ACCESS.md                          @JiaxiLEE622
+/ATTRIBUTION.md                     @JiaxiLEE622
+/COMPARABILITY.md                   @JiaxiLEE622
+/ACCUMULATION.md                    @JiaxiLEE622
+/REPRODUCTION.md                    @JiaxiLEE622
+/QUALITY_GATE.md                    @JiaxiLEE622
+/RELEASE_GATE.md                    @JiaxiLEE622
+/CERTIFICATE_LEVELS.md              @JiaxiLEE622
+/SERVICES.md                        @JiaxiLEE622
+/LICENSE-DATA.md                    @JiaxiLEE622
+/LICENSE_FAQ.md                     @JiaxiLEE622
+/findings/                          @JiaxiLEE622
+/audits/                            @JiaxiLEE622

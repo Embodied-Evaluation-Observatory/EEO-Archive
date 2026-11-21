@@ -7,7 +7,7 @@ deposited bytes. Work done before a person had commit access is recorded in
 
 | Name | Role | Scope | From |
 |---|---|---|---|
-| Zimo Li | contributor | Origin of the archive: the insertion experiment and the comparability question it raised | 2026-09 |
+| Zimo Li | founder | Origin of the archive: the insertion experiment, the comparability question, and the scope it set | 2026-09 |
 | JiaxiLEE622 | maintainer | Releases, certificates, protocol, tooling, deposits | 2026-09 |
 
 Affiliation: Zimo Li, Guangdong Technion-Israel Institute of Technology.

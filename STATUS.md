@@ -1,6 +1,7 @@
 # Status
 
-- Maintained by one contributor. Started 2026-11. No institutional backing, no
+- Started by one founder (`Zimo Li`) and published by one maintainer (`JiaxiLEE622`);
+  roles and the reason the two are separate are in `governance/ROLES.md`. Started 2026-11. No institutional backing, no
   funding, no staff. The name describes an intention — to keep a standing record
   of how embodied evaluation is reported — not an existing organisation.
 - What exists today: a frozen input snapshot per release, a deterministic export

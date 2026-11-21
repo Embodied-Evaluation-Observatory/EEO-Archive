@@ -10,6 +10,7 @@ what happens to older conclusions when the protocol changes.
 | 2026-11-15 | ReDA-1.0 | not retained under that name; the file was later renamed and revised | `cd96990` | `certificates/2026-11-15/C1..C6` |
 | 2026-11-17 | ReDA-1.1 | `304e8b71bdfb90fa…` (`reda-protocol.md`) | `ffce49f` | `certificates/2026-11-17/layers.json`, `C7.json` |
 | 2026-11-18 | ReDA-1.2 | `844040b08bf9…` (documentation revision: 0.787 figure, Holm implemented, §5.1 status matches the code, §1 safety wording) | `550e3eb` | `C7` binds the revision |
+| 2026-11-19 | ReDA-1.2 | `844040b08bf9…` (unchanged) | `ce801c9`, card correction in `180ebea` | `certificates/2026-11-19/layers.json`, `C7.json` |
 
 `tools/certify.py` writes the protocol hash into every certificate, so a
 certificate cannot silently point at a protocol that has since been edited.
@@ -20,9 +21,10 @@ certificate cannot silently point at a protocol that has since been edited.
 |---|---|---|---|
 | 1 | `10.5281/zenodo.24269292` | 2026-11-15 release | still citable |
 | 2 | `10.5281/zenodo.24288113` | 2026-11-15 files, 2026-11-18 metadata | published before the file swap; superseded, never to be cited |
-| 3 | `10.5281/zenodo.24325457` | 2026-11-17 corrected tables plus the redistributed snapshot | current |
+| 3 | `10.5281/zenodo.24325457` | 2026-11-17 corrected tables plus the redistributed snapshot | previous version, still citable |
+| 4 | `10.5281/zenodo.24395810` | 2026-11-19 scene-keyed tables, comparability and frontier tables, probe, certificates, board summary, protocol | current |
 
-Concept DOI `10.5281/zenodo.24269291` is constant across the three. Zenodo does not allow
+Concept DOI `10.5281/zenodo.24269291` is constant across the four. Zenodo does not allow
 published files to be edited, so record 2 remains online; its metadata says which bytes it
 holds. The chain is recorded here rather than smoothed over, because a reader who lands on
 record 2 needs to know why it exists.
