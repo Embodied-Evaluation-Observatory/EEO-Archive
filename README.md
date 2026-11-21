@@ -33,6 +33,8 @@ reader can recompute every number we quote.
 | `governance/DOMAIN_TRANSFER.md` | when a measured correlation may be used outside its own stratum, and how to measure one |
 | `governance/DATA_TERMS.md` | terms for partner logs: de-identification, no redistribution, review rights |
 | `governance/IN_LOOP.md` | auditing an evaluation loop that improves its own judge: correlated judging, ceiling-pinned skills, pruned suites |
+| `governance/pilots/AMR_RHO_PILOT.md` | a 150-attempt design for measuring correlation on one AMR fleet, with its precision |
+| `audits/public-data/2026-11-21/README.md` | twelve public company releases checked for a usable per-attempt label, and what DROID supports |
 
 ## Check it
 

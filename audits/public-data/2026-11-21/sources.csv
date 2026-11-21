@@ -1,0 +1,13 @@
+organisation,dataset,route,declared_license,gated,per_attempt_binary_outcome,label_field,attempts_available,size_class,rho_estimable,why
+Physical Intelligence and 13 institutions,DROID 1.0.1 (lerobot/droid_1.0.1 mirror),public download,Apache-2.0,no,yes,"is_episode_successful, per episode, operator annotated",95658,"label-only read, no video",yes,label reachable from the frame table without downloading video or images
+AGIBOT,AgiBot World 2026,public download,CC-BY-NC-SA-4.0,no,partly,"annotations.json per task: Success Frame, Error Frame, Intervention Frame",thousands per task,about 30 GB per task tar,conditional,labels sit inside 30 GB tars; NC-SA propagates to derived tables
+AGIBOT,AgiBot World Beta,public download,none declared on card,auto,unknown,unknown,unknown,100 TB class,no,terms not stated; derived publication not permitted until clarified
+Fourier Intelligence,FourierIntelligence/samples,request access,none declared,manual,unknown,unknown,small,unknown,no,manual approval; terms must be read before any use
+Unitree Robotics,G1 Dex1 task sets,public download,Apache-2.0,no,no,none,per-task episodes,GB class,no,"teleoperation demonstrations, successes only"
+BAAI DataCube / RoboMIND,robomind_benchmark1_0_release_*,public download,Apache-2.0,no,no,none in the LeRobot mirror,105 per task,1.4 GB per task,no,demonstration-only conversion; no failure label
+x-humanoid-robomind,RoboMIND original,request access,Apache-2.0,auto,partly,success annotation reported in the original package,per-task 10-episode packages,GB class,conditional,needs account; verify label semantics before use
+Google DeepMind and 21 institutions,Open X-Embodiment subsets (jxu124 mirror),public download,CC-BY-4.0,no,partly,success or failure fields in some subsets only,varies by subset,about 750 MB per tar per subset,conditional,labels inside tfrecord shards; per-subset triage needed
+haosulab,RoboCasa,public download,MIT,no,yes,success flag in simulated rollouts,large,GB class,no,"simulated rollouts, not company deployment data"
+AGIBOT,GenieSim 3.0,public download,none declared,no,partly,simulated task outcomes,large,GB class,no,simulated; same reason
+"Tesla, Figure, 1X, Apptronik",none located,-,-,-,no,-,0,-,no,no public per-attempt record found as of 2026-11-21
+"Industrial AMR vendors, including the party that asked",none located,-,-,-,no,-,0,-,no,no public per-attempt record; the pilot in governance/pilots/AMR_RHO_PILOT.md is the route

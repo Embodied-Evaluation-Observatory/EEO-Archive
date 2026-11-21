@@ -1,0 +1,11 @@
+{
+ "generated": "2026-11-21",
+ "source": "lerobot/droid_1.0.1 (mirror of DROID 1.0.1)",
+ "episodes": 95658,
+ "sites": 74,
+ "mean_success": 0.8244,
+ "cells_published": 6815,
+ "attempts_in_published_cells": 48020,
+ "zero_variance_share_published_cells": 0.9859,
+ "sha256_cells_derived": "009b24b488f2f80101322c2f7993caaca0621b5e52e373e56d62df4b33831cca"
+}
