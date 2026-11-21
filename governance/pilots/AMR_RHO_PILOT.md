@@ -39,6 +39,15 @@ text, no names), video (y/n)`
 
 Free text carries no operator names. Site names become codes at intake.
 
+## Files that go with this page
+
+- `amr_attempt_log_template.csv` — the recording sheet, one row per attempt, with two rows
+  marked EXAMPLE to show the format. Delete them before a real run.
+- `pilot_rho.py` — reads that sheet and prints rho, the cluster-bootstrap interval, the
+  zero-variance share and the design effect. It refuses to run on EXAMPLE rows, on missing
+  columns, or on a log whose outcome is not binary, so a half-defined run fails loudly
+  instead of producing a number.
+
 ## How to compute
 
 1. rho is a one-way intraclass correlation over the fifteen cells, estimated from a

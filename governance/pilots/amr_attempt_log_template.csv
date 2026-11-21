@@ -1,0 +1,3 @@
+attempt_id,date,site_code,task_type,config_label,attempt_index,outcome_primary,outcome_secondary,takeover,resets,retries,duration_min,judge_role,notes,video
+EXAMPLE-001,2026-11-21,SH-A,pick_place,cfg1,1,0,0,1,0,0,4.2,operator,EXAMPLE ROW: delete before use,0
+EXAMPLE-002,2026-11-21,SH-A,pick_place,cfg1,2,1,1,0,0,0,3.8,operator,EXAMPLE ROW: delete before use,0
