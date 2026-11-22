@@ -68,60 +68,31 @@ ul.status li:last-child{border-bottom:0}
 
 <header>
   <h1>EEO Archive — dashboard</h1>
-  <p class="sub">Release 2026-11-19: 274 cells, 4,239 attempts, 25 models, 5 benchmarks. Every figure below is recomputed from published tables; nothing is read off a chart.</p>
+  <p class="sub">Release 2026-11-19 &middot; 274 cells &middot; 4,239 attempts &middot; 25 models &middot; 5 benchmarks.
+  Three questions, one per section: is the spread between runs real, how many attempts a claim needs,
+  and can someone else recompute it. Every figure is recomputed from published tables; nothing is read off a chart.</p>
   <nav>
     <a href="index.html">Home</a>
-    <a href="reda-protocol.md">Protocol</a>
     <a href="public/2026-11-19/release_summary.csv">release_summary.csv</a>
     <a href="certificates/2026-11-19/C7.json">Certificate C7</a>
+    <a href="reda-protocol.md">Protocol</a>
+    <a href="governance/REPRODUCTION_INVITATION.md">Reproduction invitation</a>
     <a href="findings/ANTI_PATTERNS.md">Anti-patterns</a>
   </nav>
 </header>
 
 <section>
-  <h2>Headline</h2>
-  <p class="lede">The share of model pairs a record cannot separate, after multiplicity correction. The uncorrected figure is shown beside it because the difference is the finding.</p>
-  <div class="kpis">
-    <div class="kpi"><b>92%</b><span>pairs not separable, Holm-corrected (60% uncorrected)</span></div>
-    <div class="kpi"><b>268</b><span>model–task cells in this release</span></div>
-    <div class="kpi"><b>4,239</b><span>attempts behind them</span></div>
-    <div class="kpi"><b>64%</b><span>cells with a constant outcome across all attempts</span></div>
-  </div>
-</section>
-
-<section>
-  <h2>Correction on every board</h2>
-  <p class="lede">Same bytes, per-pair intervals on the left, Holm step-down on the right. RoboTwin barely moves because each cell carries 100 trials; the boards that move publish few or unstated attempts per cell.</p>
-  <div class="chart">
-    <div class="legend"><span><i style="background:#c9c4b8"></i>per-pair intervals</span><span><i style="background:#0f5c58"></i>Holm step-down</span></div>
-    <div class="brow"><span class="bname">robocurve</span><span class="btrack"><span style="width:60.1%;background:#c9c4b8"></span></span><span class="bval">60.1%</span><span class="btrack"><span style="width:91.6%;background:#0f5c58"></span></span><span class="bval">91.6%</span></div>
-    <div class="brow"><span class="bname">RoboChallenge</span><span class="btrack"><span style="width:74.7%;background:#c9c4b8"></span></span><span class="bval">74.7%</span><span class="btrack"><span style="width:97.8%;background:#0f5c58"></span></span><span class="bval">97.8%</span></div>
-    <div class="brow"><span class="bname">RoboArena</span><span class="btrack"><span style="width:80.8%;background:#c9c4b8"></span></span><span class="bval">80.8%</span><span class="btrack"><span style="width:90.9%;background:#0f5c58"></span></span><span class="bval">90.9%</span></div>
-    <div class="brow"><span class="bname">RoboTwin</span><span class="btrack"><span style="width:4.6%;background:#c9c4b8"></span></span><span class="bval">4.6%</span><span class="btrack"><span style="width:7.3%;background:#0f5c58"></span></span><span class="bval">7.3%</span></div>
-    <p class="sub" style="margin:10px 0 0">Share of model pairs the record cannot separate, per board.</p>
-  </div>
-  <table>
-    <caption>Pair tests per board. Separable pairs are those whose ranking the record supports at the stated correction.</caption>
-    <thead><tr><th>Board</th><th>Pairs</th><th>Separable, none</th><th>Separable, Holm</th><th>Undiscernible, none → Holm</th></tr></thead>
-    <tbody>
-      <tr><td>robocurve (archive strata)</td><td class="num">143</td><td class="num">57</td><td class="num">12</td><td class="num">60.1% → 91.6%</td></tr>
-      <tr><td>RoboChallenge</td><td class="num">681</td><td class="num">172</td><td class="num">15</td><td class="num">74.7% → 97.8%</td></tr>
-      <tr><td>RoboArena</td><td class="num">276</td><td class="num">53</td><td class="num">25</td><td class="num">80.8% → 90.9%</td></tr>
-      <tr><td>RoboTwin</td><td class="num">630</td><td class="num">601</td><td class="num">584</td><td class="num">4.6% → 7.3%</td></tr>
-    </tbody>
-  </table>
-</section>
-
-<section>
-  <h2>Estimates by stratum</h2>
-  <p class="lede">ρ is the intra-cluster correlation between attempts inside a cell. deff is the design effect at 20 attempts per cell; n_eff is how many independent observations one cell is worth.</p>
+  <h2>1 &middot; Data health</h2>
+  <p class="lede">rho is the intra-cluster correlation between attempts inside a cell. deff is the design
+  effect at 20 attempts per cell; n_eff is how many independent observations one cell is worth. Both are
+  consequences of rho, not separate findings.</p>
   <table>
     <caption>Public release tables, 2026-11-19. Intervals are 95%; family rows are the pooled estimate.</caption>
-    <thead><tr><th>Stratum</th><th>ρ</th><th>95% CI</th><th>Cells</th><th>Attempts</th><th>deff</th><th>n_eff</th></tr></thead>
+    <thead><tr><th>Stratum</th><th>rho</th><th>95% CI</th><th>Cells</th><th>Attempts</th><th>deff</th><th>n_eff</th></tr></thead>
     <tbody>
-      <tr><td>completion_family</td><td class="num">0.502</td><td class="num">0.340–0.636</td><td class="num">103</td><td class="num">2,371</td><td class="num">10.5</td><td class="num">1.90</td></tr>
-      <tr><td>attempt_family</td><td class="num">0.695</td><td class="num">0.534–0.807</td><td class="num">107</td><td class="num">1,598</td><td class="num">14.2</td><td class="num">1.41</td></tr>
-      <tr><td>safety_family</td><td class="num">0.684</td><td class="num">0.227–0.894</td><td class="num">64</td><td class="num">1,396</td><td class="num">14.0</td><td class="num">1.43</td></tr>
+      <tr><td>completion family</td><td class="num">0.502</td><td class="num">0.340–0.636</td><td class="num">103</td><td class="num">2,371</td><td class="num">10.5</td><td class="num">1.90</td></tr>
+      <tr><td>attempt family</td><td class="num">0.695</td><td class="num">0.534–0.807</td><td class="num">107</td><td class="num">1,598</td><td class="num">14.2</td><td class="num">1.41</td></tr>
+      <tr><td>safety family</td><td class="num">0.684</td><td class="num">0.227–0.894</td><td class="num">64</td><td class="num">1,396</td><td class="num">14.0</td><td class="num">1.43</td></tr>
       <tr><td>RoboDojo-RC task success</td><td class="num">0.501</td><td class="num">0.343–0.625</td><td class="num">96</td><td class="num">2,151</td><td class="num">10.5</td><td class="num">1.90</td></tr>
       <tr><td>Simple-tasks task success</td><td class="num">0.531</td><td class="num">0.000–0.804</td><td class="num">7</td><td class="num">220</td><td class="num">11.1</td><td class="num">1.80</td></tr>
       <tr><td>RoboHarm unsafe execution</td><td class="num">0.484</td><td class="num">0.340–0.604</td><td class="num">32</td><td class="num">698</td><td class="num">10.2</td><td class="num">1.96</td></tr>
@@ -140,60 +111,118 @@ ul.status li:last-child{border-bottom:0}
   <div class="panels">
     <div class="panel">
       <h3>Constant-outcome cells</h3>
-      <p class="sub" style="margin:0 0 12px">174 of 274 cells end the same way on every attempt. They carry no information about correlation, are listed separately, and remain in the pooled estimate.</p>
+      <p class="sub" style="margin:0 0 12px">174 of 274 cells end the same way on every attempt. They carry
+      no information about correlation, are listed separately, and remain in the pooled estimate.</p>
       <div class="bar"><span class="name">RoboDojo-RC</span><span class="track"><span class="fill" style="width:66.7%"></span></span><span class="val">64</span></div>
       <div class="bar"><span class="name">RoboHarm</span><span class="track"><span class="fill" style="width:56.3%"></span></span><span class="val">54</span></div>
       <div class="bar"><span class="name">RoboSpoof</span><span class="track"><span class="fill" style="width:57.3%"></span></span><span class="val">55</span></div>
       <div class="bar"><span class="name">Simple-tasks</span><span class="track"><span class="fill" style="width:1%"></span></span><span class="val">1</span></div>
-      <p class="sub" style="margin:12px 0 0">Per benchmark, in cells. Source: <a href="public/2026-11-19/zero_variance_cells.csv">zero_variance_cells.csv</a>.</p>
+      <p class="sub" style="margin:12px 0 0">Per benchmark, in cells. Source:
+      <a href="public/2026-11-19/zero_variance_cells.csv">zero_variance_cells.csv</a>.</p>
     </div>
     <div class="panel">
       <h3>Cells below the 30-attempt gate</h3>
-      <p class="sub" style="margin:0 0 12px">251 of 274 cells hold fewer than 30 attempts, median 20. Their correlations and zero-failure bounds are unstable; the published values stand, with a flag.</p>
+      <p class="sub" style="margin:0 0 12px">251 of 274 cells hold fewer than 30 attempts, median 20.
+      Their correlations and zero-failure bounds are unstable; the published values stand, with a flag.</p>
       <div class="bar"><span class="name">12 attempts</span><span class="track"><span class="fill" style="width:44%"></span></span><span class="val">75</span></div>
       <div class="bar"><span class="name">20 attempts</span><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">172</span></div>
-      <div class="bar"><span class="name">38–40 attempts</span><span class="track"><span class="fill" style="width:12%"></span></span><span class="val">21</span></div>
-      <div class="bar"><span class="name">16–19 attempts</span><span class="track"><span class="fill" style="width:2%"></span></span><span class="val">4</span></div>
+      <div class="bar"><span class="name">38&ndash;40 attempts</span><span class="track"><span class="fill" style="width:12%"></span></span><span class="val">21</span></div>
+      <div class="bar"><span class="name">16&ndash;19 attempts</span><span class="track"><span class="fill" style="width:2%"></span></span><span class="val">4</span></div>
       <div class="bar"><span class="name">60 attempts</span><span class="track"><span class="fill" style="width:1%"></span></span><span class="val">2</span></div>
-      <p class="sub" style="margin:12px 0 0">Per cell, by attempts. Source: <a href="public/2026-11-19/cells.csv">cells.csv</a>.</p>
+      <p class="sub" style="margin:12px 0 0">Per cell, by attempts. Source:
+      <a href="public/2026-11-19/cells.csv">cells.csv</a>.</p>
     </div>
   </div>
 </section>
 
 <section>
-  <h2>Provenance card</h2>
-  <p class="lede">Five submission checks, run on the 2026-11-17 snapshot. Three are computable from published data, one is partial, one is not implemented. A flag never deletes a record.</p>
+  <h2>2 &middot; Sample budget</h2>
+  <p class="lede">A cell cannot be made precise by repeating it. The effective count a cell can ever reach
+  is <b>1/rho</b>. At the completion family's 0.50 that is 2 independent observations, however many attempts
+  go into the cell. Precision has to come from cells, and the arithmetic below says how many.</p>
+  <div class="panels">
+    <div class="panel">
+      <h3>Attempts saturate</h3>
+      <p class="sub" style="margin:0 0 10px">Ten attempts per cell already reach 90% of what a cell can
+      deliver at rho&#8776;0.50; the current median is 20. Beyond the saturation point, extra attempts inside
+      one cell buy almost nothing.</p>
+      <table style="font-size:.84rem">
+        <thead><tr><th>Family</th><th>rho</th><th>ceiling</th><th>attempts to 90%</th></tr></thead>
+        <tbody>
+          <tr><td>completion</td><td class="num">0.503</td><td class="num">2.0</td><td class="num">9</td></tr>
+          <tr><td>attempt</td><td class="num">0.695</td><td class="num">1.4</td><td class="num">4</td></tr>
+          <tr><td>safety</td><td class="num">0.685</td><td class="num">1.5</td><td class="num">4</td></tr>
+        </tbody>
+      </table>
+      <p class="sub" style="margin:12px 0 0">ceiling = 1/rho; attempts to 90% = 9(1&minus;rho)/rho.</p>
+    </div>
+    <div class="panel">
+      <h3>Cells needed for a target half-width</h3>
+      <p class="sub" style="margin:0 0 10px">At p&#8776;0.5, independent observations needed are
+      z<sup>2</sup>0.25/h<sup>2</sup>; cells needed are that count times rho, because each cell is worth 1/rho.
+      These are arithmetic on the measured rho, not new estimates.</p>
+      <table style="font-size:.84rem">
+        <thead><tr><th>Target h</th><th>rho=0.50</th><th>rho=0.69</th><th>rho=0.68</th></tr></thead>
+        <tbody>
+          <tr><td>&plusmn;0.10</td><td class="num">48</td><td class="num">67</td><td class="num">66</td></tr>
+          <tr><td>&plusmn;0.05</td><td class="num">193</td><td class="num">267</td><td class="num">263</td></tr>
+          <tr><td>&plusmn;0.02</td><td class="num">1,206</td><td class="num">1,668</td><td class="num">1,643</td></tr>
+        </tbody>
+      </table>
+      <p class="sub" style="margin:12px 0 0">A claim good to &plusmn;2 points needs about 1,200 cells at
+      rho&#8776;0.50 &mdash; the reason this archive reports intervals instead of ranking models.</p>
+    </div>
+  </div>
+  <p class="lede" style="margin-top:18px">A budget is only a budget if it is written before the run; one
+  produced afterwards is a precision assessment. A one-fleet design that fits in a week:
+  <a href="governance/pilots/AMR_RHO_PILOT.md">150 attempts, three task types, five configurations</a>.</p>
+</section>
+
+<section>
+  <h2>3 &middot; Reproduction</h2>
+  <p class="lede">The published tables follow from the published attempts, and this is checkable from a clean
+  clone. What the archive cannot issue is the outside run: a check performed by someone who does not hold the
+  key. The request and the procedure are in
+  <a href="governance/REPRODUCTION_INVITATION.md">REPRODUCTION_INVITATION.md</a>.</p>
+  <div class="panel" style="font-size:.85rem">
+    <code>python3 tools/verify_public.py --release 2026-11-19 --input releases/2026-11-17/robocurve_allruns.json</code><br>
+    <code>python3 tools/preflight.py --release 2026-11-19 --input releases/2026-11-17/robocurve_allruns.json --zenodo-dir &lt;deposit copy&gt;</code>
+    <p class="sub" style="margin:12px 0 0">The first recomputes the summary from the attempts and exits zero on
+    agreement. The second adds the deposit check; without a local copy of the deposit it blocks that item by
+    design and says so. <code>governance/verification_partners.csv</code> carries only its header: no outside
+    run has been recorded, and the file is not filled in with friendly-sounding entries.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Source-side checks</h2>
+  <p class="lede">Five submission checks, run on the 2026-11-17 snapshot. Three are computable from published
+  data, one is partial, one is not implemented. A flag never deletes a record.</p>
   <div class="panels">
     <div class="panel">
       <h3>Status</h3>
       <ul class="status">
-        <li><span class="tag c">computed</span><span>Share concentration — top three models hold 8.3% of RoboTwin trials</span></li>
-        <li><span class="tag c">computed</span><span>Temporal clustering — 769 RoboChallenge cells with timestamps; 10 in the busiest hour, 15 sharing a minute</span></li>
-        <li><span class="tag c">computed</span><span>Pairwise consistency — 192 RoboTwin pairs agree on every shared task</span></li>
-        <li><span class="tag p">partial</span><span>Selective submission — 32,980 episodes against 769 cells, 42.9 per cell; per-cell counts unstated</span></li>
-        <li><span class="tag n">absent</span><span>Contamination probe — no perturbed task variant has been run</span></li>
+        <li><span class="tag c">computed</span><span>Share concentration &mdash; top three models hold 8.3% of RoboTwin trials</span></li>
+        <li><span class="tag c">computed</span><span>Temporal clustering &mdash; 769 RoboChallenge cells with timestamps; 10 in the busiest hour, 15 sharing a minute</span></li>
+        <li><span class="tag c">computed</span><span>Pairwise consistency &mdash; 192 RoboTwin pairs agree on every shared task</span></li>
+        <li><span class="tag p">partial</span><span>Selective submission &mdash; 32,980 episodes against 769 cells, 42.9 per cell; per-cell counts unstated</span></li>
+        <li><span class="tag n">absent</span><span>Contamination probe &mdash; no perturbed task variant has been run</span></li>
       </ul>
     </div>
     <div class="panel">
       <h3>What the flags do not say</h3>
-      <p class="sub" style="margin:0">A high concentration share can be a single large lab publishing many runs. A batch of submissions in one hour can be one evaluation sweep. Perfect pairwise consistency can mean the tasks are too easy to separate models. Each pattern is reported with its reading, not as a verdict.</p>
-      <p class="sub" style="margin:12px 0 0">Full card: <a href="findings/provenance_2026-11-17.md">provenance_2026-11-17.md</a>.</p>
+      <p class="sub" style="margin:0">A high concentration share can be a single large lab publishing many runs.
+      A batch of submissions in one hour can be one evaluation sweep. Perfect pairwise consistency can mean the
+      tasks are too easy to separate models. Each pattern is reported with its reading, not as a verdict.</p>
+      <p class="sub" style="margin:12px 0 0">Full card:
+      <a href="findings/provenance_2026-11-17.md">provenance_2026-11-17.md</a>.</p>
     </div>
   </div>
 </section>
 
-<section>
-  <h2>Reproduce</h2>
-  <p class="lede">Three commands regenerate everything on this page from the repository.</p>
-  <div class="panel" style="font-size:.85rem">
-    <code>python3 tools/verify_public.py --release 2026-11-19 --input releases/2026-11-17/robocurve_allruns.json</code><br>
-    <code>python3 tools/provenance_check.py --snapshot 2026-11-17</code>
-  </div>
-</section>
-
 <p class="foot">
-EEO Archive · release 2026-11-19 · DOI
-<a href="https://doi.org/10.5281/zenodo.24395810">10.5281/zenodo.24395810</a> ·
+EEO Archive &middot; release 2026-11-19 &middot; DOI
+<a href="https://doi.org/10.5281/zenodo.24395810">10.5281/zenodo.24395810</a> &middot;
 concept DOI <a href="https://doi.org/10.5281/zenodo.24269291">10.5281/zenodo.24269291</a>.
 The archive checks the numbers published evaluations carry; it runs no robot and certifies no system.
 </p>

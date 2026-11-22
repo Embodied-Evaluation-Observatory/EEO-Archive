@@ -1,5 +1,5 @@
 {
-  "title": "EEO Archive, release 2026-11-15: public tables of the Repetition and Discernibility Audit",
+  "title": "EEO Archive, release 2026-11-19: public tables of the Repetition and Discernibility Audit",
   "upload_type": "dataset",
   "license": {
     "id": "other-open"
@@ -10,17 +10,28 @@
       "name": "Embodied Evaluation Observatory"
     }
   ],
-  "description": "<p>Per-attempt records of public robot evaluations, re-published as three flat tables, together with the intra-cluster correlation estimates, design effects and effective sample sizes that follow from them.</p><p>The observatory does not evaluate robots. It audits published evaluations for statistical reliability. Every estimate quoted here can be recomputed from the published table alone, without access to the sealed source bytes, using <code>tools/verify_public.py</code>.</p><p><b>Licence, three blocks.</b> (1) The compilation, the de-identification and all computed statistics are CC-BY-4.0; attribute as <i>EEO Archive, release 2026-11-15</i>. (2) The per-attempt result fields originate in the public source archive named in the dataset card; their rights remain with the source, and this deposit cites them as facts without relicensing them. (3) The sealed source bytes are not redistributed; their sha256 hashes are published so that a holder can verify a copy. The deposit as a whole is therefore offered as other-open, not as CC-BY-4.0 over third-party content.</p><p>Scope: this deposit contains records and reliability measurements, not evaluation conclusions about any robot or model.</p>",
+  "description": "<p>Per-attempt records of public robot evaluations, re-published as flat tables, with the intra-cluster correlation estimates, design effects and effective sample sizes that follow from them.</p><p>The observatory does not evaluate robots. It checks the numbers evaluations publish: whether the spread between runs is real, and how many attempts a claim needs before its interval means anything. Every estimate quoted here can be recomputed from the published table alone, using <code>tools/verify_public.py</code>.</p><p><b>Licence, three blocks.</b> (1) The compilation, the de-identification and all computed statistics are CC-BY-4.0; attribute as <i>EEO Archive, release 2026-11-19</i>. (2) The per-attempt result fields originate in the public source archive named in the dataset card; their rights remain with the source, and this deposit cites them as facts without relicensing them. (3) From release 2026-11-17 the snapshot is redistributed so the export can be re-run; those copies are hashed and published, so anyone holding one can verify it. The deposit as a whole is therefore offered as other-open, not as CC-BY-4.0 over third-party content.</p><p>Scope: this deposit contains records and reliability measurements, not evaluation conclusions about any robot or model.</p>",
   "keywords": [
     "robot benchmarking",
     "evaluation variance",
     "intra-cluster correlation",
     "design effect",
+    "sample budget",
     "zero-failure certification",
     "rank stability"
   ],
-  "notes": "Release hash c0bd689f26900f488802ed21159c55c5a40ca5cde6064cb91fbe9795ce93b7db. Protocol: Repetition and Discernibility Audit (ReDA), version 1.0.",
+  "notes": "Release 2026-11-19, DOI 10.5281/zenodo.24395810 (concept 10.5281/zenodo.24269291). The tables are hashed in public/2026-11-19/checksums.txt; that file's own sha256 is fa5a2e051a0f8d7dc587f03a1908c316ac6e0bc31e4fc3fa9c97d5beda5a73d3. Protocol: ReDA 1.2. Tag v2026.11.22 marks the range correction; v2026.11.22.1 adds the signing key and the signature audit tool.",
   "related_identifiers": [
+    {
+      "identifier": "https://github.com/Embodied-Evaluation-Observatory/EEO-Archive",
+      "relation": "isSupplementTo",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://doi.org/10.5281/zenodo.24269291",
+      "relation": "isPartOf",
+      "resource_type": "dataset"
+    },
     {
       "identifier": "https://embodied-evaluation.org",
       "relation": "isDocumentedBy",
