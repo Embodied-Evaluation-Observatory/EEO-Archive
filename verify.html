@@ -179,11 +179,11 @@ $('sum').onchange=e=>{sumFile=e.target.files[0]||null;sumText='';ready();};
 $('own').onclick=async()=>{
   $('hint').textContent='loading...';
   try{
-    const a=await fetch('public/2026-11-17/attempts.csv');const s=await fetch('public/2026-11-17/release_summary.csv');
+    const a=await fetch('public/2026-11-19/attempts.csv');const s=await fetch('public/2026-11-19/release_summary.csv');
     if(!a.ok||!s.ok) throw new Error('files not reachable');
     attText=await a.text();sumText=await s.text();
-    attFile={name:'attempts.csv (release 2026-11-17)'};sumFile={name:'release_summary.csv (release 2026-11-17)'};
-    $('hint').textContent='loaded release 2026-11-17 from this site';
+    attFile={name:'attempts.csv (release 2026-11-19)'};sumFile={name:'release_summary.csv (release 2026-11-19)'};
+    $('hint').textContent='loaded release 2026-11-19 from this site';
     run();
   }catch(err){$('hint').textContent='could not load the hosted files ('+err.message+'); upload them instead';}
 };
@@ -207,7 +207,7 @@ async function run(){
   ${res.fails.length?`<pre>${res.fails.join('\n').replace(/</g,'&lt;')}</pre>`:''}
   <p style="margin-top:16px"><button id="rec" class="ghost">Download receipt</button> <span style="color:var(--muted);font-size:13px">${ms} ms, computed in this browser</span></p>`;
   $('rec').onclick=async()=>{
-    const receipt={tool:'verify.html',tool_version:'2026-11-18',release_ref:'2026-11-17 (or uploaded tables)',checked_at_utc:new Date().toISOString(),
+    const receipt={tool:'verify.html',tool_version:'2026-11-23',release_ref:'2026-11-19 (or uploaded tables)',checked_at_utc:new Date().toISOString(),
       inputs:{attempts_sha256:await sha256(new TextEncoder().encode(attText)),summary_sha256:await sha256(new TextEncoder().encode(sumText))},
       result:res.ok?'pass':'fail',fails:res.fails,not_checked:res.notChecked,
       recomputed:{strata:res.strata,families:res.families},

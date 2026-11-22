@@ -43,57 +43,59 @@
 <div class="wrap">
 
   <h1>Embodied Evaluation Observatory</h1>
-  <p class="sub">Statistics for robot evaluation records · Repetition and Discernibility Audit (ReDA)</p>
+  <p class="sub">Statistics for published robot evaluations · data health and sample budget</p>
 
-  <p class="lede">We do not evaluate robots. We audit the evaluations. <a href="dashboard.html">Audit dashboard</a>.</p>
+  <p class="lede">We do not evaluate robots. We check the numbers evaluations publish: whether the spread between
+  runs is real, and how many attempts a claim needs before its interval means anything. <a href="dashboard.html">Dashboard</a>.</p>
   <p class="lede-2">We take published evaluation records, measure how much of the variation in them is repetition
   rather than capability, and report what a record can and cannot support. We produce no robot performance data of
   our own.</p>
 
   <div class="kpis">
     <div class="kpi"><b>0.503</b><span>intra-cluster correlation, completion family, 95% CI [0.340, 0.636]</span></div>
-    <div class="kpi"><b>10.3</b><span>design effect at 20 attempts per cell</span></div>
-    <div class="kpi"><b>1.94</b><span>effective independent samples per cell</span></div>
-    <div class="kpi"><b>92%</b><span>model pairs the record cannot separate after multiplicity correction; 60% under per-pair intervals</span></div>
+    <div class="kpi"><b>10.5</b><span>design effect at 20 attempts per cell</span></div>
+    <div class="kpi"><b>1.90</b><span>effective independent samples per cell</span></div>
+    <div class="kpi"><b>0.48–0.82</b><span>the same correlation across eight strata of one release; no single value transfers</span></div>
   </div>
-  <p class="cap">Release 2026-11-17 · 268 cells · 4,239 attempts · 25 models · 5 benchmarks. Reproducible from the
+  <p class="cap">Release 2026-11-19 · 274 cells · 4,239 attempts · 25 models · 5 benchmarks. Reproducible from the
   published tables alone.</p>
 
   <hr class="rule">
 
   <h2>Archive</h2>
   <ul>
-    <li><a href="public/2026-11-17/DATASET_CARD.md">Release 2026-11-17 dataset card</a> — provenance, field dictionary, licence blocks</li>
-    <li><a href="public/2026-11-17/release_summary.csv">release_summary.csv</a> — stratum and merged estimates, design effects</li>
-    <li><a href="public/2026-11-17/cells.csv">cells.csv</a> — one row per model-task cell</li>
-    <li><a href="public/2026-11-17/attempts.csv">attempts.csv</a> — one row per attempt, 4,239 rows</li>
-    <li><a href="releases/2026-11-17/manifest.json">manifest</a> — hashes of the source bytes, which this release also redistributes</li><li><a href="certificates/2026-11-17/C7.json">certificate C7</a> · <a href="ACCESS.md">access per release</a> · <a href="findings/ANTI_PATTERNS.md">six design anti-patterns</a> · <a href="findings/selfcheck_2026-11-17.md">self-check</a></li>
+    <li><a href="public/2026-11-19/DATASET_CARD.md">Release 2026-11-19 dataset card</a> — provenance, field dictionary, licence blocks</li>
+    <li><a href="public/2026-11-19/release_summary.csv">release_summary.csv</a> — stratum and merged estimates, design effects</li>
+    <li><a href="public/2026-11-19/cells.csv">cells.csv</a> — one row per model-task cell</li>
+    <li><a href="public/2026-11-19/attempts.csv">attempts.csv</a> — one row per attempt, 4,239 rows</li>
+    <li><a href="releases/2026-11-19/manifest.json">manifest</a> — hashes of the source bytes, which this release also redistributes</li><li><a href="certificates/2026-11-19/C7.json">certificate C7</a> · <a href="ACCESS.md">access per release</a> · <a href="findings/ANTI_PATTERNS.md">six design anti-patterns</a> · <a href="findings/selfcheck_2026-11-17.md">self-check</a></li>
   </ul>
 
   <h2>Verify</h2>
   <p>Every number on this page is recomputed from the published tables, and the source bytes ship with the release:</p>
-  <pre>python3 tools/verify_public.py --release 2026-11-17 --input releases/2026-11-17/robocurve_allruns.json
+  <pre># the 2026-11-19 release reuses the snapshot sealed in 2026-11-17
+python3 tools/verify_public.py --release 2026-11-19 --input releases/2026-11-17/robocurve_allruns.json
 
 completion_family   rho=0.5025 CI=[0.3396, 0.6362]
-attempt_family      rho=0.6707 CI=[0.5433, 0.7679]
-safety_family       rho=0.6229 CI=[0.2388, 0.8384]
+attempt_family      rho=0.6949 CI=[0.5344, 0.8071]
+safety_family       rho=0.6845 CI=[0.2274, 0.8945]
 PASS: published summary reproduces from attempts.csv</pre>
 
   <h2>Protocol</h2>
-  <p>Method and reporting obligations: <a href="reda-protocol.md">Repetition and Discernibility Audit, version 1.0</a>.
+  <p>Method and reporting obligations: <a href="reda-protocol.md">the protocol specification, version 1.2</a>.
   The protocol states what we publish each release, what we check in a source, and five commitments — including that
   we never delete a record and never sell a rank.</p>
 
   <h2>Licence</h2>
   <p>Three blocks. Our compilation and all computed statistics are CC-BY-4.0. The per-attempt result fields remain
   under the source archive's terms; we cite them and do not relicense them. From release 2026-11-17 the snapshot is redistributed so the export can be re-run;
-  redistributed — their hashes are published so a holder can verify a copy.
+  copies we hold are hashed and published, so anyone holding one can verify it.
   <a href="LICENSE-DATA.md">Full statement</a>.</p>
 
   <p class="foot">
-    Embodied Evaluation Observatory · release 2026-11-17 ·
-    release hash <code>c0bd689f…93b7db</code><br>
-    DOI <a href="https://doi.org/10.5281/zenodo.24325457">10.5281/zenodo.24325457</a> · concept DOI <a href="https://doi.org/10.5281/zenodo.24269291">10.5281/zenodo.24269291</a>
+    Embodied Evaluation Observatory · release 2026-11-19 ·
+    every table hashed in <code>public/2026-11-19/checksums.txt</code><br>
+    DOI <a href="https://doi.org/10.5281/zenodo.24395810">10.5281/zenodo.24395810</a> · concept DOI <a href="https://doi.org/10.5281/zenodo.24269291">10.5281/zenodo.24269291</a>
   </p>
 
 </div>
