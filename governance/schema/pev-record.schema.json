@@ -6,7 +6,8 @@
   "additionalProperties": false,
   "required": [
     "pev_id", "module", "level", "window", "claim_under_test", "claim_locator",
-    "source_files", "fields_checked", "anomalies", "not_verified", "signer", "verify"
+    "source_files", "fields_checked", "anomalies", "not_verified", "use_limitation",
+    "signer", "verify"
   ],
   "properties": {
     "pev_id": {
@@ -104,6 +105,17 @@
           "field": { "type": "string", "minLength": 1 },
           "reason": { "type": "string", "minLength": 1 }
         }
+      }
+    },
+    "use_limitation": {
+      "description": "Fixed statement printed on the record itself, so no reader has to look for the non-goals in the protocol.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text_version", "en", "zh"],
+      "properties": {
+        "text_version": { "const": "EEO-UL-1" },
+        "en": { "type": "string", "minLength": 1 },
+        "zh": { "type": "string", "minLength": 1 }
       }
     },
     "signer": {

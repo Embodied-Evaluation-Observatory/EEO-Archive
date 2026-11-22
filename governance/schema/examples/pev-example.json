@@ -2,7 +2,10 @@
   "pev_id": "PEV-20261121-droid-zerovar",
   "module": "M2",
   "level": "L1",
-  "window": { "start": "2026-11-20", "end": "2026-11-21" },
+  "window": {
+    "start": "2026-11-20",
+    "end": "2026-11-21"
+  },
   "claim_under_test": "Among the 6,815 cells with at least two attempts, 98.6% are zero-variance",
   "claim_locator": {
     "source_file": "audits/public-data/2026-11-21/README.md",
@@ -30,7 +33,12 @@
       "evidence": "6,815 cells, 98.6% zero-variance"
     }
   ],
-  "denominator": { "randomized": 95658, "analysed": 95658, "reported": 95658, "closed": true },
+  "denominator": {
+    "randomized": 95658,
+    "analysed": 95658,
+    "reported": 95658,
+    "closed": true
+  },
   "anomalies": [],
   "not_verified": [
     {
@@ -38,7 +46,16 @@
       "reason": "labels were read by column projection; instruction strings were not checked for renaming between shards"
     }
   ],
-  "signer": { "name": "Zimo Li", "role": "Founder", "date": "2026-11-21" },
+  "use_limitation": {
+    "text_version": "EEO-UL-1",
+    "en": "This verification concerns the statistical reproducibility of evaluation data only. It is not an assessment of the value of a data asset, of title or ownership, or of any financing capacity, and it may not be cited as one.",
+    "zh": "本核验仅针对评估数据的统计可复现性，不构成对数据资产价值、产权归属或任何融资能力的认定，也不得被援引为上述认定。"
+  },
+  "signer": {
+    "name": "Zimo Li",
+    "role": "Founder",
+    "date": "2026-11-21"
+  },
   "verify": {
     "command": "python3 governance/schema/validate.py governance/schema/examples/pev-example.json",
     "expected": "OK  pev-example.json  (pev)"

@@ -22,7 +22,10 @@
     "method": "one-way ICC over site means with cluster bootstrap over sites",
     "formula": "rho = (MSB - MSW) / (MSB + (k - 1) MSW)",
     "seed": 20261121,
-    "software": { "name": "python", "version": "3.12.11" },
+    "software": {
+      "name": "python",
+      "version": "3.12.11"
+    },
     "tolerance": 0.005
   },
   "outputs": [
@@ -57,7 +60,16 @@
     "This is not an estimate for any other snapshot of DROID.",
     "This is not a statement about any vendor's capability."
   ],
-  "signer": { "name": "Zimo Li", "role": "Founder", "date": "2026-11-21" },
+  "use_limitation": {
+    "text_version": "EEO-UL-1",
+    "en": "This verification concerns the statistical reproducibility of evaluation data only. It is not an assessment of the value of a data asset, of title or ownership, or of any financing capacity, and it may not be cited as one.",
+    "zh": "本核验仅针对评估数据的统计可复现性，不构成对数据资产价值、产权归属或任何融资能力的认定，也不得被援引为上述认定。"
+  },
+  "signer": {
+    "name": "Zimo Li",
+    "role": "Founder",
+    "date": "2026-11-21"
+  },
   "verify": {
     "command": "python3 governance/schema/validate.py governance/schema/examples/receipt-example.json",
     "expected": "OK  receipt-example.json  (receipt)"

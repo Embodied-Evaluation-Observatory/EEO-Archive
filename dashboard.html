@@ -164,13 +164,16 @@ ul.status li:last-child{border-bottom:0}
       <table style="font-size:.84rem">
         <thead><tr><th>Target h</th><th>rho=0.50</th><th>rho=0.69</th><th>rho=0.68</th></tr></thead>
         <tbody>
-          <tr><td>&plusmn;0.10</td><td class="num">48</td><td class="num">67</td><td class="num">66</td></tr>
-          <tr><td>&plusmn;0.05</td><td class="num">193</td><td class="num">267</td><td class="num">263</td></tr>
-          <tr><td>&plusmn;0.02</td><td class="num">1,206</td><td class="num">1,668</td><td class="num">1,643</td></tr>
+          <tr><td>&plusmn;0.10</td><td class="num">49</td><td class="num">67</td><td class="num">66</td></tr>
+          <tr><td>&plusmn;0.05</td><td class="num">194</td><td class="num">267</td><td class="num">263</td></tr>
+          <tr><td>&plusmn;0.02</td><td class="num">1,207</td><td class="num">1,669</td><td class="num">1,644</td></tr>
         </tbody>
       </table>
       <p class="sub" style="margin:12px 0 0">A claim good to &plusmn;2 points needs about 1,200 cells at
-      rho&#8776;0.50 &mdash; the reason this archive reports intervals instead of ranking models.</p>
+      rho&#8776;0.50 &mdash; the reason this archive reports intervals instead of ranking models.
+      Both tables recompute with <code>python3 tools/sample_budget.py --rho 0.502 --half-width 0.10</code>;
+      the tool returns the smallest integer that satisfies the arithmetic, so a rounded figure in prose may
+      differ from these by one.</p>
     </div>
   </div>
   <p class="lede" style="margin-top:18px">A budget is only a budget if it is written before the run; one

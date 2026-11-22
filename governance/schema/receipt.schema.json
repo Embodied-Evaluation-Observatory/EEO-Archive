@@ -7,7 +7,7 @@
   "required": [
     "receipt_id", "receipt_version", "issued_utc", "module", "level", "claim", "scope",
     "inputs", "derivation", "outputs", "checks", "comparability", "not_supported",
-    "signer", "verify"
+    "use_limitation", "signer", "verify"
   ],
   "properties": {
     "receipt_id": {
@@ -119,6 +119,17 @@
       "minItems": 1,
       "description": "Statements a reader might wrongly draw. At least one entry is required: every record supports less than it could appear to.",
       "items": { "type": "string", "minLength": 1 }
+    },
+    "use_limitation": {
+      "description": "Fixed statement printed on the record itself, so no reader has to look for the non-goals in the protocol.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text_version", "en", "zh"],
+      "properties": {
+        "text_version": { "const": "EEO-UL-1" },
+        "en": { "type": "string", "minLength": 1 },
+        "zh": { "type": "string", "minLength": 1 }
+      }
     },
     "signer": {
       "type": "object",

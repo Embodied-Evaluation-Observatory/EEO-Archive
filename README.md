@@ -37,6 +37,8 @@ reader can recompute every number we quote.
 | `tools/export_public.py` | produces the public tables from sealed bytes |
 | `tools/verify_public.py` | recomputes the summary from the public table alone |
 | `tools/freeze_release.py` | creates an immutable release; refuses to overwrite one |
+| `tools/sample_budget.py` | cell counts for a target bound or half-width; `--check` reproduces protocol section 4 |
+| `tools/check_signing.py` | total, signed and unsigned commits, and whether `STATUS.md` still matches |
 | `reda-protocol.md` | the ReDA protocol specification, version 1.2 |
 | `governance/ROLES.md` | who can publish, what a contributor cannot do, and where the single point of failure sits |
 | `governance/PARTNERS.md` | what a named verification partner entry means, and what it does not |

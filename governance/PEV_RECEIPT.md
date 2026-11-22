@@ -128,6 +128,23 @@ and hashes taken from `audits/public-data/2026-11-21/`. There is deliberately no
 pseudo-skeleton: a skeleton with placeholder hashes would fail the schema, and a normative
 document should not ship an artefact that its own validator rejects.
 
+## Use limitation
+
+Both records carry a `use_limitation` object, required, with a fixed text version
+`EEO-UL-1`. The sentence is printed on the record itself rather than left to the protocol,
+because the reader most likely to over-read a receipt is the one who will not open the
+protocol.
+
+> This verification concerns the statistical reproducibility of evaluation data only. It is
+> not an assessment of the value of a data asset, of title or ownership, or of any financing
+> capacity, and it may not be cited as one.
+
+> 本核验仅针对评估数据的统计可复现性，不构成对数据资产价值、产权归属或任何融资能力的认定，也不得被援引为上述认定。
+
+Changing the sentence means changing `text_version`, so a record that was signed under
+`EEO-UL-1` stays identifiable as such. A record whose `use_limitation` is anything other than
+`EEO-UL-1` is not issued by this archive.
+
 ## Validation
 
 The tables above are prose; these two files are the enforceable form:
