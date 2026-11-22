@@ -71,6 +71,12 @@ next two lines would be validating against the wrong principal.
 The other two print `Good "git" signature for jiaxi999@163.com`. Both are required: a signed
 tag over an unsigned commit attributes the label, not the contents.
 
+For the whole range in one call, `tools/check_signing.py` does what the three commands do
+per object: it counts the commits, separates signed from unsigned, verifies each signed commit
+against `governance/keys/allowed_signers`, and fails if the list in `STATUS.md` no longer
+matches the unsigned set. Exit 0 is the passing case; 1 means a signature or a list does not
+hold; 2 means a shallow clone or a missing key file.
+
 What this establishes is that the key in the repository verifies the signatures in it. It
 does not establish who holds the private half; that is what the fingerprint comparison above
 is for.
