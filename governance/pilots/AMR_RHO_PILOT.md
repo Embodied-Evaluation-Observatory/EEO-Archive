@@ -86,6 +86,11 @@ Consequences to state in the report, not to leave implied:
 - if two cells differ by less than roughly one attempt's worth of independent information,
   the comparison is not yet decidable at this sample size, whatever the point estimates say.
 
+What to plan on before this pilot has run is not a range borrowed from another unit. The
+cell count that follows from a measured rho is read off `governance/SAMPLE_BUDGET_SURFACE.md`,
+and that page's decision rule governs the gap: a conservative rung, or this 150-cell baseline
+as a measuring instrument and a floor.
+
 ## Cost and schedule
 
 150 attempts, one operator, one site, two to three days including setup and the definition

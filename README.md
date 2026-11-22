@@ -44,6 +44,7 @@ reader can recompute every number we quote.
 | `governance/ROLES.md` | who can publish, what a contributor cannot do, and where the single point of failure sits |
 | `governance/PARTNERS.md` | what a named verification partner entry means, and what it does not |
 | `governance/DOMAIN_TRANSFER.md` | when a measured correlation may be used outside its own stratum, and how to measure one |
+| `governance/SAMPLE_BUDGET_SURFACE.md` | what to plan on before a fleet's own rho exists: a fixed ladder, two measurements shown as annotations, and a rule for choosing a rung |
 | `governance/DATA_TERMS.md` | terms for partner logs: de-identification, no redistribution, review rights |
 | `governance/IN_LOOP.md` | auditing an evaluation loop that improves its own judge: correlated judging, ceiling-pinned skills, pruned suites |
 | `governance/pilots/AMR_RHO_PILOT.md` | a 150-attempt design for measuring correlation on one AMR fleet, with its recording sheet and analysis script |
