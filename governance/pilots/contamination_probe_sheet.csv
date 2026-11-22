@@ -1,0 +1,5 @@
+attempt_id,run_id,model_id,model_role,variant_family,variant_id,cell_id,attempt_index,outcome,harness_hash,run_date,operator,exposure_claim,notes
+EXAMPLE-001,RUN-1,MODEL-A,under_test,P1_surface,P1-0001,TASK01-CFG1,1,1,h0...harness,2026-11-24,operator,"none stated",EXAMPLE ROW: delete before use
+EXAMPLE-002,RUN-1,MODEL-A,under_test,P1_surface,P1-0001,TASK01-CFG1,2,0,h0...harness,2026-11-24,operator,"none stated",EXAMPLE ROW: delete before use
+EXAMPLE-003,RUN-1,REF-MODEL,reference,P1_surface,P1-0001,TASK01-CFG1,1,1,h0...harness,2026-11-24,operator,"open weights; no exposure",EXAMPLE ROW: delete before use
+EXAMPLE-004,RUN-1,POS-CONTROL,positive_control,P1_surface,P1-0001,TASK01-CFG1,1,0,h0...harness,2026-11-24,operator,"trained on 200 original-surface items, procedure in plan",EXAMPLE ROW: delete before use
