@@ -6,7 +6,7 @@ earned.
 
 ## Current state
 
-Commits through 2026-11-18 are unsigned. The repository was operated through a cloud
+Commits to `f2664a7` (2026-11-18) are unsigned: 22 of the 38 on `main`. The repository was operated through a cloud
 workspace without access to a private key, and GitHub marks those commits `Unverified`.
 They are not retroactively signable: a signature covers the commit object, so changing the
 commit to add one changes its hash and invalidates every tag and reference that points at

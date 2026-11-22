@@ -35,8 +35,25 @@ states which bytes it serves.
 
 ## Verification state
 
-- Commits through 2026-11-18 are unsigned, because the repository was operated from a
-  workspace without a private key. GitHub marks them `Unverified`. They cannot be signed
-  retroactively without rewriting hashes. Policy from here: `SIGNING.md`.
+- 22 of the 38 commits reachable from `main` are unsigned: the range `8d1944c` (2026-11-16)
+  through `f2664a7` (2026-11-18). They were made from a workspace without a private key, and
+  GitHub marks them `Unverified`. They cannot be signed retroactively without rewriting
+  hashes. Signing began at `68bf1a5` on the same day and has been continuous since; the 16
+  commits from `68bf1a5` through `350575a` verify against `governance/keys/`. Policy:
+  `SIGNING.md`.
 - Each release runs the gate in `RELEASE_GATE.md` before publication; the gate record sits
   beside the release.
+
+The unsigned commits, oldest first:
+
+```
+8d1944c  86b2426  bc99bef  5a2e803  96f25b3  cd96990
+9228771  ffce49f  9016d64  60e3c8b  4fe30fa  9669953
+49892ad  07ec856  91563ba  d26252a  4b45f9f  550e3eb
+b033426  b48612a  3a94744  f2664a7
+```
+
+Count reproduced by `git rev-list --count HEAD` (38) and a check of `gpgsig` in each
+`git cat-file -p <sha>`: 22 without, 16 with. The range is listed here so it stays a
+declared exception rather than an omission.
+
