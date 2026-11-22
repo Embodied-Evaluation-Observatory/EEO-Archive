@@ -1,14 +1,16 @@
 # Verification key
 
 `eeo-signing-2026-11.pub` is the public half of the key that signs commits and release tags
-from 2026-11-22 onward. `allowed_signers` is the same key in the format `git` expects, bound
-to the address that appears as committer and tagger.
+from 2026-11-22 onward. `allowed_signers` is the same key in the format `git` expects, bound to
+the two addresses that appear as committer and tagger: the maintainer's own address and the
+archive's operational mailbox, which forwards to it. One key, two principals, no second key
+to rotate.
 
 | Item | Value |
 |---|---|
 | key type | ssh-ed25519 |
 | fingerprint | `SHA256:IMoazGr4HNXbNdMuT7UM1w1CQZXtN3iwb3L6RwsVfP0` |
-| principal | `jiaxi999@163.com` |
+| principals | `jiaxi999@163.com` and `archive@embodied-evaluation.org` |
 | first signed commit | `6af19d5` (2026-11-22) |
 | first signed tag | `v2026.11.22` |
 

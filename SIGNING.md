@@ -38,6 +38,19 @@ git log --show-signature -1
 git tag -v v2026.11.18.1
 ```
 
+## Two identities, one key
+
+Commits and tags are signed under either of two addresses: `jiaxi999@163.com`, the
+maintainer's own, and `archive@embodied-evaluation.org`, the operational mailbox, which
+forwards to it. Both are bound to the same key in `governance/keys/allowed_signers`, so a
+reader verifies them the same way and there is no second key to rotate. The address records
+who acted; the key records that the archive signed.
+
+One display detail: `git verify-commit` names the first principal bound to the key, so a
+commit made as `archive@embodied-evaluation.org` prints `Good signature for
+jiaxi999@163.com`. That is the binding order, not an error. The commit's own address is in
+the object (`%ae`), and both addresses lead to the same mailbox.
+
 ## Tags
 
 Annotated tags are signed with the same key. A release tag that is not signed leaves the
