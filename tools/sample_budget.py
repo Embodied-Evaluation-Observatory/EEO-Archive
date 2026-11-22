@@ -12,6 +12,8 @@ Usage:
     python3 tools/sample_budget.py --check          # reproduces the figures in protocol section 4
 
 Formulas are the ones in `reda-protocol.md` section 4; nothing here is fitted to a release.
+Section 4 printed its cell counts rounded to four significant digits, which understates a quota
+of cells. The corrected counts are in `reda-protocol-errata.md`; `--check` encodes them.
 Exit code 0 on a computed answer, 2 when the protocol figures do not reproduce.
 """
 import argparse

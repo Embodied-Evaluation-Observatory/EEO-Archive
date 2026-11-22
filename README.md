@@ -40,6 +40,7 @@ reader can recompute every number we quote.
 | `tools/sample_budget.py` | cell counts for a target bound or half-width; `--check` reproduces protocol section 4 |
 | `tools/check_signing.py` | total, signed and unsigned commits, and whether `STATUS.md` still matches |
 | `reda-protocol.md` | the ReDA protocol specification, version 1.2 |
+| `reda-protocol-errata.md` | corrections to the signed protocol text, kept outside it so certificates stay bound |
 | `governance/ROLES.md` | who can publish, what a contributor cannot do, and where the single point of failure sits |
 | `governance/PARTNERS.md` | what a named verification partner entry means, and what it does not |
 | `governance/DOMAIN_TRANSFER.md` | when a measured correlation may be used outside its own stratum, and how to measure one |
