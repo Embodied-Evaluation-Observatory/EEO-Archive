@@ -1,9 +1,19 @@
 # EEO Archive
 
-Embodied Evaluation Observatory — public tables for the Repetition and Discernibility
-Audit (ReDA).
+Embodied Evaluation Observatory.
 
-**We do not evaluate robots. We audit the evaluations.**
+Two questions about any number a robot evaluation publishes, asked before anyone compares it:
+
+| Question | Module | What comes back |
+|---|---|---|
+| Is the spread between runs real, or is it noise inside cells? | data health | rho, zero-variance share, design effect and interval — per stratum, never pooled |
+| How many attempts does this claim need before its interval narrows enough to mean something? | sample budget | required attempts, target interval width, the assumption and the seed — computed before the run |
+
+A third follows from the two: **reproduction verification** — can someone else recompute
+the number from the inputs they were handed?
+
+**We do not evaluate robots. We check the numbers that evaluations publish, and we publish
+the tooling, so a reader can recompute every figure we quote.**
 
 Live site: https://embodied-evaluation-observatory.github.io/EEO-Archive/ ·
 dashboard: https://embodied-evaluation-observatory.github.io/EEO-Archive/dashboard.html
