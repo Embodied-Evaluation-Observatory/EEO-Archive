@@ -21,6 +21,18 @@ Writes `certificates/<release>/layers.json`, which records each layer's status,
 the measured and declared hashes, the protocol file hash, and an explicit
 `not_certified` list.
 
+To check the committed certificate instead of writing a new one:
+
+```
+python3 tools/certify.py --release 2026-11-17 --check
+```
+
+This writes nothing. It recomputes the hash over the file's own content and
+recomputes L1/L2/L3 from the same bytes; exit 0 means the certificate on disk is
+the certificate that was issued for these inputs. `tools/preflight.py` uses this
+form, because a gate that reissues the certificate it checks cannot notice a
+change to it.
+
 ## Current state
 
 | Release | L1 | L2 | L3 |

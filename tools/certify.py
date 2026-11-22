@@ -26,10 +26,62 @@ def sha256(p):
     return h.hexdigest()
 
 
+def canon(obj):
+    # the issuer serialized with default separators and sorted keys; a verifier that
+    # canonicalizes differently invents a mismatch that is not there
+    return json.dumps(obj, ensure_ascii=False, sort_keys=True).encode('utf-8')
+
+
+def check_committed(path, fresh, rel):
+    """Verify the certificate on disk. Writes nothing.
+
+    Two questions, both about the committed file: does its recorded hash match its own
+    content, and do its layers recompute to the same answers from the same bytes? A
+    certificate that fails either is not a certificate: the first says it was edited after
+    signing, the second says the release no longer reaches what it was certified to reach.
+    """
+    if not os.path.exists(path):
+        print('BLOCK no certificate at certificates/%s/layers.json; issue one with '
+              'certify.py --release %s and commit it — the gate does not issue certificates'
+              % (rel, rel))
+        return 2
+    disk = json.load(open(path, encoding='utf-8'))
+    problems = []
+    recorded = disk.get('certificate_hash')
+    recomputed = hashlib.sha256(canon({k: v for k, v in disk.items()
+                                       if k != 'certificate_hash'})).hexdigest()
+    if not recorded:
+        problems.append('no certificate_hash recorded')
+    elif recomputed != recorded:
+        problems.append('certificate_hash %s does not match its content (%s); edited after signing'
+                        % (recorded[:12], recomputed[:12]))
+    disk_layers = disk.get('layers') or {}
+    for layer in ('L1', 'L2', 'L3'):
+        if bool(disk_layers.get(layer)) != bool(fresh['layers'][layer]):
+            problems.append('%s recorded %s, recomputes to %s'
+                            % (layer, bool(disk_layers.get(layer)), bool(fresh['layers'][layer])))
+    bound = (disk.get('protocol') or {}).get('sha256')
+    current = fresh['protocol']['sha256']
+    if bound != current:
+        problems.append('protocol bound at signing %s, current reda-protocol.md %s'
+                        % ((bound or '(none)')[:12], (current or '(none)')[:12]))
+    if problems:
+        for p in problems:
+            print('  ' + p)
+        print('BLOCK certificate check failed for %s' % rel)
+        return 1
+    reached = ', '.join(k for k in ('L1', 'L2', 'L3') if disk_layers.get(k))
+    print('certificate %s intact, issued %s, layers recompute as recorded (%s)'
+          % (recorded[:12], disk.get('issued_at'), reached))
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--release', required=True)
     ap.add_argument('--root', default=ROOT)
+    ap.add_argument('--check', action='store_true',
+                    help='verify the committed certificate instead of issuing a new one')
     a = ap.parse_args()
     rel, root = a.release, a.root
     pub = os.path.join(root, 'public', rel)
@@ -113,13 +165,18 @@ def main():
     cert['certificate_hash'] = sha256_str = hashlib.sha256(blob.encode('utf-8')).hexdigest()
 
     out_dir = os.path.join(root, 'certificates', rel)
-    os.makedirs(out_dir, exist_ok=True)
     path = os.path.join(out_dir, 'layers.json')
+
+    if a.check:
+        return check_committed(path, cert, rel)
+
+    os.makedirs(out_dir, exist_ok=True)
     json.dump(cert, open(path, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     print('written: certificates/%s/layers.json' % rel)
     print('L1=%s L2=%s L3=%s highest=%s hash=%s'
           % (ok1, ok2, ok3, cert['layers']['highest'], sha256_str[:12]))
+    return 0
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())

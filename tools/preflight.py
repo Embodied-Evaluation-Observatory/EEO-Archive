@@ -10,7 +10,9 @@ Checks, in order:
   1. manifest: the frozen snapshot on disk matches its recorded bytes and sha256
   2. public tables: checksums.txt matches every published file
   3. recompute: verify_public.py reproduces the summary from attempts.csv
-  4. certificates: certify.py reports L1, L2 and L3 reached
+  4. certificates: the committed certificate is intact and its layers still recompute.
+     The gate reads certificates; it never issues one. certify.py writes on every run and
+     stamps a new issued_at, so calling it here would alter the artefact being checked.
   5. protocol binding: the certificate carries the current protocol hash
   6. deposit: files downloaded from the deposit match the manifest and the tables
      (optional, but a release may not be published without it)
@@ -21,6 +23,10 @@ Usage:
   python3 tools/preflight.py --release 2026-11-17 \
       --input releases/2026-11-17/robocurve_allruns.json \
       --zenodo-dir ~/Downloads/zenodo-24325457
+
+A certificate is issued deliberately, then committed, then checked. Pass --recertify only
+when a release's inputs changed and a new certificate is intended; it writes
+certificates/<release>/layers.json and the gate will then block until you commit it.
 
 The optional --zenodo-dir should hold the files exactly as downloaded from the
 deposit page. The gate hashes them and compares against the local release. Use
@@ -68,6 +74,8 @@ def main():
     ap.add_argument('--zenodo-dir', default=None, help='files as downloaded from the deposit')
     ap.add_argument('--zenodo-checksums', default=None, help='checksums.txt from the deposit')
     ap.add_argument('--out', default=None, help='write a JSON record of the run')
+    ap.add_argument('--recertify', action='store_true',
+                    help='reissue the certificate first (writes certificates/<release>/layers.json)')
     a = ap.parse_args()
 
     results = []
@@ -140,17 +148,27 @@ def main():
     else:
         check('recompute', False, 'no --input given; the summary cannot be reproduced')
 
-    # 4. certificates
-    cmd = [sys.executable, os.path.join(ROOT, 'tools', 'certify.py'), '--release', a.release]
-    r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
-    layers_path = os.path.join(cert_dir, 'layers.json')
-    if os.path.exists(layers_path):
-        layers = json.load(open(layers_path, encoding='utf-8'))
-        reached = [k for k, v in (layers.get('layers') or {}).items() if v is True]
-        check('certificates', r.returncode == 0 and len(reached) == 3,
-              'reached %s' % ', '.join(reached) if reached else 'none reached')
+    # 4. certificates, read-only. A gate that reissues what it checks cannot detect a
+    #    changed certificate, because it replaces it before looking.
+    cy = os.path.join(ROOT, 'tools', 'certify.py')
+    if a.recertify:
+        r = subprocess.run([sys.executable, cy, '--release', a.release],
+                           cwd=ROOT, capture_output=True, text=True)
+        lines = [l.strip() for l in (r.stdout or '').strip().splitlines() if l.strip()]
+        if r.returncode != 0:
+            check('certificates', False, (r.stdout.strip() or r.stderr.strip())[-120:])
+        else:
+            check('certificates', False,
+                  'issued %s — commit certificates/%s/layers.json and rerun without '
+                  '--recertify; a gate does not pass a certificate it wrote itself'
+                  % (lines[-1].split('hash=')[-1] if lines else 'a new certificate', a.release))
     else:
-        check('certificates', False, 'no layers.json written')
+        r = subprocess.run([sys.executable, cy, '--release', a.release, '--check'],
+                           cwd=ROOT, capture_output=True, text=True)
+        lines = [l.strip() for l in (r.stdout or '').strip().splitlines() if l.strip()]
+        check('certificates', r.returncode == 0,
+              lines[-1] if (r.returncode == 0 and lines)
+              else ' | '.join(lines[-2:]) or r.stderr.strip()[-120:])
 
     # 5. certificate binds the current protocol
     proto = os.path.join(ROOT, 'reda-protocol.md')

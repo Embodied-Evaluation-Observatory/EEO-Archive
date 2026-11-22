@@ -41,9 +41,20 @@ python3 tools/preflight.py --release 2026-11-17 \
 | manifest | the frozen snapshot on disk differs from its recorded bytes or sha256 |
 | public tables | a published file is missing, altered, or not listed in checksums.txt |
 | recompute | `verify_public.py` cannot reproduce the summary from attempts.csv |
-| certificates | fewer than L1, L2, L3 are reached |
+| certificates | the committed certificate does not match its own hash, or its layers no longer recompute to what it recorded |
 | protocol binding | the C7 protocol hash differs from the current `reda-protocol.md` |
 | deposit files | a file downloaded from the deposit differs from the release, or cannot be checked |
+
+The gate reads a certificate; it does not issue one. `tools/certify.py` writes
+`certificates/<release>/layers.json` on every run and stamps the current time, so a gate that
+called it would replace the file it was about to check and always find it consistent. It
+would also make every gate run dirty the tree, which is how a certificate nobody meant to
+issue ends up in a commit. The gate therefore calls `certify.py --check`, which verifies two
+things about the committed file: its recorded `certificate_hash` still matches its own
+content, and L1/L2/L3 recompute to the recorded answers from the same bytes. Issuing is
+deliberate: run `certify.py`, commit the result, then run the gate. `--recertify` exists for
+the case where inputs genuinely changed, and it blocks the run that writes, so the new
+certificate has to be committed and checked before anything is published.
 
 The last check is the one that would have caught `24288113`. It refuses to pass when
 nothing was downloaded, so an unverified deposit cannot slip through on a technicality.
