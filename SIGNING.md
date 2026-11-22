@@ -53,6 +53,28 @@ immutable releases lock the tag. If a signed release tag is wanted for the 2026-
 contents, it has to be a new tag pointing at the same commit, and the old one stays as a
 documented unsigned predecessor.
 
+## Verifying a signature without GitHub
+
+The public key is published in this repository, so verification does not depend on a page
+outside it. `governance/keys/README.md` records where the key came from.
+
+```
+ssh-keygen -lf governance/keys/eeo-signing-2026-11.pub
+git -c gpg.ssh.allowedSignersFile=governance/keys/allowed_signers verify-tag v2026.11.22
+git -c gpg.ssh.allowedSignersFile=governance/keys/allowed_signers verify-commit 1f2d114
+```
+
+The first line prints `SHA256:IMoazGr4HNXbNdMuT7UM1w1CQZXtN3iwb3L6RwsVfP0`. If it prints
+anything else, stop: the key in the repository is not the key that signed this tag, and the
+next two lines would be validating against the wrong principal.
+
+The other two print `Good "git" signature for jiaxi999@163.com`. Both are required: a signed
+tag over an unsigned commit attributes the label, not the contents.
+
+What this establishes is that the key in the repository verifies the signatures in it. It
+does not establish who holds the private half; that is what the fingerprint comparison above
+is for.
+
 ## Rules
 
 1. From the next release onward, every release tag and every release commit is signed.
