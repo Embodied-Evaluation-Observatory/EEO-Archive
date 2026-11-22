@@ -11,8 +11,8 @@ field and size. Two findings from the inventory alone:
 - Only one source exposes a per-episode binary outcome through a small, label-only read:
   DROID 1.0.1, co-produced by Physical Intelligence and thirteen institutions. Everything
   else either puts labels inside 30 GB-to-terabyte archives (AgiBot World 2026), withholds
-  terms until an access request is granted (AgiBot World Beta, RoboMIND original, Fourier
-  samples), or is simulation rather than deployment (RoboCasa, GenieSim).
+  terms until an access request is granted (AgiBot World Beta, RoboMIND original, one humanoid vendor's sample
+  repository), or is simulation rather than deployment (RoboCasa, GenieSim).
 - Two classes of party have nothing public at all: the large humanoid vendors and the
   industrial AMR vendors, including the fleet that asked for a correlation estimate. For
   them no amount of collection produces a number; only their own records do.

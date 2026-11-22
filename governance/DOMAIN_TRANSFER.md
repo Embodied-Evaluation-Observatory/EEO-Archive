@@ -73,12 +73,12 @@ What must not happen: quoting the archive's 0.5 as if it applied to an AMR fleet
 deriving a confidence interval from it. The arithmetic would be correct and the input
 wrong, which is the failure mode this file exists to prevent.
 
-## Rehabilitation and humanoid contact tasks
+## Contact-rich tasks and repeated human judgement
 
-Clinical and contact-rich settings add a second source of dependence that the benchmarks do
-not have: the assessor. If a therapist scores the same episode twice and gives different
-numbers, that variance sits inside the cell and inflates rho in a way that has nothing to do
-with the policy.
+Contact-rich and human-judged settings add a second source of dependence that the benchmarks
+do not have: the assessor. If the same operator scores the same episode twice and gives
+different numbers, that variance sits inside the cell and inflates rho in a way that has
+nothing to do with the policy.
 
 So there are two quantities, and they must not be merged:
 
@@ -98,7 +98,7 @@ is not making a statistical claim; it is repeating a number.
 
 ## Status
 
-No measurement exists for industrial mobile robots or for rehabilitation settings as of
+No measurement exists for industrial mobile robots or for human-judged settings as of
 2026-11-21. Both parties who asked have offered their own records, which is the right
 starting point: a first estimate from their own runs, published with its interval and its
 limits, is worth more than any transfer argument.

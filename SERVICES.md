@@ -34,9 +34,9 @@ standing to answer; whether the claim is comparable at all, it can answer.
 
 ## 4. Statistics for people who do not do statistics
 
-Many of the people who most need a defensible number are not statisticians: clinicians
-writing up a rehabilitation series, graduate students with a few dozen trials per arm,
-teachers with class-level data. The failure is rarely malice; it is a denominator that was
+Many of the people who most need a defensible number are not statisticians: graduate
+students with a few dozen trials per arm, teachers with class-level data, analysts handed a
+spreadsheet they did not build. The failure is rarely malice; it is a denominator that was
 never defined, a denominator that moved, or a difference smaller than the sample can
 resolve.
 

@@ -35,6 +35,8 @@ reader can recompute every number we quote.
 | `governance/IN_LOOP.md` | auditing an evaluation loop that improves its own judge: correlated judging, ceiling-pinned skills, pruned suites |
 | `governance/pilots/AMR_RHO_PILOT.md` | a 150-attempt design for measuring correlation on one AMR fleet, with its recording sheet and analysis script |
 | `audits/public-data/2026-11-21/README.md` | twelve public company releases checked for a usable per-attempt label, and what DROID supports |
+| `governance/POSITIONING-CLIENT-zh.md` | the four modules, the two cross-cutting axes, the three entry points, and what is not offered |
+| `governance/PEV_RECEIPT.md` | the record and matrix definitions, with JSON Schemas, validator and passing examples under `governance/schema/` |
 
 ## Check it
 
