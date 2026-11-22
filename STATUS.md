@@ -35,12 +35,11 @@ states which bytes it serves.
 
 ## Verification state
 
-- 22 of the 38 commits reachable from `main` are unsigned: the range `8d1944c` (2026-11-16)
-  through `f2664a7` (2026-11-18). They were made from a workspace without a private key, and
-  GitHub marks them `Unverified`. They cannot be signed retroactively without rewriting
-  hashes. Signing began at `68bf1a5` on the same day and has been continuous since; the 16
-  commits from `68bf1a5` through `350575a` verify against `governance/keys/`. Policy:
-  `SIGNING.md`.
+- Every commit before `68bf1a5` is unsigned: `8d1944c` (2026-11-16) through `f2664a7`
+  (2026-11-18). They were made from a workspace without a private key, and GitHub marks them
+  `Unverified`. They cannot be signed retroactively without rewriting hashes. Signing began
+  at `68bf1a5` on 2026-11-18, and every commit since carries a signature that verifies
+  against `governance/keys/`. Policy: `SIGNING.md`.
 - Each release runs the gate in `RELEASE_GATE.md` before publication; the gate record sits
   beside the release.
 
@@ -53,7 +52,15 @@ The unsigned commits, oldest first:
 b033426  b48612a  3a94744  f2664a7
 ```
 
-Count reproduced by `git rev-list --count HEAD` (38) and a check of `gpgsig` in each
-`git cat-file -p <sha>`: 22 without, 16 with. The range is listed here so it stays a
-declared exception rather than an omission.
+The list above is the unsigned set, not a sample: it stays complete as commits are added,
+because new commits fall on the signed side of `68bf1a5`. Two commands reproduce the
+membership without trusting this file:
+
+```
+git rev-list --count HEAD
+for c in $(git rev-list --abbrev-commit HEAD); do git cat-file -p $c | grep -q gpgsig || echo $c; done
+```
+
+The first prints the total; the second prints the same set of abbreviated shas, newest first.
+Neither number is written down here, so neither can go stale.
 
