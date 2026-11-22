@@ -18,6 +18,44 @@ the input, so a reader can confirm that the same input produced the same table w
 receiving the input. That is the hash-only route in `ACCESS.md`, applied to a private
 source.
 
+## What to send: files, not links
+
+Intake is a file transfer. The archive accepts an actual file, hashes it on arrival, and
+records the hash in the certificate. A link is not an input: it can be edited, rate-limited,
+taken down or resolved to different bytes on a second request, and none of that is visible in
+the certificate.
+
+| Accepted | Not accepted as input |
+|---|---|
+| CSV, JSONL, Parquet, or a database dump, with a field dictionary | a URL to a dashboard, bucket or repository |
+| the attempt-level log described below | screenshots of a dashboard, or a PDF report |
+| a declaration file naming the fields that were not captured | an aggregate summary table on its own |
+
+An aggregate table can support a data-health reading and a budget-adequacy reading, both
+capped at L1. It cannot support process-evidence verification or reproduction, because
+neither can be recovered from totals. If a party has only aggregates, that is where the work
+stops, and saying so at intake is cheaper than saying it in the report.
+
+## Required attempt fields
+
+The minimum is `eval_log_min`, schema in `schema/eval-log-min.schema.json`. One object per
+attempt. Ten fields are required: `attempt_id`, `cell_id`, `task_id`, `config_id`, `seed`,
+`init_state_digest`, `termination_reason`, `scoring_method`, `rerun_flag`,
+`replacement_flag`.
+
+| Field group | Feeds | If absent |
+|---|---|---|
+| `attempt_id`, `cell_id`, `task_id`, `config_id` | cell structure, every module | nothing can be joined; intake is declined |
+| `seed`, `init_state_digest` | reproduction | reproduction is not attempted; recorded as not verified |
+| `termination_reason`, `scoring_method` | trace verification, data health | the outcome flag is read as reported, and the mix of human and script judging cannot be separated |
+| `rerun_flag`, `replacement_flag` | denominators | attempts dropped after the run are invisible; the stated count stands unchallenged |
+
+Fields a party did not capture are declared absent in the declaration file, in the same
+transfer. They are recorded in the verification record as not checked. They are not
+backfilled later: a value supplied after the run is indistinguishable from one supplied
+before it, which is why the record names the date of each field's arrival rather than trusting
+the order.
+
 ## De-identification
 
 Removed or coarsened before analysis, recorded field by field in the de-identification

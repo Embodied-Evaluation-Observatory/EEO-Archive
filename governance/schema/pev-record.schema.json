@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://embodied-evaluation.org/schema/pev-record-1.json",
+  "title": "Process-evidence verification record (PEV)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "pev_id", "module", "level", "window", "claim_under_test", "claim_locator",
+    "source_files", "fields_checked", "anomalies", "not_verified", "signer", "verify"
+  ],
+  "properties": {
+    "pev_id": {
+      "type": "string",
+      "pattern": "^PEV-[0-9]{8}-[a-z0-9][a-z0-9-]*$"
+    },
+    "module": { "const": "M2" },
+    "level": { "enum": ["L1", "L2", "L3"] },
+    "window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end"],
+      "properties": {
+        "start": { "type": "string", "format": "date" },
+        "end": { "type": "string", "format": "date" }
+      }
+    },
+    "claim_under_test": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Verbatim quotation of the claim under test. Paraphrase invalidates the record: it silently changes the object being checked."
+    },
+    "claim_locator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_file", "locator"],
+      "description": "Where the quotation sits, so a reader can confirm it is verbatim rather than trusting the record.",
+      "properties": {
+        "source_file": { "type": "string", "minLength": 1 },
+        "locator": { "type": "string", "minLength": 1, "description": "Section, page, table or paragraph." }
+      }
+    },
+    "source_files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["role", "id", "bytes", "sha256"],
+        "properties": {
+          "role": { "enum": ["log", "export", "manifest", "protocol"] },
+          "id": { "type": "string", "minLength": 1 },
+          "bytes": { "type": "integer", "minimum": 1 },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    },
+    "fields_checked": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["field", "rule", "result", "evidence"],
+        "properties": {
+          "field": { "type": "string", "minLength": 1 },
+          "rule": { "type": "string", "minLength": 1, "description": "Stated so that a reader could re-run it without asking." },
+          "result": { "enum": ["conform", "nonconform", "undetermined"] },
+          "evidence": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "denominator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["randomized", "analysed", "reported", "closed"],
+      "properties": {
+        "randomized": { "type": "integer", "minimum": 0 },
+        "analysed": { "type": "integer", "minimum": 0 },
+        "reported": { "type": "integer", "minimum": 0 },
+        "closed": { "type": "boolean" }
+      }
+    },
+    "anomalies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "description", "severity"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "minLength": 1 },
+          "severity": { "enum": ["blocking", "material", "note"] }
+        }
+      }
+    },
+    "not_verified": {
+      "type": "array",
+      "description": "Fields a reader might assume were checked. The key must be present; an empty array means nothing was left unchecked. Omitting the key is invalid, because absence reads as coverage.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["field", "reason"],
+        "properties": {
+          "field": { "type": "string", "minLength": 1 },
+          "reason": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "signer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "role", "date"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "role": { "enum": ["Founder", "Maintainer"] },
+        "date": { "type": "string", "format": "date" }
+      }
+    },
+    "verify": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["command", "expected"],
+      "properties": {
+        "command": { "type": "string", "minLength": 1 },
+        "expected": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "receipt_id": "REC-20261121-droid-site-rho",
+  "receipt_version": "EEO-REC-1",
+  "issued_utc": "2026-11-21T00:00:00Z",
+  "module": "M3",
+  "level": "L1",
+  "claim": "Recomputing site-level rho from the published derived table returns 0.0827 with a 95% cluster-bootstrap interval of 0.056 to 0.112.",
+  "scope": {
+    "stratum": "site",
+    "population": "episodes",
+    "n_units": 95658
+  },
+  "inputs": [
+    {
+      "role": "derived_table",
+      "id": "audits/public-data/2026-11-21/cells_derived.csv",
+      "bytes": 722427,
+      "sha256": "009b24b488f2f80101322c2f7993caaca0621b5e52e373e56d62df4b33831cca"
+    }
+  ],
+  "derivation": {
+    "method": "one-way ICC over site means with cluster bootstrap over sites",
+    "formula": "rho = (MSB - MSW) / (MSB + (k - 1) MSW)",
+    "seed": 20261121,
+    "software": { "name": "python", "version": "3.12.11" },
+    "tolerance": 0.005
+  },
+  "outputs": [
+    {
+      "name": "summary.json",
+      "rows": 1,
+      "sha256": "a4381fab5a57d1e87b30fe322092dce0e6a42a51226f2a637d75fec4d0a9929a"
+    }
+  ],
+  "checks": [
+    {
+      "id": "C1",
+      "rule": "the rho reported here and the rho in summary.json agree to three decimals",
+      "result": "conform",
+      "evidence": "summary.json site_rho = 0.0827"
+    },
+    {
+      "id": "C3",
+      "rule": "no rho is carried from another stratum; the cell-level figure is reported separately with its zero-variance caveat",
+      "result": "conform",
+      "evidence": "README.md, section 'How to read the second and third rows'"
+    }
+  ],
+  "comparability": {
+    "rule_applied": "C3",
+    "borrowed_from": null,
+    "permitted": true,
+    "note": "site stratum only; the cell-level estimate is published but not used as a borrowed prior"
+  },
+  "not_supported": [
+    "This is not a ranking of sites.",
+    "This is not an estimate for any other snapshot of DROID.",
+    "This is not a statement about any vendor's capability."
+  ],
+  "signer": { "name": "Zimo Li", "role": "Founder", "date": "2026-11-21" },
+  "verify": {
+    "command": "python3 governance/schema/validate.py governance/schema/examples/receipt-example.json",
+    "expected": "OK  receipt-example.json  (receipt)"
+  }
+}

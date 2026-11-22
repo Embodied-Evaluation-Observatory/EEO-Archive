@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://embodied-evaluation.org/schema/eval-log-min.json",
+  "title": "Minimum per-attempt evaluation log (eval_log_min)",
+  "description": "One attempt per object. Fields whose values cannot be reconstructed after the run are required. A field that is not captured at the time makes later verification partial, not lenient.",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "attempt_id", "cell_id", "task_id", "config_id",
+      "seed", "init_state_digest", "termination_reason", "scoring_method",
+      "rerun_flag", "replacement_flag"
+    ],
+    "properties": {
+      "attempt_id": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Unique per attempt; the key every later audit joins on."
+      },
+      "cell_id": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Task x configuration x stratum identifier the attempt belongs to."
+      },
+      "task_id": { "type": "string", "minLength": 1 },
+      "config_id": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Policy, checkpoint or hardware configuration under test."
+      },
+      "seed": {
+        "oneOf": [{ "type": "integer" }, { "type": "string", "minLength": 1 }],
+        "description": "Generator seed. A null is not allowed: an unseeded attempt cannot be recomputed."
+      },
+      "init_state_digest": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$",
+        "description": "sha256 of the initial state or scene manifest, proving attempts started from the same state."
+      },
+      "termination_reason": {
+        "enum": ["success", "failure", "interrupt", "timeout", "excluded"],
+        "description": "A bare outcome flag cannot tell success from a timeout that was later counted as failure."
+      },
+      "scoring_method": {
+        "enum": ["human", "script", "mixed"],
+        "description": "Who judged the outcome. Mixing the two without recording which was used makes rater variance invisible."
+      },
+      "rerun_flag": {
+        "type": "boolean",
+        "description": "True when this attempt replaces or follows an earlier attempt on the same cell."
+      },
+      "replacement_flag": {
+        "type": "boolean",
+        "description": "True when this attempt was substituted for a discarded one. Dropping attempts changes the denominator."
+      },
+      "started_at": { "type": "string", "format": "date-time" },
+      "ended_at": { "type": "string", "format": "date-time" },
+      "collector_id": { "type": "string", "minLength": 1 },
+      "notes": { "type": "string" }
+    }
+  }
+}

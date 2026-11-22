@@ -1,0 +1,46 @@
+{
+  "pev_id": "PEV-20261121-droid-zerovar",
+  "module": "M2",
+  "level": "L1",
+  "window": { "start": "2026-11-20", "end": "2026-11-21" },
+  "claim_under_test": "Among the 6,815 cells with at least two attempts, 98.6% are zero-variance",
+  "claim_locator": {
+    "source_file": "audits/public-data/2026-11-21/README.md",
+    "locator": "section 'How to read the second and third rows', paragraph 1"
+  },
+  "source_files": [
+    {
+      "role": "export",
+      "id": "audits/public-data/2026-11-21/cells_derived.csv",
+      "bytes": 722427,
+      "sha256": "009b24b488f2f80101322c2f7993caaca0621b5e52e373e56d62df4b33831cca"
+    }
+  ],
+  "fields_checked": [
+    {
+      "field": "bytes",
+      "rule": "file size equals the byte count recorded in this record",
+      "result": "conform",
+      "evidence": "cells_derived.csv, 722427 bytes"
+    },
+    {
+      "field": "zero_variance_share",
+      "rule": "recompute the share of cells with zero internal variance, restricted to cells with at least two attempts, and compare with the quoted figure at one decimal place",
+      "result": "conform",
+      "evidence": "6,815 cells, 98.6% zero-variance"
+    }
+  ],
+  "denominator": { "randomized": 95658, "analysed": 95658, "reported": 95658, "closed": true },
+  "anomalies": [],
+  "not_verified": [
+    {
+      "field": "instruction_string_stability",
+      "reason": "labels were read by column projection; instruction strings were not checked for renaming between shards"
+    }
+  ],
+  "signer": { "name": "Zimo Li", "role": "Founder", "date": "2026-11-21" },
+  "verify": {
+    "command": "python3 governance/schema/validate.py governance/schema/examples/pev-example.json",
+    "expected": "OK  pev-example.json  (pev)"
+  }
+}
